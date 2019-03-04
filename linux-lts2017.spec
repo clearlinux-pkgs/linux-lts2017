@@ -14,19 +14,13 @@ Source0:        https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.14.104.tar.
 Source1:        config
 Source2:        cmdline
 
-%define kversion %{version}-%{release}.lts
+%define ktarget  lts2017
+%define kversion %{version}-%{release}.%{ktarget}
 
-BuildRequires:  bash >= 2.03
-BuildRequires:  bc
-BuildRequires:  binutils-dev
-BuildRequires:  elfutils-dev
-BuildRequires:  kernel-config
-BuildRequires:  make >= 3.78
-BuildRequires:  openssl-dev
-BuildRequires:  flex
-BuildRequires:  bison
-BuildRequires:  kmod
-BuildRequires:  linux-firmware
+BuildRequires:  buildreq-kernel
+
+Requires: systemd-bin
+Requires: init-rdahead-extras
 
 # don't strip .ko files!
 %global __os_install_post %{nil}
@@ -98,6 +92,23 @@ Group:          kernel
 %description extra
 Linux kernel extra files
 
+%package cpio
+License:        GPL-2.0
+Summary:        cpio file with kenrel modules
+Group:          kernel
+
+%description cpio
+Creates a cpio file with some module
+
+%package dev
+License:        GPL-2.0
+Summary:        The Linux kernel
+Group:          kernel
+Requires:       %{name} = %{version}-%{release}, %{name}-extra = %{version}-%{release}
+
+%description dev
+Linux kernel build files and install script
+
 %prep
 %setup -q -n linux-4.14.104
 
@@ -159,72 +170,118 @@ cp -a /usr/lib/firmware/intel-ucode firmware/
 
 %build
 BuildKernel() {
-    MakeTarget=$1
 
+    Target=$1
     Arch=x86_64
-    ExtraVer="-%{release}.lts"
+    ExtraVer="-%{release}.${Target}"
 
     perl -p -i -e "s/^EXTRAVERSION.*/EXTRAVERSION = ${ExtraVer}/" Makefile
 
-    make -s mrproper
-    cp config .config
+    make O=${Target} -s mrproper
+    cp config ${Target}/.config
 
-    make -s ARCH=$Arch oldconfig > /dev/null
-    make -s CONFIG_DEBUG_SECTION_MISMATCH=y %{?_smp_mflags} ARCH=$Arch %{?sparse_mflags}
+    make O=${Target} -s ARCH=${Arch} olddefconfig
+    make O=${Target} -s ARCH=${Arch} CONFIG_DEBUG_SECTION_MISMATCH=y %{?_smp_mflags} %{?sparse_mflags}
 }
 
-BuildKernel bzImage
+BuildKernel %{ktarget}
 
 %install
-mkdir -p %{buildroot}/usr/sbin
 
 InstallKernel() {
-    KernelImage=$1
 
+    Target=$1
+    Kversion=$2
     Arch=x86_64
-    KernelVer=%{kversion}
     KernelDir=%{buildroot}/usr/lib/kernel
+    DevDir=%{buildroot}/usr/lib/modules/${Kversion}/build
 
     mkdir   -p ${KernelDir}
-    install -m 644 .config    ${KernelDir}/config-${KernelVer}
-    install -m 644 System.map ${KernelDir}/System.map-${KernelVer}
-    install -m 644 %{SOURCE2} ${KernelDir}/cmdline-${KernelVer}
-    cp  $KernelImage ${KernelDir}/org.clearlinux.lts.%{version}-%{release}
-    chmod 755 ${KernelDir}/org.clearlinux.lts.%{version}-%{release}
+    install -m 644 ${Target}/.config    ${KernelDir}/config-${Kversion}
+    install -m 644 ${Target}/System.map ${KernelDir}/System.map-${Kversion}
+    install -m 644 ${Target}/vmlinux    ${KernelDir}/vmlinux-${Kversion}
+    install -m 644 %{SOURCE2}           ${KernelDir}/cmdline-${Kversion}
+    cp  ${Target}/arch/x86/boot/bzImage ${KernelDir}/org.clearlinux.${Target}.%{version}-%{release}
+    chmod 755 ${KernelDir}/org.clearlinux.${Target}.%{version}-%{release}
 
-    mkdir -p %{buildroot}/usr/lib/modules/$KernelVer
-    make -s ARCH=$Arch INSTALL_MOD_PATH=%{buildroot}/usr modules_install KERNELRELEASE=$KernelVer
+    mkdir -p %{buildroot}/usr/lib/modules
+    make O=${Target} -s ARCH=${Arch} INSTALL_MOD_PATH=%{buildroot}/usr modules_install
 
-    rm -f %{buildroot}/usr/lib/modules/$KernelVer/build
-    rm -f %{buildroot}/usr/lib/modules/$KernelVer/source
+    rm -f %{buildroot}/usr/lib/modules/${Kversion}/build
+    rm -f %{buildroot}/usr/lib/modules/${Kversion}/source
 
-    # Erase some modules index
-    for i in alias ccwmap dep ieee1394map inputmap isapnpmap ofmap pcimap seriomap symbols usbmap softdep devname
-    do
-        rm -f %{buildroot}/usr/lib/modules/${KernelVer}/modules.${i}*
-    done
-    rm -f %{buildroot}/usr/lib/modules/${KernelVer}/modules.*.bin
+    mkdir -p ${DevDir}
+    find . -type f -a '(' -name 'Makefile*' -o -name 'Kbuild*' -o -name 'Kconfig*' ')' -exec cp -t ${DevDir} --parents -pr {} +
+    find . -type f -a '(' -name '*.sh' -o -name '*.pl' ')' -exec cp -t ${DevDir} --parents -pr {} +
+    cp -t ${DevDir} -pr ${Target}/{Module.symvers,tools}
+    ln -s ../../../kernel/config-${Kversion} ${DevDir}/.config
+    ln -s ../../../kernel/System.map-${Kversion} ${DevDir}/System.map
+    cp -t ${DevDir} --parents -pr arch/x86/include
+    cp -t ${DevDir}/arch/x86/include -pr ${Target}/arch/x86/include/*
+    cp -t ${DevDir}/include -pr include/*
+    cp -t ${DevDir}/include -pr ${Target}/include/*
+    cp -t ${DevDir} --parents -pr scripts/*
+    cp -t ${DevDir}/scripts -pr ${Target}/scripts/*
+    find  ${DevDir}/scripts -type f -name '*.[cho]' -exec rm -v {} +
+    find  ${DevDir} -type f -name '*.cmd' -exec rm -v {} +
+    # Cleanup any dangling links
+    find ${DevDir} -type l -follow -exec rm -v {} +
+
+    # Kernel default target link
+    ln -s org.clearlinux.${Target}.%{version}-%{release} %{buildroot}/usr/lib/kernel/default-${Target}
 }
 
-InstallKernel arch/x86/boot/bzImage
+# cpio file for i8042 libps2 atkbd
+createCPIO() {
+
+    Target=$1
+    Kversion=$2
+    KernelDir=%{buildroot}/usr/lib/kernel
+    ModDir=/usr/lib/modules/${Kversion}
+
+    mkdir -p cpiofile${ModDir}/kernel/drivers/input/{serio,keyboard}
+    mkdir -p cpiofile${ModDir}/kernel/drivers/hid
+    cp %{buildroot}${ModDir}/kernel/drivers/input/serio/i8042.ko      cpiofile${ModDir}/kernel/drivers/input/serio
+    cp %{buildroot}${ModDir}/kernel/drivers/input/serio/libps2.ko     cpiofile${ModDir}/kernel/drivers/input/serio
+    cp %{buildroot}${ModDir}/kernel/drivers/input/keyboard/atkbd.ko   cpiofile${ModDir}/kernel/drivers/input/keyboard
+    cp %{buildroot}${ModDir}/kernel/drivers/hid/hid-logitech-dj.ko    cpiofile${ModDir}/kernel/drivers/hid
+    cp %{buildroot}${ModDir}/kernel/drivers/hid/hid-logitech-hidpp.ko cpiofile${ModDir}/kernel/drivers/hid
+    cp %{buildroot}${ModDir}/modules.order   cpiofile${ModDir}
+    cp %{buildroot}${ModDir}/modules.builtin cpiofile${ModDir}
+
+    depmod -b cpiofile/usr ${Kversion}
+
+    (
+      cd cpiofile
+      find . | cpio --create --format=newc \
+        | xz --check=crc32 --lzma2=dict=512KiB > ${KernelDir}/initrd-org.clearlinux.${Target}.%{version}-%{release}
+    )
+}
+
+InstallKernel %{ktarget} %{kversion}
+
+createCPIO %{ktarget} %{kversion}
 
 rm -rf %{buildroot}/usr/lib/firmware
-
-# Recreate modules indices
-depmod -a -b %{buildroot}/usr %{kversion}
-
-ln -s org.clearlinux.lts.%{version}-%{release} %{buildroot}/usr/lib/kernel/default-lts
 
 %files
 %dir /usr/lib/kernel
 %dir /usr/lib/modules/%{kversion}
 /usr/lib/kernel/config-%{kversion}
 /usr/lib/kernel/cmdline-%{kversion}
-/usr/lib/kernel/org.clearlinux.lts.%{version}-%{release}
-/usr/lib/kernel/default-lts
+/usr/lib/kernel/org.clearlinux.%{ktarget}.%{version}-%{release}
+/usr/lib/kernel/default-%{ktarget}
 /usr/lib/modules/%{kversion}/kernel
 /usr/lib/modules/%{kversion}/modules.*
 
 %files extra
 %dir /usr/lib/kernel
 /usr/lib/kernel/System.map-%{kversion}
+/usr/lib/kernel/vmlinux-%{kversion}
+
+%files cpio
+/usr/lib/kernel/initrd-org.clearlinux.%{ktarget}.%{version}-%{release}
+
+%files dev
+%defattr(-,root,root)
+/usr/lib/modules/%{kversion}/build
