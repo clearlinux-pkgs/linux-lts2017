@@ -177,7 +177,6 @@ BuildKernel bzImage
 
 %install
 mkdir -p %{buildroot}/usr/sbin
-install -m 755 %{SOURCE3} %{buildroot}/usr/sbin
 
 InstallKernel() {
     KernelImage=$1
