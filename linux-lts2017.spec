@@ -3,9 +3,9 @@
 # for long-term support
 #
 
-Name:           linux-lts
+Name:           linux-lts2017
 Version:        4.14.97
-Release:        414
+Release:        1
 License:        GPL-2.0
 Summary:        The Linux kernel
 Url:            http://www.kernel.org/
