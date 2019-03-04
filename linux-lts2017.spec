@@ -13,7 +13,6 @@ Group:          kernel
 Source0:        https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.14.104.tar.xz
 Source1:        config
 Source2:        cmdline
-Source3:        install-vbox-lga
 
 %define kversion %{version}-%{release}.lts
 
@@ -226,7 +225,6 @@ ln -s org.clearlinux.lts.%{version}-%{release} %{buildroot}/usr/lib/kernel/defau
 /usr/lib/kernel/default-lts
 /usr/lib/modules/%{kversion}/kernel
 /usr/lib/modules/%{kversion}/modules.*
-/usr/sbin/install-vbox-lga
 
 %files extra
 %dir /usr/lib/kernel
