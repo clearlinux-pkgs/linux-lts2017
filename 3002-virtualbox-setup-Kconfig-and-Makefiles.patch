@@ -1,28 +1,28 @@
-From 2418d622309353097625b6cbe57e6c5f253d8e95 Mon Sep 17 00:00:00 2001
-From: Miguel Bernal Marin <miguel.bernal.marin@linux.intel.com>
-Date: Sun, 15 Apr 2018 12:13:43 -0500
+From 5059e6401bad28bc5867cbbdef61781f409c9393 Mon Sep 17 00:00:00 2001
+From: "Brett T. Warden" <brett.t.warden@intel.com>
+Date: Mon, 4 Mar 2019 10:43:22 -0800
 Subject: [PATCH 3002/3002] virtualbox: setup Kconfig and Makefiles
 
 ---
  drivers/misc/Kconfig                          | 31 +++++++++++++++++++
  drivers/misc/Makefile                         |  3 ++
- drivers/misc/vboxguest/Makefile               |  1 +
- .../misc/vboxguest/Makefile.include.header    |  6 ++--
- drivers/misc/vboxsf/Makefile                  |  1 +
- drivers/misc/vboxsf/Makefile.include.header   |  6 ++--
- drivers/misc/vboxvideo/Makefile               |  1 +
- .../misc/vboxvideo/Makefile.include.header    |  6 ++--
- 8 files changed, 46 insertions(+), 9 deletions(-)
+ drivers/misc/vboxguest/Makefile               |  5 +++
+ .../misc/vboxguest/Makefile.include.header    | 10 +++---
+ drivers/misc/vboxsf/Makefile                  | 15 ++++++---
+ drivers/misc/vboxsf/Makefile.include.header   | 10 +++---
+ drivers/misc/vboxvideo/Makefile               |  5 +++
+ .../misc/vboxvideo/Makefile.include.header    | 10 +++---
+ 8 files changed, 69 insertions(+), 20 deletions(-)
 
 diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
-index 8136dc7e863d..251334f909d3 100644
+index 8136dc7e..86aca577 100644
 --- a/drivers/misc/Kconfig
 +++ b/drivers/misc/Kconfig
 @@ -506,6 +506,37 @@ config PCI_ENDPOINT_TEST
             Enable this configuration option to enable the host side test driver
             for PCI Endpoint.
  
-+config VBOXGUEST
++config ORACLE_VBOXGUEST
 +	tristate "VirtualBox Guest Addition driver"
 +	depends on X86
 +	default m
@@ -32,9 +32,9 @@ index 8136dc7e863d..251334f909d3 100644
 +	  To compile this driver as a module, choose M here: the
 +	  module will be called vboxguest.
 +
-+config VBOXSF
++config ORACLE_VBOXSF
 +	tristate "VirtualBox Share Folder driver"
-+	depends on X86 && VBOXGUEST
++	depends on X86 && ORACLE_VBOXGUEST
 +	default m
 +	help
 +	  This is the driver to share folders between guest and
@@ -43,9 +43,9 @@ index 8136dc7e863d..251334f909d3 100644
 +	  To compile this driver as a module, choose M here: the
 +	  module will be called vboxsf.
 +
-+config VBOXVIDEO
++config ORACLE_VBOXVIDEO
 +	tristate "VirtualBox Video driver"
-+	depends on X86 && VBOXGUEST
++	depends on X86 && ORACLE_VBOXGUEST
 +	default m
 +	help
 +	  This is the video driver for VirtualBox VM.
@@ -57,33 +57,37 @@ index 8136dc7e863d..251334f909d3 100644
  source "drivers/misc/eeprom/Kconfig"
  source "drivers/misc/cb710/Kconfig"
 diff --git a/drivers/misc/Makefile b/drivers/misc/Makefile
-index ad0e64fdba34..1372be11ce8e 100644
+index ad0e64fd..dc0cb68b 100644
 --- a/drivers/misc/Makefile
 +++ b/drivers/misc/Makefile
 @@ -53,6 +53,9 @@ obj-$(CONFIG_GENWQE)		+= genwqe/
  obj-$(CONFIG_ECHO)		+= echo/
  obj-$(CONFIG_VEXPRESS_SYSCFG)	+= vexpress-syscfg.o
  obj-$(CONFIG_CXL_BASE)		+= cxl/
-+obj-$(CONFIG_VBOXGUEST)		+= vboxguest/
-+obj-$(CONFIG_VBOXSF)		+= vboxsf/
-+obj-$(CONFIG_VBOXVIDEO)		+= vboxvideo/
++obj-$(CONFIG_ORACLE_VBOXGUEST)	+= vboxguest/
++obj-$(CONFIG_ORACLE_VBOXSF)	+= vboxsf/
++obj-$(CONFIG_ORACLE_VBOXVIDEO)	+= vboxvideo/
  obj-$(CONFIG_ASPEED_LPC_CTRL)	+= aspeed-lpc-ctrl.o
  obj-$(CONFIG_ASPEED_LPC_SNOOP)	+= aspeed-lpc-snoop.o
  obj-$(CONFIG_PCI_ENDPOINT_TEST)	+= pci_endpoint_test.o
 diff --git a/drivers/misc/vboxguest/Makefile b/drivers/misc/vboxguest/Makefile
-index fdb72b36e761..c6e0e4279db0 100644
+index 23d32214..813ac8ed 100644
 --- a/drivers/misc/vboxguest/Makefile
 +++ b/drivers/misc/vboxguest/Makefile
-@@ -27,6 +27,7 @@
+@@ -27,6 +27,11 @@
  # Linux kbuild sets this to our source directory if we are called from there
  obj ?= $(CURDIR)
  include $(obj)/Makefile.include.header
++ifneq ($(KBUILD_SRC),)
++KBUILD_EXTMOD=$(KBUILD_SRC)/$(obj)
++else
 +KBUILD_EXTMOD=$(obj)
++endif
  
  MOD_NAME = vboxguest
  
 diff --git a/drivers/misc/vboxguest/Makefile.include.header b/drivers/misc/vboxguest/Makefile.include.header
-index 1ceebec41848..fd7b9656fc29 100644
+index 702e049a..de493113 100644
 --- a/drivers/misc/vboxguest/Makefile.include.header
 +++ b/drivers/misc/vboxguest/Makefile.include.header
 @@ -86,7 +86,7 @@ ifeq ($(USERNAME),)
@@ -95,35 +99,74 @@ index 1ceebec41848..fd7b9656fc29 100644
  
   #
   # building from this directory
-@@ -131,12 +131,12 @@ else # neq($(KERNELRELEASE),)
+@@ -118,7 +118,7 @@ ifeq ($(KERNELRELEASE),)
+   KERN_VERSION := 26
+  endif
+ 
+-else # neq($(KERNELRELEASE),)
++else # neq($(KERNELVERSION),)
+ 
+  #
+  # building from kbuild (make -C <kernel_directory> M=`pwd`)
+@@ -131,13 +131,13 @@ else # neq($(KERNELRELEASE),)
    KERN_VERSION := 26
   endif
  
 - KERN_VER := $(KERNELRELEASE)
 + KERN_VER := $(KERNELVERSION)
  
- endif # neq($(KERNELRELEASE),)
+-endif # neq($(KERNELRELEASE),)
++endif # neq($(KERNELVERSION),)
  
  # Kernel build folder
--KERN_DIR := /lib/modules/$(KERN_VER)/build
-+KERN_DIR := $(KBUILD_SRC)
+ ifeq ($(KERN_DIR),)
+- KERN_DIR := /lib/modules/$(KERN_VER)/build
++ KERN_DIR := $(KBUILD_SRC)
+ endif
  ifneq ($(shell if test -d $(KERN_DIR); then echo yes; fi),yes)
   $(error Error: unable to find the headers of the Linux kernel to build against. \
-           Specify KERN_VER=<version> (currently $(KERN_VER)) and run Make again)
 diff --git a/drivers/misc/vboxsf/Makefile b/drivers/misc/vboxsf/Makefile
-index 8ba17c7b5008..04ca20d4d256 100644
+index 9b59dee0..d6de999c 100644
 --- a/drivers/misc/vboxsf/Makefile
 +++ b/drivers/misc/vboxsf/Makefile
-@@ -20,6 +20,7 @@
+@@ -20,6 +20,11 @@
  # Linux kbuild sets this to our source directory if we are called from there
  obj ?= $(CURDIR)
  include $(obj)/Makefile.include.header
++ifneq ($(KBUILD_SRC),)
++KBUILD_EXTMOD=$(KBUILD_SRC)/$(obj)
++else
 +KBUILD_EXTMOD=$(obj)
++endif
  
  MOD_NAME = vboxsf
  MOD_OBJS   = \
+@@ -69,7 +74,7 @@ else
+ 
+ # special hack for Fedora Core 6 2.6.18 (fc6), rhel5 2.6.18 (el5),
+ # ClarkConnect 4.3 (cc4) and ClarkConnect 5 (v5)
+- ifeq ($(KERNELRELEASE),)
++ ifeq ($(KERNELVERSION),)
+   MOD_EXTRA += $(foreach inc,$(KERN_INCL),\
+               $(if $(wildcard $(inc)/linux/utsrelease.h),\
+                 $(if $(shell grep '"2.6.18.*fc6.*"' $(inc)/linux/utsrelease.h; \
+@@ -78,10 +83,10 @@ else
+ 			    grep '"2.6.18.*cc4.*"' $(inc)/linux/utsrelease.h),\
+ 		-DKERNEL_FC6,),))
+  else
+-  MOD_EXTRA += $(if $(shell echo "$(KERNELRELEASE)"|grep '2.6.18.*fc6.*';\
+-			echo "$(KERNELRELEASE)"|grep '2.6.18.*el5.*';\
+-			echo "$(KERNELRELEASE)"|grep '2.6.18.*v5.*';\
+-			echo "$(KERNELRELEASE)"|grep '2.6.18.*cc4.*'),\
++  MOD_EXTRA += $(if $(shell echo "$(KERNELVERSION)"|grep '2.6.18.*fc6.*';\
++			echo "$(KERNELVERSION)"|grep '2.6.18.*el5.*';\
++			echo "$(KERNELVERSION)"|grep '2.6.18.*v5.*';\
++			echo "$(KERNELVERSION)"|grep '2.6.18.*cc4.*'),\
+ 		-DKERNEL_FC6,)
+  endif
+ endif
 diff --git a/drivers/misc/vboxsf/Makefile.include.header b/drivers/misc/vboxsf/Makefile.include.header
-index 1ceebec41848..fd7b9656fc29 100644
+index 702e049a..de493113 100644
 --- a/drivers/misc/vboxsf/Makefile.include.header
 +++ b/drivers/misc/vboxsf/Makefile.include.header
 @@ -86,7 +86,7 @@ ifeq ($(USERNAME),)
@@ -135,35 +178,50 @@ index 1ceebec41848..fd7b9656fc29 100644
  
   #
   # building from this directory
-@@ -131,12 +131,12 @@ else # neq($(KERNELRELEASE),)
+@@ -118,7 +118,7 @@ ifeq ($(KERNELRELEASE),)
+   KERN_VERSION := 26
+  endif
+ 
+-else # neq($(KERNELRELEASE),)
++else # neq($(KERNELVERSION),)
+ 
+  #
+  # building from kbuild (make -C <kernel_directory> M=`pwd`)
+@@ -131,13 +131,13 @@ else # neq($(KERNELRELEASE),)
    KERN_VERSION := 26
   endif
  
 - KERN_VER := $(KERNELRELEASE)
 + KERN_VER := $(KERNELVERSION)
  
- endif # neq($(KERNELRELEASE),)
+-endif # neq($(KERNELRELEASE),)
++endif # neq($(KERNELVERSION),)
  
  # Kernel build folder
--KERN_DIR := /lib/modules/$(KERN_VER)/build
-+KERN_DIR := $(KBUILD_SRC)
+ ifeq ($(KERN_DIR),)
+- KERN_DIR := /lib/modules/$(KERN_VER)/build
++ KERN_DIR := $(KBUILD_SRC)
+ endif
  ifneq ($(shell if test -d $(KERN_DIR); then echo yes; fi),yes)
   $(error Error: unable to find the headers of the Linux kernel to build against. \
-           Specify KERN_VER=<version> (currently $(KERN_VER)) and run Make again)
 diff --git a/drivers/misc/vboxvideo/Makefile b/drivers/misc/vboxvideo/Makefile
-index ae0b57a8b316..ff8d913f9f7f 100755
+index 8cdbdb56..969ec32d 100755
 --- a/drivers/misc/vboxvideo/Makefile
 +++ b/drivers/misc/vboxvideo/Makefile
-@@ -20,6 +20,7 @@
+@@ -20,6 +20,11 @@
  # Linux kbuild sets this to our source directory if we are called from there
  obj ?= $(CURDIR)
  include $(obj)/Makefile.include.header
++ifneq ($(KBUILD_SRC),)
++KBUILD_EXTMOD=$(KBUILD_SRC)/$(obj)
++else
 +KBUILD_EXTMOD=$(obj)
++endif
  
  BUILD =
  
 diff --git a/drivers/misc/vboxvideo/Makefile.include.header b/drivers/misc/vboxvideo/Makefile.include.header
-index 1ceebec41848..fd7b9656fc29 100755
+index 702e049a..de493113 100755
 --- a/drivers/misc/vboxvideo/Makefile.include.header
 +++ b/drivers/misc/vboxvideo/Makefile.include.header
 @@ -86,7 +86,7 @@ ifeq ($(USERNAME),)
@@ -175,21 +233,32 @@ index 1ceebec41848..fd7b9656fc29 100755
  
   #
   # building from this directory
-@@ -131,12 +131,12 @@ else # neq($(KERNELRELEASE),)
+@@ -118,7 +118,7 @@ ifeq ($(KERNELRELEASE),)
+   KERN_VERSION := 26
+  endif
+ 
+-else # neq($(KERNELRELEASE),)
++else # neq($(KERNELVERSION),)
+ 
+  #
+  # building from kbuild (make -C <kernel_directory> M=`pwd`)
+@@ -131,13 +131,13 @@ else # neq($(KERNELRELEASE),)
    KERN_VERSION := 26
   endif
  
 - KERN_VER := $(KERNELRELEASE)
 + KERN_VER := $(KERNELVERSION)
  
- endif # neq($(KERNELRELEASE),)
+-endif # neq($(KERNELRELEASE),)
++endif # neq($(KERNELVERSION),)
  
  # Kernel build folder
--KERN_DIR := /lib/modules/$(KERN_VER)/build
-+KERN_DIR := $(KBUILD_SRC)
+ ifeq ($(KERN_DIR),)
+- KERN_DIR := /lib/modules/$(KERN_VER)/build
++ KERN_DIR := $(KBUILD_SRC)
+ endif
  ifneq ($(shell if test -d $(KERN_DIR); then echo yes; fi),yes)
   $(error Error: unable to find the headers of the Linux kernel to build against. \
-           Specify KERN_VER=<version> (currently $(KERN_VER)) and run Make again)
 -- 
-2.18.0
+2.20.1
 
