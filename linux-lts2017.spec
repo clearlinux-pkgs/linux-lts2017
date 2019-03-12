@@ -5,7 +5,7 @@
 
 Name:           linux-lts2017
 Version:        4.14.105
-Release:        9
+Release:        10
 License:        GPL-2.0
 Summary:        The Linux kernel
 Url:            http://www.kernel.org/
@@ -276,7 +276,6 @@ rm -rf %{buildroot}/usr/lib/firmware
 
 mkdir -p %{buildroot}/usr/share/package-licenses/linux-lts2017
 cp COPYING %{buildroot}/usr/share/package-licenses/linux-lts2017/COPYING
-cp -a LICENSES/* %{buildroot}/usr/share/package-licenses/linux-lts2017
 
 %files
 %dir /usr/lib/kernel
