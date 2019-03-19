@@ -5,7 +5,7 @@
 
 Name:           linux-lts2017
 Version:        4.14.107
-Release:        13
+Release:        12
 License:        GPL-2.0
 Summary:        The Linux kernel
 Url:            http://www.kernel.org/
@@ -29,9 +29,6 @@ Requires: %{name}-license = %{version}-%{release}
 %define __strip /bin/true
 
 # kconfig: linux-4.17.11-600
-
-#    000X: cve, bugfixes patches
-Patch0001: CVE-2019-9857.patch
 
 #    00XY: Mainline patches, upstream backports
 Patch0011: 0011-libata-Add-new-med_power_with_dipm-link_power_manage.patch
@@ -124,9 +121,6 @@ Linux kernel build files and install script
 
 %prep
 %setup -q -n linux-4.14.107
-
-#    000X: cve, bugfixes patches
-%patch0001 -p1
 
 #     00XY  Mainline patches, upstream backports
 %patch0011 -p1
