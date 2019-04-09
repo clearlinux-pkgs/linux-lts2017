@@ -1,7 +1,7 @@
-From 72e1284a07ed8e8a21670096a358c185225d9d21 Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Tue, 20 Jun 2017 20:19:08 +0000
-Subject: [PATCH 126/133] print fsync count for bootchart
+Subject: [PATCH] print fsync count for bootchart
 
 ---
  block/blk-core.c      | 3 +++
@@ -10,10 +10,10 @@ Subject: [PATCH 126/133] print fsync count for bootchart
  3 files changed, 5 insertions(+)
 
 diff --git a/block/blk-core.c b/block/blk-core.c
-index 68bae6338ad4..574b2ce80a4b 100644
+index 0b14aebfd1a8..5994439bf5d4 100644
 --- a/block/blk-core.c
 +++ b/block/blk-core.c
-@@ -2285,6 +2285,9 @@ blk_qc_t submit_bio(struct bio *bio)
+@@ -2289,6 +2289,9 @@ blk_qc_t submit_bio(struct bio *bio)
  			count_vm_events(PGPGIN, count);
  		}
  
@@ -24,7 +24,7 @@ index 68bae6338ad4..574b2ce80a4b 100644
  			char b[BDEVNAME_SIZE];
  			printk(KERN_DEBUG "%s(%d): %s block %Lu on %s (%u sectors)\n",
 diff --git a/include/linux/sched.h b/include/linux/sched.h
-index e04919aa8201..77f96d06578b 100644
+index 866439c361a9..58947dc8f22e 100644
 --- a/include/linux/sched.h
 +++ b/include/linux/sched.h
 @@ -778,6 +778,7 @@ struct task_struct {
@@ -36,10 +36,10 @@ index e04919aa8201..77f96d06578b 100644
  	/* Process credentials: */
  
 diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
-index 2f93e4a2d9f6..7a2f3f3ea75b 100644
+index 187c04a34ba1..c3b30681e1ab 100644
 --- a/kernel/sched/debug.c
 +++ b/kernel/sched/debug.c
-@@ -943,6 +943,7 @@ void proc_sched_show_task(struct task_struct *p, struct pid_namespace *ns,
+@@ -947,6 +947,7 @@ void proc_sched_show_task(struct task_struct *p, struct pid_namespace *ns,
  	PN(se.exec_start);
  	PN(se.vruntime);
  	PN(se.sum_exec_runtime);
@@ -48,5 +48,5 @@ index 2f93e4a2d9f6..7a2f3f3ea75b 100644
  	nr_switches = p->nvcsw + p->nivcsw;
  
 -- 
-2.18.0
+https://clearlinux.org
 

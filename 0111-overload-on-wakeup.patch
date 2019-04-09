@@ -1,7 +1,7 @@
-From 1cc29422b21ec0ed3a5fbb8a6e9f00cec6e8a326 Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: jplozi <jplozi@unice.fr>
 Date: Fri, 11 Mar 2016 15:18:06 +0100
-Subject: [PATCH 111/133] overload on wakeup
+Subject: [PATCH] overload on wakeup
 
 source https://github.com/jplozi/wastedcores
 
@@ -14,10 +14,10 @@ a more permanent/elegant solution.
  1 file changed, 26 insertions(+)
 
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 5c09ddf8c832..7f7ba81ea093 100644
+index 4d54c1fe9623..5f445834f1d8 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
-@@ -5925,6 +5925,8 @@ static int wake_cap(struct task_struct *p, int cpu, int prev_cpu)
+@@ -5946,6 +5946,8 @@ static int wake_cap(struct task_struct *p, int cpu, int prev_cpu)
  	return min_cap * 1024 < task_util(p) * capacity_margin;
  }
  
@@ -26,7 +26,7 @@ index 5c09ddf8c832..7f7ba81ea093 100644
  /*
   * select_task_rq_fair: Select target runqueue for the waking task in domains
   * that have the 'sd_flag' flag set. In practice, this is SD_BALANCE_WAKE,
-@@ -5953,6 +5955,30 @@ select_task_rq_fair(struct task_struct *p, int prev_cpu, int sd_flag, int wake_f
+@@ -5974,6 +5976,30 @@ select_task_rq_fair(struct task_struct *p, int prev_cpu, int sd_flag, int wake_f
  	}
  
  	rcu_read_lock();
@@ -58,5 +58,5 @@ index 5c09ddf8c832..7f7ba81ea093 100644
  		if (!(tmp->flags & SD_LOAD_BALANCE))
  			break;
 -- 
-2.18.0
+https://clearlinux.org
 

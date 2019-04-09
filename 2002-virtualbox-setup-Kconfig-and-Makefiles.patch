@@ -1,6 +1,6 @@
-From 95d624ec57c7b8524c6d1f12af927e068c8fd59b Mon Sep 17 00:00:00 2001
-From: Miguel Bernal Marin <miguel.bernal.marin@linux.intel.com>
-Date: Fri, 1 Feb 2019 17:59:28 -0600
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: "Brett T. Warden" <brett.t.warden@intel.com>
+Date: Mon, 4 Mar 2019 10:43:22 -0800
 Subject: [PATCH] virtualbox: setup Kconfig and Makefiles
 
 ---
@@ -15,12 +15,12 @@ Subject: [PATCH] virtualbox: setup Kconfig and Makefiles
  8 files changed, 69 insertions(+), 20 deletions(-)
 
 diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
-index 3726eacdf65d..ae7a2de2c2b7 100644
+index 8136dc7e863d..86aca5770bb8 100644
 --- a/drivers/misc/Kconfig
 +++ b/drivers/misc/Kconfig
-@@ -513,6 +513,37 @@ config MISC_RTSX
- 	tristate
- 	default MISC_RTSX_PCI || MISC_RTSX_USB
+@@ -506,6 +506,37 @@ config PCI_ENDPOINT_TEST
+            Enable this configuration option to enable the host side test driver
+            for PCI Endpoint.
  
 +config ORACLE_VBOXGUEST
 +	tristate "VirtualBox Guest Addition driver"
@@ -57,7 +57,7 @@ index 3726eacdf65d..ae7a2de2c2b7 100644
  source "drivers/misc/eeprom/Kconfig"
  source "drivers/misc/cb710/Kconfig"
 diff --git a/drivers/misc/Makefile b/drivers/misc/Makefile
-index af22bbc3d00c..786464acb96f 100644
+index ad0e64fdba34..dc0cb68b62e1 100644
 --- a/drivers/misc/Makefile
 +++ b/drivers/misc/Makefile
 @@ -53,6 +53,9 @@ obj-$(CONFIG_GENWQE)		+= genwqe/
@@ -71,7 +71,7 @@ index af22bbc3d00c..786464acb96f 100644
  obj-$(CONFIG_ASPEED_LPC_SNOOP)	+= aspeed-lpc-snoop.o
  obj-$(CONFIG_PCI_ENDPOINT_TEST)	+= pci_endpoint_test.o
 diff --git a/drivers/misc/vboxguest/Makefile b/drivers/misc/vboxguest/Makefile
-index c1a8fe10f247..85340d55c0a8 100644
+index 23d3221494b6..813ac8ed376b 100644
 --- a/drivers/misc/vboxguest/Makefile
 +++ b/drivers/misc/vboxguest/Makefile
 @@ -27,6 +27,11 @@
@@ -126,7 +126,7 @@ index 702e049a1751..de49311335a7 100644
  ifneq ($(shell if test -d $(KERN_DIR); then echo yes; fi),yes)
   $(error Error: unable to find the headers of the Linux kernel to build against. \
 diff --git a/drivers/misc/vboxsf/Makefile b/drivers/misc/vboxsf/Makefile
-index f68e808aa6bf..5903a4e21416 100644
+index 9b59dee0f65e..d6de999cc6ff 100644
 --- a/drivers/misc/vboxsf/Makefile
 +++ b/drivers/misc/vboxsf/Makefile
 @@ -20,6 +20,11 @@
@@ -205,7 +205,7 @@ index 702e049a1751..de49311335a7 100644
  ifneq ($(shell if test -d $(KERN_DIR); then echo yes; fi),yes)
   $(error Error: unable to find the headers of the Linux kernel to build against. \
 diff --git a/drivers/misc/vboxvideo/Makefile b/drivers/misc/vboxvideo/Makefile
-index 6f95bf813530..e3e5766bb0db 100755
+index 8cdbdb5678a9..969ec32d63d0 100755
 --- a/drivers/misc/vboxvideo/Makefile
 +++ b/drivers/misc/vboxvideo/Makefile
 @@ -20,6 +20,11 @@
@@ -260,5 +260,5 @@ index 702e049a1751..de49311335a7 100755
  ifneq ($(shell if test -d $(KERN_DIR); then echo yes; fi),yes)
   $(error Error: unable to find the headers of the Linux kernel to build against. \
 -- 
-2.20.1
+https://clearlinux.org
 

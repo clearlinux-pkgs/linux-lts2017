@@ -1,7 +1,7 @@
-From 67278a3c15359c0d6470a2fa269a097fe013dbe0 Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Mon, 25 Jul 2016 06:44:34 -0500
-Subject: [PATCH 117/133] reduce e1000e boot time by tightening sleep ranges
+Subject: [PATCH] reduce e1000e boot time by tightening sleep ranges
 
 The e1000e driver is a great user of the usleep_range() API,
 and has any nice ranges that in principle help power management.
@@ -120,7 +120,7 @@ index 003cbd605799..6295b607c555 100644
  		}
  		/* Fall Through */
 diff --git a/drivers/net/ethernet/intel/e1000e/ich8lan.c b/drivers/net/ethernet/intel/e1000e/ich8lan.c
-index ff308b05d68c..c7cd81664f47 100644
+index 00eedf202e62..ced83e9ce03b 100644
 --- a/drivers/net/ethernet/intel/e1000e/ich8lan.c
 +++ b/drivers/net/ethernet/intel/e1000e/ich8lan.c
 @@ -289,7 +289,7 @@ static void e1000_toggle_lanphypc_pch_lpt(struct e1000_hw *hw)
@@ -159,7 +159,7 @@ index ff308b05d68c..c7cd81664f47 100644
  		}
  		e_dbg("ULP_CONFIG_DONE cleared after %dmsec\n", i * 10);
  
-@@ -2019,7 +2019,7 @@ static s32 e1000_check_reset_block_ich8lan(struct e1000_hw *hw)
+@@ -2017,7 +2017,7 @@ static s32 e1000_check_reset_block_ich8lan(struct e1000_hw *hw)
  
  	while ((blocked = !(er32(FWSM) & E1000_ICH_FWSM_RSPCIPHY)) &&
  	       (i++ < 30))
@@ -168,7 +168,7 @@ index ff308b05d68c..c7cd81664f47 100644
  	return blocked ? E1000_BLK_PHY_RESET : 0;
  }
  
-@@ -2838,7 +2838,7 @@ static s32 e1000_post_phy_reset_ich8lan(struct e1000_hw *hw)
+@@ -2836,7 +2836,7 @@ static s32 e1000_post_phy_reset_ich8lan(struct e1000_hw *hw)
  		return 0;
  
  	/* Allow time for h/w to get to quiescent state after reset */
@@ -177,7 +177,7 @@ index ff308b05d68c..c7cd81664f47 100644
  
  	/* Perform any necessary post-reset workarounds */
  	switch (hw->mac.type) {
-@@ -2874,7 +2874,7 @@ static s32 e1000_post_phy_reset_ich8lan(struct e1000_hw *hw)
+@@ -2872,7 +2872,7 @@ static s32 e1000_post_phy_reset_ich8lan(struct e1000_hw *hw)
  	if (hw->mac.type == e1000_pch2lan) {
  		/* Ungate automatic PHY configuration on non-managed 82579 */
  		if (!(er32(FWSM) & E1000_ICH_FWSM_FW_VALID)) {
@@ -186,7 +186,7 @@ index ff308b05d68c..c7cd81664f47 100644
  			e1000_gate_hw_phy_config_ich8lan(hw, false);
  		}
  
-@@ -3895,7 +3895,7 @@ static s32 e1000_update_nvm_checksum_spt(struct e1000_hw *hw)
+@@ -3893,7 +3893,7 @@ static s32 e1000_update_nvm_checksum_spt(struct e1000_hw *hw)
  	 */
  	if (!ret_val) {
  		nvm->ops.reload(hw);
@@ -195,7 +195,7 @@ index ff308b05d68c..c7cd81664f47 100644
  	}
  
  out:
-@@ -4046,7 +4046,7 @@ static s32 e1000_update_nvm_checksum_ich8lan(struct e1000_hw *hw)
+@@ -4044,7 +4044,7 @@ static s32 e1000_update_nvm_checksum_ich8lan(struct e1000_hw *hw)
  	 */
  	if (!ret_val) {
  		nvm->ops.reload(hw);
@@ -204,7 +204,7 @@ index ff308b05d68c..c7cd81664f47 100644
  	}
  
  out:
-@@ -4670,7 +4670,7 @@ static s32 e1000_reset_hw_ich8lan(struct e1000_hw *hw)
+@@ -4668,7 +4668,7 @@ static s32 e1000_reset_hw_ich8lan(struct e1000_hw *hw)
  	ew32(TCTL, E1000_TCTL_PSP);
  	e1e_flush();
  
@@ -214,10 +214,10 @@ index ff308b05d68c..c7cd81664f47 100644
  	/* Workaround for ICH8 bit corruption issue in FIFO memory */
  	if (hw->mac.type == e1000_ich8lan) {
 diff --git a/drivers/net/ethernet/intel/e1000e/mac.c b/drivers/net/ethernet/intel/e1000e/mac.c
-index db735644b312..22385d467a40 100644
+index 48cc945fc8b0..26af5746f984 100644
 --- a/drivers/net/ethernet/intel/e1000e/mac.c
 +++ b/drivers/net/ethernet/intel/e1000e/mac.c
-@@ -820,7 +820,7 @@ static s32 e1000_poll_fiber_serdes_link_generic(struct e1000_hw *hw)
+@@ -815,7 +815,7 @@ static s32 e1000_poll_fiber_serdes_link_generic(struct e1000_hw *hw)
  	 * milliseconds even if the other end is doing it in SW).
  	 */
  	for (i = 0; i < FIBER_LINK_UP_LIMIT; i++) {
@@ -227,10 +227,10 @@ index db735644b312..22385d467a40 100644
  		if (status & E1000_STATUS_LU)
  			break;
 diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
-index 7a226537877b..3192da9a6eea 100644
+index 3c214a47c1c4..10d7f6a44041 100644
 --- a/drivers/net/ethernet/intel/e1000e/netdev.c
 +++ b/drivers/net/ethernet/intel/e1000e/netdev.c
-@@ -3232,7 +3232,7 @@ static void e1000_configure_rx(struct e1000_adapter *adapter)
+@@ -3221,7 +3221,7 @@ static void e1000_configure_rx(struct e1000_adapter *adapter)
  	if (!(adapter->flags2 & FLAG2_NO_DISABLE_RX))
  		ew32(RCTL, rctl & ~E1000_RCTL_EN);
  	e1e_flush();
@@ -239,7 +239,7 @@ index 7a226537877b..3192da9a6eea 100644
  
  	if (adapter->flags2 & FLAG2_DMA_BURST) {
  		/* set the writeback threshold (only takes effect if the RDTR
-@@ -4306,7 +4306,7 @@ void e1000e_down(struct e1000_adapter *adapter, bool reset)
+@@ -4292,7 +4292,7 @@ void e1000e_down(struct e1000_adapter *adapter, bool reset)
  
  	/* flush both disables and wait for them to finish */
  	e1e_flush();
@@ -248,7 +248,7 @@ index 7a226537877b..3192da9a6eea 100644
  
  	e1000_irq_disable(adapter);
  
-@@ -4344,7 +4344,7 @@ void e1000e_reinit_locked(struct e1000_adapter *adapter)
+@@ -4330,7 +4330,7 @@ void e1000e_reinit_locked(struct e1000_adapter *adapter)
  {
  	might_sleep();
  	while (test_and_set_bit(__E1000_RESETTING, &adapter->state))
@@ -257,7 +257,7 @@ index 7a226537877b..3192da9a6eea 100644
  	e1000e_down(adapter, true);
  	e1000e_up(adapter);
  	clear_bit(__E1000_RESETTING, &adapter->state);
-@@ -4719,7 +4719,7 @@ int e1000e_close(struct net_device *netdev)
+@@ -4705,7 +4705,7 @@ int e1000e_close(struct net_device *netdev)
  	int count = E1000_CHECK_RESET_COUNT;
  
  	while (test_bit(__E1000_RESETTING, &adapter->state) && count--)
@@ -266,7 +266,7 @@ index 7a226537877b..3192da9a6eea 100644
  
  	WARN_ON(test_bit(__E1000_RESETTING, &adapter->state));
  
-@@ -6037,7 +6037,7 @@ static int e1000_change_mtu(struct net_device *netdev, int new_mtu)
+@@ -6020,7 +6020,7 @@ static int e1000_change_mtu(struct net_device *netdev, int new_mtu)
  	}
  
  	while (test_and_set_bit(__E1000_RESETTING, &adapter->state))
@@ -275,7 +275,7 @@ index 7a226537877b..3192da9a6eea 100644
  	/* e1000e_down -> e1000e_reset dependent on max_frame_size & mtu */
  	adapter->max_frame_size = max_frame;
  	e_info("changing MTU from %d to %d\n", netdev->mtu, new_mtu);
-@@ -6317,7 +6317,7 @@ static int e1000e_pm_freeze(struct device *dev)
+@@ -6300,7 +6300,7 @@ static int e1000e_pm_freeze(struct device *dev)
  		int count = E1000_CHECK_RESET_COUNT;
  
  		while (test_bit(__E1000_RESETTING, &adapter->state) && count--)
@@ -284,7 +284,7 @@ index 7a226537877b..3192da9a6eea 100644
  
  		WARN_ON(test_bit(__E1000_RESETTING, &adapter->state));
  
-@@ -6732,7 +6732,7 @@ static int e1000e_pm_runtime_suspend(struct device *dev)
+@@ -6715,7 +6715,7 @@ static int e1000e_pm_runtime_suspend(struct device *dev)
  		int count = E1000_CHECK_RESET_COUNT;
  
  		while (test_bit(__E1000_RESETTING, &adapter->state) && count--)
@@ -307,5 +307,5 @@ index 2efd80dfd88e..38f7c8fb3061 100644
  	}
  
 -- 
-2.18.0
+https://clearlinux.org
 

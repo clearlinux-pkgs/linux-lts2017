@@ -1,7 +1,7 @@
-From d2d9e69d44fb548bf61003de17880fdeebc6ea95 Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Thu, 12 Jan 2017 18:17:14 +0000
-Subject: [PATCH 121/133] disable PM on some NICs
+Subject: [PATCH] disable PM on some NICs
 
 igb: no runtime pm to fix reboot oops
 
@@ -33,10 +33,10 @@ index 3dd4aeb2706d..c2abb3992085 100644
  	.err_handler = &e1000_err_handler
  };
 diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
-index 3192da9a6eea..afc737c0a411 100644
+index 10d7f6a44041..8a39d5fafd42 100644
 --- a/drivers/net/ethernet/intel/e1000e/netdev.c
 +++ b/drivers/net/ethernet/intel/e1000e/netdev.c
-@@ -7594,9 +7594,6 @@ static struct pci_driver e1000_driver = {
+@@ -7577,9 +7577,6 @@ static struct pci_driver e1000_driver = {
  	.id_table = e1000_pci_tbl,
  	.probe    = e1000_probe,
  	.remove   = e1000_remove,
@@ -47,7 +47,7 @@ index 3192da9a6eea..afc737c0a411 100644
  	.err_handler = &e1000_err_handler
  };
 diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
-index 6ca580cdfd84..fb7f43a53f93 100644
+index 8892ea5cbb01..4ff0c1859231 100644
 --- a/drivers/net/ethernet/intel/igb/igb_main.c
 +++ b/drivers/net/ethernet/intel/igb/igb_main.c
 @@ -239,9 +239,6 @@ static struct pci_driver igb_driver = {
@@ -61,5 +61,5 @@ index 6ca580cdfd84..fb7f43a53f93 100644
  	.sriov_configure = igb_pci_sriov_configure,
  	.err_handler = &igb_err_handler
 -- 
-2.18.0
+https://clearlinux.org
 

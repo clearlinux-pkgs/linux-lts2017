@@ -1,7 +1,7 @@
-From 9b876d7897b88afe6a4f514ded31f305955b3137 Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Sat, 9 Apr 2016 22:41:37 +0000
-Subject: [PATCH 110/133] fs: ext4: fsync: optimize double-fsync() a bunch
+Subject: [PATCH] fs: ext4: fsync: optimize double-fsync() a bunch
 
 There are cases where EXT4 is a bit too conservative sending barriers down to
 the disk; there are cases where the transaction in progress is not the one
@@ -21,10 +21,10 @@ barrier to complete. Any consecutive IO will block on the barrier correctly.
  5 files changed, 70 insertions(+), 1 deletion(-)
 
 diff --git a/block/bio.c b/block/bio.c
-index 90f19d7df66c..e811efcd5130 100644
+index 2e5d881423b8..ea239957eee2 100644
 --- a/block/bio.c
 +++ b/block/bio.c
-@@ -959,6 +959,25 @@ int submit_bio_wait(struct bio *bio)
+@@ -957,6 +957,25 @@ int submit_bio_wait(struct bio *bio)
  }
  EXPORT_SYMBOL(submit_bio_wait);
  
@@ -51,7 +51,7 @@ index 90f19d7df66c..e811efcd5130 100644
   * bio_advance - increment/complete a bio by some number of bytes
   * @bio:	bio to advance
 diff --git a/block/blk-flush.c b/block/blk-flush.c
-index 4938bec8cfef..dbddde870dab 100644
+index 6603352879e7..0fe4cd0f17bf 100644
 --- a/block/blk-flush.c
 +++ b/block/blk-flush.c
 @@ -543,6 +543,46 @@ int blkdev_issue_flush(struct block_device *bdev, gfp_t gfp_mask,
@@ -102,7 +102,7 @@ index 4938bec8cfef..dbddde870dab 100644
  		int node, int cmd_size)
  {
 diff --git a/fs/ext4/fsync.c b/fs/ext4/fsync.c
-index 26a7fe5c4fd3..2708b292ddca 100644
+index 5508baa11bb6..fc5397957153 100644
 --- a/fs/ext4/fsync.c
 +++ b/fs/ext4/fsync.c
 @@ -154,7 +154,11 @@ int ext4_sync_file(struct file *file, loff_t start, loff_t end, int datasync)
@@ -154,5 +154,5 @@ index 4d4af0e94059..8a5dfba7b71f 100644
  
  #endif
 -- 
-2.18.0
+https://clearlinux.org
 

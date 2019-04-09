@@ -1,7 +1,7 @@
-From 16959a6adac15aefc2a1bfd7f42758fe3f345245 Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Hans de Goede <hdegoede@redhat.com>
 Date: Thu, 14 Sep 2017 12:35:36 +0200
-Subject: [PATCH 11/12] libata: Add new med_power_with_dipm
+Subject: [PATCH] libata: Add new med_power_with_dipm
  link_power_management_policy setting
 
 As described by Matthew Garret quite a while back:
@@ -56,7 +56,7 @@ Signed-off-by: Tejun Heo <tj@kernel.org>
  4 files changed, 12 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index 6938bd86ff1c..eca689bc665f 100644
+index 04f406d7e973..1a629a6ed1fb 100644
 --- a/drivers/ata/libata-core.c
 +++ b/drivers/ata/libata-core.c
 @@ -3967,6 +3967,7 @@ int sata_link_scr_lpm(struct ata_link *link, enum ata_lpm_policy policy,
@@ -68,10 +68,10 @@ index 6938bd86ff1c..eca689bc665f 100644
  		if (ata_link_nr_enabled(link) > 0)
  			/* no restrictions on LPM transitions */
 diff --git a/drivers/ata/libata-eh.c b/drivers/ata/libata-eh.c
-index 711dd91b5e2c..a7b8b8ecd2cc 100644
+index 2651c81d1edf..75b410bffb42 100644
 --- a/drivers/ata/libata-eh.c
 +++ b/drivers/ata/libata-eh.c
-@@ -3454,9 +3454,9 @@ static int ata_eh_maybe_retry_flush(struct ata_device *dev)
+@@ -3458,9 +3458,9 @@ static int ata_eh_maybe_retry_flush(struct ata_device *dev)
   *	@r_failed_dev: out parameter for failed device
   *
   *	Enable SATA Interface power management.  This will enable
@@ -84,7 +84,7 @@ index 711dd91b5e2c..a7b8b8ecd2cc 100644
   *
   *	LOCKING:
   *	EH context.
-@@ -3502,7 +3502,7 @@ static int ata_eh_set_lpm(struct ata_link *link, enum ata_lpm_policy policy,
+@@ -3506,7 +3506,7 @@ static int ata_eh_set_lpm(struct ata_link *link, enum ata_lpm_policy policy,
  			hints &= ~ATA_LPM_HIPM;
  
  		/* disable DIPM before changing link config */
@@ -93,7 +93,7 @@ index 711dd91b5e2c..a7b8b8ecd2cc 100644
  			err_mask = ata_dev_set_feature(dev,
  					SETFEATURES_SATA_DISABLE, SATA_DIPM);
  			if (err_mask && err_mask != AC_ERR_DEV) {
-@@ -3545,7 +3545,7 @@ static int ata_eh_set_lpm(struct ata_link *link, enum ata_lpm_policy policy,
+@@ -3549,7 +3549,7 @@ static int ata_eh_set_lpm(struct ata_link *link, enum ata_lpm_policy policy,
  
  	/* host config updated, enable DIPM if transitioning to MIN_POWER */
  	ata_for_each_dev(dev, link, ENABLED) {
@@ -135,5 +135,5 @@ index c5188dc389c8..fb5e8270d463 100644
  };
  
 -- 
-2.18.0
+https://clearlinux.org
 

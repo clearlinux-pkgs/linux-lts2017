@@ -1,8 +1,7 @@
-From a592b6f6ef4e69765b6aa19b02b75eb18ee8ce3a Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Wed, 11 Feb 2015 16:05:23 -0600
-Subject: [PATCH 112/133] bootstats: add printk's to measure boot time in more
- detail
+Subject: [PATCH] bootstats: add printk's to measure boot time in more detail
 
 Few distro-tweaks to add printk's to visualize boot time better
 
@@ -53,10 +52,10 @@ index 4b57cf5bc81d..218031ac9269 100644
  	__module_get(THIS_MODULE);
  	ret = _request_firmware(firmware_p, name, device, NULL, 0,
 diff --git a/init/main.c b/init/main.c
-index 0d88f37febcb..130ecb1fcf6c 100644
+index 3d3d79c5a232..dd9c7385575f 100644
 --- a/init/main.c
 +++ b/init/main.c
-@@ -799,7 +799,7 @@ static int __init_or_module do_one_initcall_debug(initcall_t fn)
+@@ -798,7 +798,7 @@ static int __init_or_module do_one_initcall_debug(initcall_t fn)
  	unsigned long long duration;
  	int ret;
  
@@ -79,5 +78,5 @@ index bc6addd9152b..9241a16ca4fd 100644
  	if (!argv)
  		goto out;
 -- 
-2.18.0
+https://clearlinux.org
 
