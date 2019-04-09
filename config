@@ -1,6 +1,6 @@
 #
 # Automatically generated file; DO NOT EDIT.
-# Linux/x86 4.14.104 Kernel Configuration
+# Linux/x86 4.14.111 Kernel Configuration
 #
 CONFIG_64BIT=y
 CONFIG_X86_64=y
@@ -889,6 +889,8 @@ CONFIG_NET_KEY_MIGRATE=y
 CONFIG_SMC=m
 CONFIG_SMC_DIAG=m
 CONFIG_INET=y
+CONFIG_WIREGUARD=m
+# CONFIG_WIREGUARD_DEBUG is not set
 CONFIG_IP_MULTICAST=y
 CONFIG_IP_ADVANCED_ROUTER=y
 # CONFIG_IP_FIB_TRIE_STATS is not set
@@ -6114,8 +6116,3 @@ CONFIG_ARCH_HAS_PMEM_API=y
 CONFIG_ARCH_HAS_UACCESS_FLUSHCACHE=y
 CONFIG_SBITMAP=y
 # CONFIG_STRING_SELFTEST is not set
-
-
-# kernel-config sources:
-# FILEVER=/usr/share/kernel-config/base-4.14-3-19
-# FILEVER=/usr/share/kernel-config/mandatory-4.14-3-19
