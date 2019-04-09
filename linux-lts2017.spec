@@ -21,7 +21,7 @@ BuildRequires:  buildreq-kernel
 
 Requires: systemd-bin
 Requires: init-rdahead-extras
-Requires: %{name}-license = %{version}-%{release}
+Requires: linux-lts2017-license = %{version}-%{release}
 
 # don't strip .ko files!
 %global __os_install_post %{nil}
@@ -29,6 +29,8 @@ Requires: %{name}-license = %{version}-%{release}
 %define __strip /bin/true
 
 # kconfig: linux-4.17.11-600
+
+#    000X: cve, bugfixes patches
 
 #    00XY: Mainline patches, upstream backports
 Patch0011: 0011-libata-Add-new-med_power_with_dipm-link_power_manage.patch
@@ -64,23 +66,20 @@ Patch0126: 0126-print-fsync-count-for-bootchart.patch
 Patch0127: 0127-zero-extra-registers.patch
 Patch0128: 0128-Enable-stateless-firmware-loading.patch
 Patch0129: 0129-Migrate-some-systemd-defaults-to-the-kernel-defaults.patch
+#Serie.clr.end
 
-# Clear Linux KVM Memory Optimization
-Patch0151: 0151-mm-Export-do_madvise.patch
-Patch0152: 0152-x86-kvm-Notify-host-to-release-pages.patch
-Patch0153: 0153-x86-Return-memory-from-guest-to-host-kernel.patch
-Patch0154: 0154-sysctl-vm-Fine-grained-cache-shrinking.patch
+#Serie1.name WireGuard
+#Serie1.git  https://git.zx2c4.com/WireGuard
+#Serie1.cmt  91b0a211861d487382a534572844ff29839064f1
+#Serie1.tag  0.0.20190406
+Patch1001: 1001-WireGuard-fast-modern-secure-kernel-VPN-tunnel.patch
+#Serie1.end
 
-# Serie    XYYY: Extra features modules
-
-#    200X: Open Programmable Acceleration Engine (OPAE)
-#Patch2001: 2001-opae-add-intel-fpga-drivers.patch
-#Patch2002: 2002-opae-add-Kconfig-and-Makefile.patch
-
-#     300Y: VirtualBox modules
-Patch3001: 3001-virtualbox-add-module-sources.patch
-Patch3002: 3002-virtualbox-setup-Kconfig-and-Makefiles.patch
-
+#Serie2.name VirtualBox
+#Serie2.ver  6.0.4
+Patch2001: 2001-virtualbox-add-module-sources.patch
+Patch2002: 2002-virtualbox-setup-Kconfig-and-Makefiles.patch
+#Serie2.end
 
 %description
 The Linux kernel.
@@ -89,7 +88,7 @@ The Linux kernel.
 License:        GPL-2.0
 Summary:        The Linux kernel extra files
 Group:          kernel
-Requires:       %{name}-license = %{version}-%{release}
+Requires:       linux-lts2017-license = %{version}-%{release}
 
 %description extra
 Linux kernel extra files
@@ -113,14 +112,17 @@ Creates a cpio file with some module
 License:        GPL-2.0
 Summary:        The Linux kernel
 Group:          kernel
-Requires:       %{name} = %{version}-%{release}, %{name}-extra = %{version}-%{release}
-Requires:       %{name}-license = %{version}-%{release}
+Requires:       linux-lts2017 = %{version}-%{release}
+Requires:       linux-lts2017-extra = %{version}-%{release}
+Requires:       linux-lts2017-license = %{version}-%{release}
 
 %description dev
 Linux kernel build files and install script
 
 %prep
 %setup -q -n linux-4.14.111
+
+#     000X  cve, bugfixes patches
 
 #     00XY  Mainline patches, upstream backports
 %patch0011 -p1
@@ -156,22 +158,16 @@ Linux kernel build files and install script
 %patch0127 -p1
 %patch0128 -p1
 %patch0129 -p1
+#Serie.clr.patch.end
 
-# Clear Linux KVM Memory Optimization
-%patch0151 -p1
-%patch0152 -p1
-%patch0153 -p1
-%patch0154 -p1
+#Serie1.patch.start
+%patch1001 -p1
+#Serie1.patch.end
 
-# Serie    XYYY: Extra features modules
-
-#    200X: Open Programmable Acceleration Engine (OPAE)
-#%patch2001 -p1
-#%patch2002 -p1
-
-#     300Y: VirtualBox modules
-%patch3001 -p1
-%patch3002 -p1
+#Serie2.patch.start
+%patch2001 -p1
+%patch2002 -p1
+#Serie2.patch.end
 
 cp %{SOURCE1} .
 
