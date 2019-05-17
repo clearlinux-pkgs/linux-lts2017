@@ -28,7 +28,7 @@ Requires: linux-lts2017-license = %{version}-%{release}
 %define debug_package %{nil}
 %define __strip /bin/true
 
-# kconfig: linux-4.17.11-600
+# kconfig: linux-5.0.17-759
 
 #    000X: cve, bugfixes patches
 
