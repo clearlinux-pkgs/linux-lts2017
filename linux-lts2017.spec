@@ -155,7 +155,7 @@ Linux kernel build files and install script
 %patch0124 -p1
 %patch0125 -p1
 %patch0126 -p1
-#%patch0127 -p1
+%patch0127 -p1
 %patch0128 -p1
 %patch0129 -p1
 #Serie.clr.patch.end
