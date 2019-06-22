@@ -5,7 +5,7 @@
 
 Name:           linux-lts2017
 Version:        4.14.129
-Release:        45
+Release:        46
 License:        GPL-2.0
 Summary:        The Linux kernel
 Url:            http://www.kernel.org/
@@ -28,7 +28,7 @@ Requires: linux-lts2017-license = %{version}-%{release}
 %define debug_package %{nil}
 %define __strip /bin/true
 
-# kconfig: linux-5.0.17-767
+# kconfig: linux-5.1.14-788
 
 #    000X: cve, bugfixes patches
 
