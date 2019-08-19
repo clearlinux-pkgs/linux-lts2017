@@ -5,7 +5,7 @@
 
 Name:           linux-lts2017
 Version:        4.14.139
-Release:        57
+Release:        58
 License:        GPL-2.0
 Summary:        The Linux kernel
 Url:            http://www.kernel.org/
@@ -31,6 +31,7 @@ Requires: linux-lts2017-license = %{version}-%{release}
 # kconfig: linux-5.1.16-794
 
 #    000X: cve, bugfixes patches
+Patch0001: CVE-2018-20976.patch
 
 #    00XY: Mainline patches, upstream backports
 Patch0011: 0011-libata-Add-new-med_power_with_dipm-link_power_manage.patch
@@ -123,6 +124,7 @@ Linux kernel build files and install script
 %setup -q -n linux-4.14.139
 
 #     000X  cve, bugfixes patches
+%patch0001 -p1
 
 #     00XY  Mainline patches, upstream backports
 %patch0011 -p1
