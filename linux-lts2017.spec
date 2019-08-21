@@ -30,14 +30,16 @@ Requires: linux-lts2017-license = %{version}-%{release}
 
 # kconfig: linux-5.1.16-794
 
-#    000X: cve, bugfixes patches
+#cve.start cve patches from 0001 to 050
 Patch0001: CVE-2018-20976.patch
+#cve.end
 
-#    00XY: Mainline patches, upstream backports
+#mainline: Mainline patches, upstream backport and fixes from 0051 to 0099
 Patch0011: 0011-libata-Add-new-med_power_with_dipm-link_power_manage.patch
 Patch0012: 0012-platform-x86-intel_turbo_max_3-Add-Skylake-platform.patch
+#mainline.end
 
-# Serie    01XX: Clear Linux patches
+#Serie.clr 01XX: Clear Linux patches
 Patch0101: 0101-i8042-decrease-debug-message-level-to-info.patch
 Patch0102: 0102-init-do_mounts-recreate-dev-root.patch
 Patch0103: 0103-Increase-the-ext4-default-commit-age.patch
@@ -67,7 +69,7 @@ Patch0126: 0126-print-fsync-count-for-bootchart.patch
 Patch0127: 0127-zero-extra-registers.patch
 Patch0128: 0128-Enable-stateless-firmware-loading.patch
 Patch0129: 0129-Migrate-some-systemd-defaults-to-the-kernel-defaults.patch
-#Serie.clr.end
+#Serie.end
 
 #Serie1.name WireGuard
 #Serie1.git  https://git.zx2c4.com/WireGuard
@@ -123,14 +125,16 @@ Linux kernel build files and install script
 %prep
 %setup -q -n linux-4.14.139
 
-#     000X  cve, bugfixes patches
+#cve.patch.start cve patches
 %patch0001 -p1
+#cve.patch.end
 
-#     00XY  Mainline patches, upstream backports
+#mainline.patch.start Mainline patches, upstream backport and fixes
 %patch0011 -p1
 %patch0012 -p1
+#mainline.patch.end
 
-#     01XX  Clear Linux patches
+#Serie.patch.start Clear Linux patches
 %patch0101 -p1
 %patch0102 -p1
 %patch0103 -p1
@@ -160,7 +164,7 @@ Linux kernel build files and install script
 %patch0127 -p1
 %patch0128 -p1
 %patch0129 -p1
-#Serie.clr.patch.end
+#Serie.patch.end
 
 #Serie1.patch.start
 %patch1001 -p1
@@ -172,9 +176,6 @@ Linux kernel build files and install script
 #Serie2.patch.end
 
 cp %{SOURCE1} .
-
-cp -a /usr/lib/firmware/i915 firmware/
-cp -a /usr/lib/firmware/intel-ucode firmware/
 
 %build
 BuildKernel() {
