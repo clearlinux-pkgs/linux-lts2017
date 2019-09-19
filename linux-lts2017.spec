@@ -1,6 +1,7 @@
 #
 # This is a special configuration of the Linux kernel, based on linux package
 # for long-term support
+# 
 #
 
 Name:           linux-lts2017
@@ -120,7 +121,7 @@ Requires:       linux-lts2017-extra = %{version}-%{release}
 Requires:       linux-lts2017-license = %{version}-%{release}
 
 %description dev
-Linux kernel build files and install script
+Linux kernel build files
 
 %prep
 %setup -q -n linux-4.14.144
@@ -240,7 +241,7 @@ InstallKernel() {
     ln -s org.clearlinux.${Target}.%{version}-%{release} %{buildroot}/usr/lib/kernel/default-${Target}
 }
 
-# cpio file for i8042 libps2 atkbd
+# cpio file for keyboard drivers
 createCPIO() {
 
     Target=$1
@@ -255,6 +256,7 @@ createCPIO() {
     cp %{buildroot}${ModDir}/kernel/drivers/input/keyboard/atkbd.ko   cpiofile${ModDir}/kernel/drivers/input/keyboard
     cp %{buildroot}${ModDir}/kernel/drivers/hid/hid-logitech-dj.ko    cpiofile${ModDir}/kernel/drivers/hid
     cp %{buildroot}${ModDir}/kernel/drivers/hid/hid-logitech-hidpp.ko cpiofile${ModDir}/kernel/drivers/hid
+    cp %{buildroot}${ModDir}/kernel/drivers/hid/hid-apple.ko          cpiofile${ModDir}/kernel/drivers/hid
     cp %{buildroot}${ModDir}/modules.order   cpiofile${ModDir}
     cp %{buildroot}${ModDir}/modules.builtin cpiofile${ModDir}
 
