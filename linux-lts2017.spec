@@ -6,7 +6,7 @@
 
 Name:           linux-lts2017
 Version:        4.14.150
-Release:        71
+Release:        72
 License:        GPL-2.0
 Summary:        The Linux kernel
 Url:            http://www.kernel.org/
@@ -32,7 +32,6 @@ Requires: linux-lts2017-license = %{version}-%{release}
 # kconfig: linux-5.2.13-832
 
 #cve.start cve patches from 0001 to 050
-Patch0001: CVE-2018-20976.patch
 #cve.end
 
 #mainline: Mainline patches, upstream backport and fixes from 0051 to 0099
@@ -127,7 +126,6 @@ Linux kernel build files
 %setup -q -n linux-4.14.150
 
 #cve.patch.start cve patches
-%patch0001 -p1
 #cve.patch.end
 
 #mainline.patch.start Mainline patches, upstream backport and fixes
