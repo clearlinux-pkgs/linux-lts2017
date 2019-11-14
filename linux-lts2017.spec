@@ -6,7 +6,7 @@
 
 Name:           linux-lts2017
 Version:        4.14.154
-Release:        79
+Release:        80
 License:        GPL-2.0
 Summary:        The Linux kernel
 Url:            http://www.kernel.org/
@@ -127,32 +127,6 @@ Linux kernel build files
 %setup -q -n linux-4.14.154
 
 #cve.patch.start cve patches
-%patch0001 -p1
-%patch0002 -p1
-%patch0003 -p1
-%patch0004 -p1
-%patch0005 -p1
-%patch0006 -p1
-%patch0007 -p1
-%patch0008 -p1
-%patch0009 -p1
-%patch0010 -p1
-%patch0011 -p1
-%patch0012 -p1
-%patch0013 -p1
-%patch0014 -p1
-%patch0015 -p1
-%patch0016 -p1
-%patch0017 -p1
-%patch0018 -p1
-%patch0019 -p1
-%patch0020 -p1
-%patch0021 -p1
-%patch0022 -p1
-%patch0023 -p1
-%patch0024 -p1
-%patch0025 -p1
-%patch0026 -p1
 #cve.patch.end
 
 #mainline.patch.start Mainline patches, upstream backport and fixes
