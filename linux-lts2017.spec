@@ -32,37 +32,11 @@ Requires: linux-lts2017-license = %{version}-%{release}
 # kconfig: linux-5.3.7-851
 
 #cve.start cve patches from 0001 to 050
-Patch0001: 0001-KVM-x86-use-Intel-speculation-bugs-and-features-as-d.patch
-Patch0002: 0002-x86-msr-Add-the-IA32_TSX_CTRL-MSR.patch
-Patch0003: 0003-x86-cpu-Add-a-helper-function-x86_read_arch_cap_msr.patch
-Patch0004: 0004-x86-cpu-Add-a-tsx-cmdline-option-with-TSX-disabled-b.patch
-Patch0005: 0005-x86-speculation-taa-Add-mitigation-for-TSX-Async-Abo.patch
-Patch0006: 0006-x86-speculation-taa-Add-sysfs-reporting-for-TSX-Asyn.patch
-Patch0007: 0007-kvm-x86-Export-MDS_NO-0-to-guests-when-TSX-is-enable.patch
-Patch0008: 0008-x86-tsx-Add-auto-option-to-the-tsx-cmdline-parameter.patch
-Patch0009: 0009-x86-speculation-taa-Add-documentation-for-TSX-Async-.patch
-Patch0010: 0010-x86-tsx-Add-config-options-to-set-tsx-on-off-auto.patch
-Patch0011: 0011-x86-bugs-Add-ITLB_MULTIHIT-bug-infrastructure.patch
-Patch0012: 0012-x86-cpu-Add-Tremont-to-the-cpu-vulnerability-whiteli.patch
-Patch0013: 0013-cpu-speculation-Uninline-and-export-CPU-mitigations-.patch
-Patch0014: 0014-Documentation-Add-ITLB_MULTIHIT-documentation.patch
-Patch0015: 0015-x86-speculation-taa-Fix-printing-of-TAA_MSG_SMT-on-I.patch
-Patch0016: 0016-kvm-x86-powerpc-do-not-allow-clearing-largepages-deb.patch
-Patch0017: 0017-kvm-Convert-kvm_lock-to-a-mutex.patch
-Patch0018: 0018-kvm-mmu-Do-not-release-the-page-inside-mmu_set_spte.patch
-Patch0019: 0019-KVM-x86-make-FNAME-fetch-and-__direct_map-more-simil.patch
-Patch0020: 0020-KVM-x86-remove-now-unneeded-hugepage-gfn-adjustment.patch
-Patch0021: 0021-KVM-x86-change-kvm_mmu_page_get_gfn-BUG_ON-to-WARN_O.patch
-Patch0022: 0022-KVM-x86-add-tracepoints-around-__direct_map-and-FNAM.patch
-Patch0023: 0023-KVM-vmx-svm-always-run-with-EFER.NXE-1-when-shadow-p.patch
-Patch0024: 0024-kvm-mmu-ITLB_MULTIHIT-mitigation.patch
-Patch0025: 0025-kvm-Add-helper-function-for-creating-VM-worker-threa.patch
-Patch0026: 0026-kvm-x86-mmu-Recovery-of-shattered-NX-large-pages.patch
 #cve.end
 
 #mainline: Mainline patches, upstream backport and fixes from 0051 to 0099
-Patch0051: 0011-libata-Add-new-med_power_with_dipm-link_power_manage.patch
-Patch0052: 0012-platform-x86-intel_turbo_max_3-Add-Skylake-platform.patch
+Patch0051: 0051-libata-Add-new-med_power_with_dipm-link_power_manage.patch
+Patch0052: 0052-platform-x86-intel_turbo_max_3-Add-Skylake-platform.patch
 #mainline.end
 
 #Serie.clr 01XX: Clear Linux patches
