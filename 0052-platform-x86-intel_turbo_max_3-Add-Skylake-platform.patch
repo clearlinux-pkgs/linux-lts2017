@@ -33,7 +33,7 @@ Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
  1 file changed, 1 insertion(+)
 
 diff --git a/drivers/platform/x86/intel_turbo_max_3.c b/drivers/platform/x86/intel_turbo_max_3.c
-index 4f60d8e32a0a..d4ea01805879 100644
+index 4f60d8e..d4ea018 100644
 --- a/drivers/platform/x86/intel_turbo_max_3.c
 +++ b/drivers/platform/x86/intel_turbo_max_3.c
 @@ -125,6 +125,7 @@ static int itmt_legacy_cpu_online(unsigned int cpu)
