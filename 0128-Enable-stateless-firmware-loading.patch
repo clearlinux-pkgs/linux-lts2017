@@ -11,7 +11,7 @@ firmware and distribution firmware.
  1 file changed, 2 insertions(+)
 
 diff --git a/drivers/base/firmware_class.c b/drivers/base/firmware_class.c
-index 218031ac9269..fd833ff45e45 100644
+index 218031a..fd833ff 100644
 --- a/drivers/base/firmware_class.c
 +++ b/drivers/base/firmware_class.c
 @@ -368,6 +368,8 @@ static void fw_free_buf(struct firmware_buf *buf)

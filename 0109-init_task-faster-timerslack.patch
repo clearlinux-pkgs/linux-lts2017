@@ -17,7 +17,7 @@ for where the patch goes work out better here
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/include/linux/init_task.h b/include/linux/init_task.h
-index 8062e6cc607c..2903519e2462 100644
+index 8062e6c..2903519 100644
 --- a/include/linux/init_task.h
 +++ b/include/linux/init_task.h
 @@ -275,7 +275,7 @@ extern struct cred init_cred;

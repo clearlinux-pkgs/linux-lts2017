@@ -17,7 +17,7 @@ e1000: disable PM just in case
  3 files changed, 11 deletions(-)
 
 diff --git a/drivers/net/ethernet/intel/e1000/e1000_main.c b/drivers/net/ethernet/intel/e1000/e1000_main.c
-index 3dd4aeb2706d..c2abb3992085 100644
+index 3dd4aeb..c2abb39 100644
 --- a/drivers/net/ethernet/intel/e1000/e1000_main.c
 +++ b/drivers/net/ethernet/intel/e1000/e1000_main.c
 @@ -209,11 +209,6 @@ static struct pci_driver e1000_driver = {
@@ -33,10 +33,10 @@ index 3dd4aeb2706d..c2abb3992085 100644
  	.err_handler = &e1000_err_handler
  };
 diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
-index 10d7f6a44041..8a39d5fafd42 100644
+index 4740ee0..631e008 100644
 --- a/drivers/net/ethernet/intel/e1000e/netdev.c
 +++ b/drivers/net/ethernet/intel/e1000e/netdev.c
-@@ -7577,9 +7577,6 @@ static struct pci_driver e1000_driver = {
+@@ -7582,9 +7582,6 @@ static struct pci_driver e1000_driver = {
  	.id_table = e1000_pci_tbl,
  	.probe    = e1000_probe,
  	.remove   = e1000_remove,
@@ -47,7 +47,7 @@ index 10d7f6a44041..8a39d5fafd42 100644
  	.err_handler = &e1000_err_handler
  };
 diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
-index 8892ea5cbb01..4ff0c1859231 100644
+index 9c7e75b..fe3d3eb 100644
 --- a/drivers/net/ethernet/intel/igb/igb_main.c
 +++ b/drivers/net/ethernet/intel/igb/igb_main.c
 @@ -239,9 +239,6 @@ static struct pci_driver igb_driver = {

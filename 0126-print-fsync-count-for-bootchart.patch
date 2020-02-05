@@ -10,10 +10,10 @@ Subject: [PATCH] print fsync count for bootchart
  3 files changed, 5 insertions(+)
 
 diff --git a/block/blk-core.c b/block/blk-core.c
-index 0b14aebfd1a8..5994439bf5d4 100644
+index 4e04c79..69cf286 100644
 --- a/block/blk-core.c
 +++ b/block/blk-core.c
-@@ -2289,6 +2289,9 @@ blk_qc_t submit_bio(struct bio *bio)
+@@ -2288,6 +2288,9 @@ blk_qc_t submit_bio(struct bio *bio)
  			count_vm_events(PGPGIN, count);
  		}
  
@@ -24,7 +24,7 @@ index 0b14aebfd1a8..5994439bf5d4 100644
  			char b[BDEVNAME_SIZE];
  			printk(KERN_DEBUG "%s(%d): %s block %Lu on %s (%u sectors)\n",
 diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 866439c361a9..58947dc8f22e 100644
+index b065776..96c09e5 100644
 --- a/include/linux/sched.h
 +++ b/include/linux/sched.h
 @@ -778,6 +778,7 @@ struct task_struct {
@@ -36,7 +36,7 @@ index 866439c361a9..58947dc8f22e 100644
  	/* Process credentials: */
  
 diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
-index 187c04a34ba1..c3b30681e1ab 100644
+index 187c04a..c3b3068 100644
 --- a/kernel/sched/debug.c
 +++ b/kernel/sched/debug.c
 @@ -947,6 +947,7 @@ void proc_sched_show_task(struct task_struct *p, struct pid_namespace *ns,

@@ -15,7 +15,7 @@ if we're not going to do anything else ever.
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/dummy.c b/drivers/net/dummy.c
-index d0a1f9ce3168..7c7ab94fe252 100644
+index d0a1f9c..7c7ab94 100644
 --- a/drivers/net/dummy.c
 +++ b/drivers/net/dummy.c
 @@ -45,7 +45,7 @@
@@ -28,7 +28,7 @@ index d0a1f9ce3168..7c7ab94fe252 100644
  
  struct vf_data_storage {
 diff --git a/include/uapi/linux/if_bonding.h b/include/uapi/linux/if_bonding.h
-index 61a1bf6e865e..78a449f3bf5d 100644
+index 61a1bf6..78a449f 100644
 --- a/include/uapi/linux/if_bonding.h
 +++ b/include/uapi/linux/if_bonding.h
 @@ -82,7 +82,7 @@

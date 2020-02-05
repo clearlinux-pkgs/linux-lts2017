@@ -21,10 +21,10 @@ barrier to complete. Any consecutive IO will block on the barrier correctly.
  5 files changed, 70 insertions(+), 1 deletion(-)
 
 diff --git a/block/bio.c b/block/bio.c
-index 2e5d881423b8..ea239957eee2 100644
+index 1384f97..9cd4a6e 100644
 --- a/block/bio.c
 +++ b/block/bio.c
-@@ -957,6 +957,25 @@ int submit_bio_wait(struct bio *bio)
+@@ -1016,6 +1016,25 @@ int submit_bio_wait(struct bio *bio)
  }
  EXPORT_SYMBOL(submit_bio_wait);
  
@@ -51,7 +51,7 @@ index 2e5d881423b8..ea239957eee2 100644
   * bio_advance - increment/complete a bio by some number of bytes
   * @bio:	bio to advance
 diff --git a/block/blk-flush.c b/block/blk-flush.c
-index 6603352879e7..0fe4cd0f17bf 100644
+index 6603352..0fe4cd0 100644
 --- a/block/blk-flush.c
 +++ b/block/blk-flush.c
 @@ -543,6 +543,46 @@ int blkdev_issue_flush(struct block_device *bdev, gfp_t gfp_mask,
@@ -102,7 +102,7 @@ index 6603352879e7..0fe4cd0f17bf 100644
  		int node, int cmd_size)
  {
 diff --git a/fs/ext4/fsync.c b/fs/ext4/fsync.c
-index 5508baa11bb6..fc5397957153 100644
+index 5508baa..fc53979 100644
 --- a/fs/ext4/fsync.c
 +++ b/fs/ext4/fsync.c
 @@ -154,7 +154,11 @@ int ext4_sync_file(struct file *file, loff_t start, loff_t end, int datasync)
@@ -119,10 +119,10 @@ index 5508baa11bb6..fc5397957153 100644
  			ret = err;
  	}
 diff --git a/include/linux/bio.h b/include/linux/bio.h
-index 5aa40f4712ff..74a24f950a86 100644
+index e260f00..0385c6c 100644
 --- a/include/linux/bio.h
 +++ b/include/linux/bio.h
-@@ -448,6 +448,7 @@ struct request_queue;
+@@ -453,6 +453,7 @@ struct request_queue;
  extern int bio_phys_segments(struct request_queue *, struct bio *);
  
  extern int submit_bio_wait(struct bio *bio);
@@ -131,7 +131,7 @@ index 5aa40f4712ff..74a24f950a86 100644
  
  extern void bio_init(struct bio *bio, struct bio_vec *table,
 diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-index 4d4af0e94059..8a5dfba7b71f 100644
+index ad94010..f4488b8 100644
 --- a/include/linux/blkdev.h
 +++ b/include/linux/blkdev.h
 @@ -1353,6 +1353,7 @@ static inline struct request *blk_map_queue_find_tag(struct blk_queue_tag *bqt,

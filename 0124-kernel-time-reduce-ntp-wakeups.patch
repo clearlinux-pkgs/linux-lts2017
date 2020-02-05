@@ -8,10 +8,10 @@ Subject: [PATCH] kernel: time: reduce ntp wakeups
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/kernel/time/ntp.c b/kernel/time/ntp.c
-index 99e03bec68e4..5183f012565c 100644
+index 9288532..eea378b 100644
 --- a/kernel/time/ntp.c
 +++ b/kernel/time/ntp.c
-@@ -559,7 +559,7 @@ static void sync_cmos_clock(struct work_struct *work)
+@@ -560,7 +560,7 @@ static void sync_cmos_clock(struct work_struct *work)
  	if (!fail || fail == -ENODEV)
  		next.tv_sec = 659;
  	else
