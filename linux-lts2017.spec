@@ -6,7 +6,7 @@
 
 Name:           linux-lts2017
 Version:        4.14.170
-Release:        92
+Release:        93
 License:        GPL-2.0
 Summary:        The Linux kernel
 Url:            http://www.kernel.org/
@@ -69,7 +69,6 @@ Patch0126: 0126-print-fsync-count-for-bootchart.patch
 Patch0127: 0127-zero-extra-registers.patch
 Patch0128: 0128-Enable-stateless-firmware-loading.patch
 Patch0129: 0129-Migrate-some-systemd-defaults-to-the-kernel-defaults.patch
-Patch0130: 0130-add-workaround-for-binutils-optimization.patch
 #Serie.end
 
 #Serie1.name WireGuard
@@ -164,7 +163,6 @@ Linux kernel build files
 %patch0127 -p1
 %patch0128 -p1
 %patch0129 -p1
-%patch0130 -p1
 #Serie.patch.end
 
 #Serie1.patch.start
