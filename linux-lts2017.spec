@@ -29,7 +29,7 @@ Requires: linux-lts2017-license = %{version}-%{release}
 %define debug_package %{nil}
 %define __strip /bin/true
 
-# kconfig: linux-5.3.7-851
+# kconfig: linux-5.5.6-915
 
 #cve.start cve patches from 0001 to 050
 #cve.end
