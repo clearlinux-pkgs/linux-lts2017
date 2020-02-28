@@ -56,7 +56,7 @@ Signed-off-by: Tejun Heo <tj@kernel.org>
  4 files changed, 12 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index 08f67c1..b99e6ed 100644
+index 33eb5e3..a332cd5 100644
 --- a/drivers/ata/libata-core.c
 +++ b/drivers/ata/libata-core.c
 @@ -3967,6 +3967,7 @@ int sata_link_scr_lpm(struct ata_link *link, enum ata_lpm_policy policy,
@@ -123,7 +123,7 @@ index eb0c4ee..d8448ab 100644
  
  static ssize_t ata_scsi_lpm_store(struct device *device,
 diff --git a/include/linux/libata.h b/include/linux/libata.h
-index c5188dc..fb5e827 100644
+index 93838d9..068b1de 100644
 --- a/include/linux/libata.h
 +++ b/include/linux/libata.h
 @@ -523,6 +523,7 @@ enum ata_lpm_policy {
