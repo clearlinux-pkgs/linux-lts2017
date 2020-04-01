@@ -6,7 +6,7 @@
 
 Name:           linux-lts2017
 Version:        4.14.174
-Release:        101
+Release:        102
 License:        GPL-2.0
 Summary:        The Linux kernel
 Url:            http://www.kernel.org/
