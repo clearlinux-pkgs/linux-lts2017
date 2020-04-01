@@ -71,18 +71,18 @@ Patch0128: 0128-Enable-stateless-firmware-loading.patch
 Patch0129: 0129-Migrate-some-systemd-defaults-to-the-kernel-defaults.patch
 #Serie.end
 
-#Serie1.name WireGuard
-#Serie1.git  https://git.zx2c4.com/WireGuard
-#Serie1.cmt  91b0a211861d487382a534572844ff29839064f1
-#Serie1.tag  0.0.20190406
+#Serie100.name WireGuard
+#Serie100.git  https://git.zx2c4.com/WireGuard
+#Serie100.cmt  edad0d6e99e5133b1e8e865d727a25fff6399cb4
+#Serie100.tag  0.0.20191219
 Patch1001: 1001-WireGuard-fast-modern-secure-kernel-VPN-tunnel.patch
-#Serie1.end
+#Serie100.end
 
-#Serie2.name VirtualBox
-#Serie2.ver  6.0.4
-Patch2001: 2001-virtualbox-add-module-sources.patch
-Patch2002: 2002-virtualbox-setup-Kconfig-and-Makefiles.patch
-#Serie2.end
+#Serie101.name VirtualBox
+#Serie101.ver  6.1.4
+Patch1011: 1011-virtualbox-add-module-sources.patch
+Patch1012: 1012-virtualbox-setup-Kconfig-and-Makefiles.patch
+#Serie101.end
 
 %description
 The Linux kernel.
@@ -165,14 +165,14 @@ Linux kernel build files
 %patch0129 -p1
 #Serie.patch.end
 
-#Serie1.patch.start
+#Serie100.patch.start
 %patch1001 -p1
-#Serie1.patch.end
+#Serie100.patch.end
 
-#Serie2.patch.start
-%patch2001 -p1
-%patch2002 -p1
-#Serie2.patch.end
+#Serie101.patch.start
+%patch1011 -p1
+%patch1012 -p1
+#Serie101.patch.end
 
 cp %{SOURCE1} .
 
