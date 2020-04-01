@@ -6,7 +6,7 @@
 
 Name:           linux-lts2017
 Version:        4.14.174
-Release:        102
+Release:        103
 License:        GPL-2.0
 Summary:        The Linux kernel
 Url:            http://www.kernel.org/
@@ -73,8 +73,8 @@ Patch0129: 0129-Migrate-some-systemd-defaults-to-the-kernel-defaults.patch
 
 #Serie100.name WireGuard
 #Serie100.git  https://git.zx2c4.com/WireGuard
-#Serie100.cmt  edad0d6e99e5133b1e8e865d727a25fff6399cb4
-#Serie100.tag  0.0.20191219
+#Serie100.cmt  43f57dac7b8305024f83addc533c9eede6509129
+#Serie100.tag  v1.0.20200401
 Patch1001: 1001-WireGuard-fast-modern-secure-kernel-VPN-tunnel.patch
 #Serie100.end
 
