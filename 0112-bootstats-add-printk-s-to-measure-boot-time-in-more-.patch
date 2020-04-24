@@ -65,7 +65,7 @@ index b1ab36f..88b5640 100644
  	ret = fn();
  	rettime = ktime_get();
 diff --git a/kernel/kmod.c b/kernel/kmod.c
-index bc6addd..9241a16 100644
+index a2de58d..cee747e 100644
 --- a/kernel/kmod.c
 +++ b/kernel/kmod.c
 @@ -77,6 +77,8 @@ static int call_modprobe(char *module_name, int wait)
