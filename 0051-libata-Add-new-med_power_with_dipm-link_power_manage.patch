@@ -103,7 +103,7 @@ index c398be4..e2b661f 100644
  			err_mask = ata_dev_set_feature(dev,
  					SETFEATURES_SATA_ENABLE, SATA_DIPM);
 diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
-index eb0c4ee..d8448ab 100644
+index 2f81d65..02719a4 100644
 --- a/drivers/ata/libata-scsi.c
 +++ b/drivers/ata/libata-scsi.c
 @@ -106,10 +106,11 @@ static const u8 def_control_mpage[CONTROL_MPAGE_LEN] = {
