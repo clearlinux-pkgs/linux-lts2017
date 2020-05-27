@@ -1,6 +1,6 @@
 #
 # Automatically generated file; DO NOT EDIT.
-# Linux/x86 4.14.181 Kernel Configuration
+# Linux/x86 4.14.182 Kernel Configuration
 #
 CONFIG_64BIT=y
 CONFIG_X86_64=y
@@ -7132,5 +7132,5 @@ CONFIG_SBITMAP=y
 
 
 # kernel-config sources:
-# FILEVER=/usr/share/kernel-config/base-4.14-4-43
-# FILEVER=/usr/share/kernel-config/mandatory-4.14-4-43
+# FILEVER=/usr/share/kernel-config/base-4.14-4-44
+# FILEVER=/usr/share/kernel-config/mandatory-4.14-4-44
