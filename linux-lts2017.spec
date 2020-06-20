@@ -72,9 +72,9 @@ Patch0129: 0129-Migrate-some-systemd-defaults-to-the-kernel-defaults.patch
 #Serie.end
 
 #Serie100.name WireGuard
-#Serie100.git  https://git.zx2c4.com/WireGuard
-#Serie100.cmt  43f57dac7b8305024f83addc533c9eede6509129
-#Serie100.tag  v1.0.20200401
+#Serie100.git  https://git.zx2c4.com/wireguard-linux-compat
+#Serie100.cmt  178cdfffb99f2fd6fb4a5bfd2f9319461d93f53b
+#Serie100.tag  1.0.20200611
 Patch1001: 1001-WireGuard-fast-modern-secure-kernel-VPN-tunnel.patch
 #Serie100.end
 
