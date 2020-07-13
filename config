@@ -1,6 +1,6 @@
 #
 # Automatically generated file; DO NOT EDIT.
-# Linux/x86 4.14.187 Kernel Configuration
+# Linux/x86 4.14.188 Kernel Configuration
 #
 CONFIG_64BIT=y
 CONFIG_X86_64=y
@@ -6225,6 +6225,7 @@ CONFIG_EFI_CAPSULE_LOADER=y
 # CONFIG_EFI_TEST is not set
 CONFIG_APPLE_PROPERTIES=y
 # CONFIG_RESET_ATTACK_MITIGATION is not set
+# CONFIG_EFI_CUSTOM_SSDT_OVERLAYS is not set
 CONFIG_UEFI_CPER=y
 CONFIG_EFI_DEV_PATH_PARSER=y
 
