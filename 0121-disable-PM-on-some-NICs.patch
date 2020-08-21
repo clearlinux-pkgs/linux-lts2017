@@ -47,7 +47,7 @@ index 00fb622..504658f 100644
  	.err_handler = &e1000_err_handler
  };
 diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
-index 9c7e75b..fe3d3eb 100644
+index 50fa040..696e50f 100644
 --- a/drivers/net/ethernet/intel/igb/igb_main.c
 +++ b/drivers/net/ethernet/intel/igb/igb_main.c
 @@ -239,9 +239,6 @@ static struct pci_driver igb_driver = {
