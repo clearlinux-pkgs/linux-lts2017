@@ -35,8 +35,6 @@ Requires: linux-lts2017-license = %{version}-%{release}
 #cve.end
 
 #mainline: Mainline patches, upstream backport and fixes from 0051 to 0099
-Patch0051: 0051-libata-Add-new-med_power_with_dipm-link_power_manage.patch
-Patch0052: 0052-platform-x86-intel_turbo_max_3-Add-Skylake-platform.patch
 #mainline.end
 
 #Serie.clr 01XX: Clear Linux patches
@@ -129,8 +127,6 @@ Linux kernel build files
 #cve.patch.end
 
 #mainline.patch.start Mainline patches, upstream backport and fixes
-%patch0051 -p1
-%patch0052 -p1
 #mainline.patch.end
 
 #Serie.patch.start Clear Linux patches
