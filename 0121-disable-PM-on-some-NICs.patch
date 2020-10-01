@@ -17,7 +17,7 @@ e1000: disable PM just in case
  3 files changed, 11 deletions(-)
 
 diff --git a/drivers/net/ethernet/intel/e1000/e1000_main.c b/drivers/net/ethernet/intel/e1000/e1000_main.c
-index 175681a..e7936c1 100644
+index 8cc0e48..cdbbbaa 100644
 --- a/drivers/net/ethernet/intel/e1000/e1000_main.c
 +++ b/drivers/net/ethernet/intel/e1000/e1000_main.c
 @@ -209,11 +209,6 @@ static struct pci_driver e1000_driver = {
