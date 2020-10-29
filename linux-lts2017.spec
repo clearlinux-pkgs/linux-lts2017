@@ -5,13 +5,13 @@
 #
 
 Name:           linux-lts2017
-Version:        4.14.202
-Release:        132
+Version:        4.14.203
+Release:        133
 License:        GPL-2.0
 Summary:        The Linux kernel
 Url:            http://www.kernel.org/
 Group:          kernel
-Source0:        https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.14.202.tar.xz
+Source0:        https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.14.203.tar.xz
 Source1:        config
 Source2:        cmdline
 
@@ -121,7 +121,7 @@ Requires:       linux-lts2017-license = %{version}-%{release}
 Linux kernel build files
 
 %prep
-%setup -q -n linux-4.14.202
+%setup -q -n linux-4.14.203
 
 #cve.patch.start cve patches
 #cve.patch.end
