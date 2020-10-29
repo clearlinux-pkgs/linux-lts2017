@@ -16,7 +16,7 @@ Signed-off-by: Miguel Bernal Marin <miguel.bernal.marin@linux.intel.com>
  4 files changed, 9 insertions(+), 1 deletion(-)
 
 diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-index b034826..bf3a5f2 100644
+index b034826a0b3b..bf3a5f2bc193 100644
 --- a/arch/x86/kernel/alternative.c
 +++ b/arch/x86/kernel/alternative.c
 @@ -626,7 +626,9 @@ void __init alternative_instructions(void)
@@ -39,7 +39,7 @@ index b034826..bf3a5f2 100644
  		free_init_pages("SMP alternatives",
  				(unsigned long)__smp_locks,
 diff --git a/drivers/base/firmware_class.c b/drivers/base/firmware_class.c
-index 4b57cf5..218031a 100644
+index 4b57cf5bc81d..218031ac9269 100644
 --- a/drivers/base/firmware_class.c
 +++ b/drivers/base/firmware_class.c
 @@ -1265,6 +1265,8 @@ request_firmware(const struct firmware **firmware_p, const char *name,
@@ -52,7 +52,7 @@ index 4b57cf5..218031a 100644
  	__module_get(THIS_MODULE);
  	ret = _request_firmware(firmware_p, name, device, NULL, 0,
 diff --git a/init/main.c b/init/main.c
-index 603b1ad..348c29d 100644
+index 603b1ad88cb6..348c29d74e00 100644
 --- a/init/main.c
 +++ b/init/main.c
 @@ -799,7 +799,7 @@ static int __init_or_module do_one_initcall_debug(initcall_t fn)
@@ -65,7 +65,7 @@ index 603b1ad..348c29d 100644
  	ret = fn();
  	rettime = ktime_get();
 diff --git a/kernel/kmod.c b/kernel/kmod.c
-index a2de58d..cee747e 100644
+index a2de58de6ab6..cee747e84d2a 100644
 --- a/kernel/kmod.c
 +++ b/kernel/kmod.c
 @@ -77,6 +77,8 @@ static int call_modprobe(char *module_name, int wait)

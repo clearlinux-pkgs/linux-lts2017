@@ -13,7 +13,7 @@ rdrand and rdtsc add zero entropy.
  1 file changed, 2 insertions(+)
 
 diff --git a/drivers/char/random.c b/drivers/char/random.c
-index b202f66..74e1524 100644
+index b202f66fc383..74e15244a3a6 100644
 --- a/drivers/char/random.c
 +++ b/drivers/char/random.c
 @@ -1773,6 +1773,8 @@ static void init_std_data(struct entropy_store *r)
