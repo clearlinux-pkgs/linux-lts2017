@@ -22,8 +22,8 @@ This project is released under the [GPLv2](COPYING).
  net/wireguard/allowedips.h                    |   59 +
  net/wireguard/compat/Makefile.include         |  102 +
  .../compat/checksum/checksum_partial_compat.h |  208 +
- net/wireguard/compat/compat-asm.h             |   78 +
- net/wireguard/compat/compat.h                 | 1083 ++
+ net/wireguard/compat/compat-asm.h             |   89 +
+ net/wireguard/compat/compat.h                 | 1115 ++
  net/wireguard/compat/dst_cache/dst_cache.c    |  175 +
  .../compat/dst_cache/include/net/dst_cache.h  |   97 +
  .../compat/fpu-x86/include/asm/fpu/api.h      |    1 +
@@ -85,34 +85,34 @@ This project is released under the [GPLv2](COPYING).
  .../crypto/zinc/selftest/curve25519.c         | 1315 +++
  net/wireguard/crypto/zinc/selftest/poly1305.c | 1107 ++
  net/wireguard/crypto/zinc/selftest/run.h      |   48 +
- net/wireguard/device.c                        |  473 +
- net/wireguard/device.h                        |   65 +
+ net/wireguard/device.c                        |  470 +
+ net/wireguard/device.h                        |   64 +
  net/wireguard/main.c                          |   69 +
  net/wireguard/messages.h                      |  128 +
- net/wireguard/netlink.c                       |  654 ++
+ net/wireguard/netlink.c                       |  658 ++
  net/wireguard/netlink.h                       |   12 +
- net/wireguard/noise.c                         |  833 ++
+ net/wireguard/noise.c                         |  830 ++
  net/wireguard/noise.h                         |  135 +
  net/wireguard/peer.c                          |  237 +
  net/wireguard/peer.h                          |   83 +
- net/wireguard/peerlookup.c                    |  221 +
+ net/wireguard/peerlookup.c                    |  226 +
  net/wireguard/peerlookup.h                    |   64 +
  net/wireguard/queueing.c                      |   55 +
- net/wireguard/queueing.h                      |  211 +
+ net/wireguard/queueing.h                      |  196 +
  net/wireguard/ratelimiter.c                   |  235 +
  net/wireguard/ratelimiter.h                   |   19 +
- net/wireguard/receive.c                       |  605 ++
+ net/wireguard/receive.c                       |  599 ++
  net/wireguard/selftest/allowedips.c           |  683 ++
  net/wireguard/selftest/counter.c              |  111 +
  net/wireguard/selftest/ratelimiter.c          |  226 +
  net/wireguard/send.c                          |  429 +
- net/wireguard/socket.c                        |  425 +
+ net/wireguard/socket.c                        |  436 +
  net/wireguard/socket.h                        |   44 +
  net/wireguard/timers.c                        |  243 +
  net/wireguard/timers.h                        |   31 +
  net/wireguard/uapi/wireguard.h                |  196 +
  net/wireguard/version.h                       |    3 +
- 98 files changed, 50420 insertions(+)
+ 98 files changed, 50455 insertions(+)
  create mode 100644 net/wireguard/Kconfig
  create mode 100644 net/wireguard/Makefile
  create mode 100644 net/wireguard/allowedips.c
@@ -1072,10 +1072,10 @@ index 00000000..3dfe5397
 +}
 diff --git a/net/wireguard/compat/compat-asm.h b/net/wireguard/compat/compat-asm.h
 new file mode 100644
-index 00000000..53b33d4b
+index 00000000..7067afd9
 --- /dev/null
 +++ b/net/wireguard/compat/compat-asm.h
-@@ -0,0 +1,78 @@
+@@ -0,0 +1,89 @@
 +/* SPDX-License-Identifier: GPL-2.0 */
 +/*
 + * Copyright (C) 2015-2019 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
@@ -1087,6 +1087,17 @@ index 00000000..53b33d4b
 +#include <linux/linkage.h>
 +#include <linux/kconfig.h>
 +#include <linux/version.h>
++
++#ifdef RHEL_MAJOR
++#if RHEL_MAJOR == 7
++#define ISRHEL7
++#elif RHEL_MAJOR == 8
++#define ISRHEL8
++#if RHEL_MINOR == 4
++#define ISCENTOS8S
++#endif
++#endif
++#endif
 +
 +/* PaX compatibility */
 +#if defined(RAP_PLUGIN)
@@ -1118,7 +1129,7 @@ index 00000000..53b33d4b
 +#undef pull
 +#endif
 +
-+#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 4, 76)
++#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 4, 76) && !defined(ISCENTOS8S)
 +#define SYM_FUNC_START ENTRY
 +#define SYM_FUNC_END ENDPROC
 +#endif
@@ -1156,10 +1167,10 @@ index 00000000..53b33d4b
 +#endif /* _WG_COMPATASM_H */
 diff --git a/net/wireguard/compat/compat.h b/net/wireguard/compat/compat.h
 new file mode 100644
-index 00000000..cd1773a7
+index 00000000..edc05027
 --- /dev/null
 +++ b/net/wireguard/compat/compat.h
-@@ -0,0 +1,1083 @@
+@@ -0,0 +1,1115 @@
 +/* SPDX-License-Identifier: GPL-2.0 */
 +/*
 + * Copyright (C) 2015-2019 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
@@ -1178,6 +1189,9 @@ index 00000000..cd1773a7
 +#define ISRHEL7
 +#elif RHEL_MAJOR == 8
 +#define ISRHEL8
++#if RHEL_MINOR == 4
++#define ISCENTOS8S
++#endif
 +#endif
 +#endif
 +#ifdef UTS_UBUNTU_RELEASE_ABI
@@ -1192,9 +1206,6 @@ index 00000000..cd1773a7
 +#elif LINUX_VERSION_CODE < KERNEL_VERSION(5, 4, 0) && LINUX_VERSION_CODE >= KERNEL_VERSION(5, 3, 0)
 +#define ISUBUNTU1910
 +#endif
-+#endif
-+#if defined(CONFIG_SUSE_KERNEL) && LINUX_VERSION_CODE < KERNEL_VERSION(4, 13, 0) && LINUX_VERSION_CODE >= KERNEL_VERSION(4, 12, 0)
-+#define ISOPENSUSE15
 +#endif
 +
 +#if LINUX_VERSION_CODE < KERNEL_VERSION(3, 10, 0)
@@ -1253,7 +1264,7 @@ index 00000000..cd1773a7
 +
 +#if LINUX_VERSION_CODE < KERNEL_VERSION(3, 17, 0) && LINUX_VERSION_CODE >= KERNEL_VERSION(3, 16, 83)
 +#define ipv6_dst_lookup_flow(a, b, c, d) ipv6_dst_lookup_flow(b, c, d)
-+#elif (LINUX_VERSION_CODE < KERNEL_VERSION(5, 4, 5) && LINUX_VERSION_CODE >= KERNEL_VERSION(5, 4, 0)) || (LINUX_VERSION_CODE < KERNEL_VERSION(5, 3, 18) && LINUX_VERSION_CODE >= KERNEL_VERSION(4, 20, 0) && !defined(ISUBUNTU1904)) || (!defined(ISRHEL8) && !defined(ISDEBIAN) && !defined(ISUBUNTU1804) && LINUX_VERSION_CODE < KERNEL_VERSION(4, 19, 119) && LINUX_VERSION_CODE >= KERNEL_VERSION(4, 15, 0)) || (LINUX_VERSION_CODE < KERNEL_VERSION(4, 14, 181) && LINUX_VERSION_CODE >= KERNEL_VERSION(4, 10, 0)) || (LINUX_VERSION_CODE < KERNEL_VERSION(4, 9, 224) && LINUX_VERSION_CODE >= KERNEL_VERSION(4, 5, 0)) || (LINUX_VERSION_CODE < KERNEL_VERSION(4, 4, 224) && !defined(ISUBUNTU1604))
++#elif (LINUX_VERSION_CODE < KERNEL_VERSION(5, 4, 5) && LINUX_VERSION_CODE >= KERNEL_VERSION(5, 4, 0)) || (LINUX_VERSION_CODE < KERNEL_VERSION(5, 3, 18) && LINUX_VERSION_CODE >= KERNEL_VERSION(4, 20, 0) && !defined(ISUBUNTU1904)) || (!defined(ISRHEL8) && !defined(ISDEBIAN) && !defined(ISUBUNTU1804) && LINUX_VERSION_CODE < KERNEL_VERSION(4, 19, 119) && LINUX_VERSION_CODE >= KERNEL_VERSION(4, 15, 0)) || (LINUX_VERSION_CODE < KERNEL_VERSION(4, 14, 181) && LINUX_VERSION_CODE >= KERNEL_VERSION(4, 10, 0)) || (LINUX_VERSION_CODE < KERNEL_VERSION(4, 9, 224) && LINUX_VERSION_CODE >= KERNEL_VERSION(4, 5, 0)) || (LINUX_VERSION_CODE < KERNEL_VERSION(4, 4, 224) && !defined(ISUBUNTU1604) && !defined(ISRHEL7))
 +#define ipv6_dst_lookup_flow(a, b, c, d) ipv6_dst_lookup(a, b, &dst, c) + (void *)0 ?: dst
 +#endif
 +
@@ -1443,7 +1454,7 @@ index 00000000..cd1773a7
 +#define in6addr_any __compat_in6addr_any
 +#endif
 +
-+#if LINUX_VERSION_CODE < KERNEL_VERSION(4, 13, 0) && LINUX_VERSION_CODE >= KERNEL_VERSION(4, 2, 0) && !defined(ISOPENSUSE15)
++#if LINUX_VERSION_CODE < KERNEL_VERSION(4, 13, 0) && LINUX_VERSION_CODE >= KERNEL_VERSION(4, 2, 0)
 +#include <linux/completion.h>
 +#include <linux/random.h>
 +#include <linux/errno.h>
@@ -1539,7 +1550,7 @@ index 00000000..cd1773a7
 +}
 +#endif
 +
-+#if LINUX_VERSION_CODE < KERNEL_VERSION(4, 13, 0) && !defined(ISOPENSUSE15)
++#if LINUX_VERSION_CODE < KERNEL_VERSION(4, 13, 0)
 +static inline int get_random_bytes_wait(void *buf, int nbytes)
 +{
 +	int ret = wait_for_random_bytes();
@@ -1682,7 +1693,7 @@ index 00000000..cd1773a7
 +#define priv_destructor destructor
 +#endif
 +
-+#if LINUX_VERSION_CODE < KERNEL_VERSION(4, 13, 0) && !defined(ISOPENSUSE15)
++#if LINUX_VERSION_CODE < KERNEL_VERSION(4, 13, 0)
 +#define wg_newlink(a,b,c,d,e) wg_newlink(a,b,c,d)
 +#endif
 +
@@ -1821,12 +1832,12 @@ index 00000000..cd1773a7
 +#define COMPAT_CANNOT_USE_AVX512
 +#endif
 +
-+#if LINUX_VERSION_CODE < KERNEL_VERSION(4, 15, 0) && !defined(ISOPENSUSE15)
++#if LINUX_VERSION_CODE < KERNEL_VERSION(4, 15, 0)
 +#include <net/genetlink.h>
 +#define genl_dump_check_consistent(a, b) genl_dump_check_consistent(a, b, &genl_family)
 +#endif
 +
-+#if LINUX_VERSION_CODE < KERNEL_VERSION(4, 13, 0) && !defined(ISRHEL7) && !defined(ISOPENSUSE15)
++#if LINUX_VERSION_CODE < KERNEL_VERSION(4, 13, 0) && !defined(ISRHEL7)
 +static inline void *skb_put_data(struct sk_buff *skb, const void *data, unsigned int len)
 +{
 +	void *tmp = skb_put(skb, len);
@@ -1883,7 +1894,7 @@ index 00000000..cd1773a7
 +}
 +#endif
 +
-+#if LINUX_VERSION_CODE < KERNEL_VERSION(4, 14, 0) && !defined(ISOPENSUSE15)
++#if LINUX_VERSION_CODE < KERNEL_VERSION(4, 14, 0)
 +#include <crypto/algapi.h>
 +static inline void crypto_xor_cpy(u8 *dst, const u8 *src1, const u8 *src2,
 +				  unsigned int size)
@@ -1919,7 +1930,7 @@ index 00000000..cd1773a7
 +#define hlist_add_behind(a, b) hlist_add_after(b, a)
 +#endif
 +
-+#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 0, 0)
++#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 0, 0) && !defined(ISCENTOS8S)
 +#define totalram_pages() totalram_pages
 +#endif
 +
@@ -1985,7 +1996,7 @@ index 00000000..cd1773a7
 +#define COMPAT_CANNOT_DEPRECIATE_BH_RCU
 +#endif
 +
-+#if LINUX_VERSION_CODE < KERNEL_VERSION(4, 19, 10) && !defined(ISRHEL8) && !defined(ISOPENSUSE15)
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(4, 19, 10) && LINUX_VERSION_CODE >= KERNEL_VERSION(4, 15, 0) && !defined(ISRHEL8)) || LINUX_VERSION_CODE < KERNEL_VERSION(4, 14, 217)
 +static inline void skb_mark_not_on_list(struct sk_buff *skb)
 +{
 +	skb->next = NULL;
@@ -1993,10 +2004,10 @@ index 00000000..cd1773a7
 +#endif
 +
 +#if LINUX_VERSION_CODE < KERNEL_VERSION(4, 20, 0) && !defined(ISRHEL8)
-+#define NLA_EXACT_LEN NLA_UNSPEC
++#define NLA_POLICY_EXACT_LEN(_len) { .type = NLA_UNSPEC, .len = _len }
 +#endif
 +#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 2, 0) && !defined(ISRHEL8)
-+#define NLA_MIN_LEN NLA_UNSPEC
++#define NLA_POLICY_MIN_LEN(_len) { .type = NLA_UNSPEC, .len = _len }
 +#define COMPAT_CANNOT_INDIVIDUAL_NETLINK_OPS_POLICY
 +#endif
 +
@@ -2101,7 +2112,7 @@ index 00000000..cd1773a7
 +#include <net/ipv6.h>
 +#include <net/icmp.h>
 +#include <net/netfilter/nf_conntrack.h>
-+#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 1, 0)
++#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 1, 0) && !defined(ISRHEL8)
 +#include <net/netfilter/nf_nat_core.h>
 +#endif
 +static inline void __compat_icmp_ndo_send(struct sk_buff *skb_in, int type, int code, __be32 info)
@@ -2174,7 +2185,7 @@ index 00000000..cd1773a7
 +#define COMPAT_CANNOT_USE_MAX_MTU
 +#endif
 +
-+#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 5, 14) && LINUX_VERSION_CODE >= KERNEL_VERSION(5, 5, 0)) || (LINUX_VERSION_CODE < KERNEL_VERSION(5, 4, 29) && !defined(ISUBUNTU1910) && !defined(ISUBUNTU1904))
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 5, 14) && LINUX_VERSION_CODE >= KERNEL_VERSION(5, 5, 0)) || (LINUX_VERSION_CODE < KERNEL_VERSION(5, 4, 29) && !defined(ISUBUNTU1910) && !defined(ISUBUNTU1904) && !defined(ISRHEL8))
 +#include <linux/skbuff.h>
 +#include <net/sch_generic.h>
 +static inline void skb_reset_redirect(struct sk_buff *skb)
@@ -2196,6 +2207,38 @@ index 00000000..cd1773a7
 +
 +#if LINUX_VERSION_CODE < KERNEL_VERSION(3, 17, 0) && !defined(ISRHEL7)
 +#define sw_hash ignore_df = 0; skb->nf_trace = skb->ooo_okay
++#endif
++
++#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 3, 0)
++#define pre_exit exit
++#endif
++
++#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 8, 0)
++#include <linux/skbuff.h>
++#include <linux/ip.h>
++#include <linux/ipv6.h>
++static inline __be16 ip_tunnel_parse_protocol(const struct sk_buff *skb)
++{
++	if (skb_network_header(skb) >= skb->head &&
++	    (skb_network_header(skb) + sizeof(struct iphdr)) <= skb_tail_pointer(skb) &&
++	    ip_hdr(skb)->version == 4)
++		return htons(ETH_P_IP);
++	if (skb_network_header(skb) >= skb->head &&
++	    (skb_network_header(skb) + sizeof(struct ipv6hdr)) <= skb_tail_pointer(skb) &&
++	    ipv6_hdr(skb)->version == 6)
++		return htons(ETH_P_IPV6);
++	return 0;
++}
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 1, 0) || defined(ISRHEL8)
++static const struct header_ops ip_tunnel_header_ops = { .parse_protocol = ip_tunnel_parse_protocol };
++#else
++#define header_ops hard_header_len
++#define ip_tunnel_header_ops *(char *)0 - (char *)0
++#endif
++#endif
++
++#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 9, 0)
++#define kfree_sensitive(a) kzfree(a)
 +#endif
 +
 +#if defined(ISUBUNTU1604) || defined(ISRHEL7)
@@ -3522,7 +3565,7 @@ index 00000000..a975b38b
 +#endif
 diff --git a/net/wireguard/compat/simd/include/linux/simd.h b/net/wireguard/compat/simd/include/linux/simd.h
 new file mode 100644
-index 00000000..c75c7247
+index 00000000..3ff8a027
 --- /dev/null
 +++ b/net/wireguard/compat/simd/include/linux/simd.h
 @@ -0,0 +1,70 @@
@@ -3553,7 +3596,7 @@ index 00000000..c75c7247
 +
 +static inline void simd_get(simd_context_t *ctx)
 +{
-+	*ctx = !IS_ENABLED(CONFIG_PREEMPT_RT_BASE) && may_use_simd() ? HAVE_FULL_SIMD : HAVE_NO_SIMD;
++	*ctx = !IS_ENABLED(CONFIG_PREEMPT_RT) && !IS_ENABLED(CONFIG_PREEMPT_RT_BASE) && may_use_simd() ? HAVE_FULL_SIMD : HAVE_NO_SIMD;
 +}
 +
 +static inline void simd_put(simd_context_t *ctx)
@@ -44578,10 +44621,10 @@ index 00000000..4ffaf608
 +#endif
 diff --git a/net/wireguard/device.c b/net/wireguard/device.c
 new file mode 100644
-index 00000000..5ea039ba
+index 00000000..c6734463
 --- /dev/null
 +++ b/net/wireguard/device.c
-@@ -0,0 +1,473 @@
+@@ -0,0 +1,470 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) 2015-2019 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
@@ -44637,17 +44680,18 @@ index 00000000..5ea039ba
 +#endif
 +#endif
 +
++	mutex_lock(&wg->device_update_lock);
 +	ret = wg_socket_init(wg, wg->incoming_port);
 +	if (ret < 0)
-+		return ret;
-+	mutex_lock(&wg->device_update_lock);
++		goto out;
 +	list_for_each_entry(peer, &wg->peer_list, peer_list) {
 +		wg_packet_send_staged_packets(peer);
 +		if (peer->persistent_keepalive_interval)
 +			wg_packet_send_keepalive(peer);
 +	}
++out:
 +	mutex_unlock(&wg->device_update_lock);
-+	return 0;
++	return ret;
 +}
 +
 +#ifdef CONFIG_PM_SLEEP
@@ -44748,7 +44792,7 @@ index 00000000..5ea039ba
 +	} else {
 +		struct sk_buff *segs = skb_gso_segment(skb, 0);
 +
-+		if (unlikely(IS_ERR(segs))) {
++		if (IS_ERR(segs)) {
 +			ret = PTR_ERR(segs);
 +			goto err_peer;
 +		}
@@ -44817,6 +44861,7 @@ index 00000000..5ea039ba
 +	list_del(&wg->device_list);
 +	rtnl_unlock();
 +	mutex_lock(&wg->device_update_lock);
++	rcu_assign_pointer(wg->creating_net, NULL);
 +	wg->incoming_port = 0;
 +	wg_socket_reinit(wg, NULL, NULL);
 +	/* The final references are cleared in the below calls to destroy_workqueue. */
@@ -44832,13 +44877,11 @@ index 00000000..5ea039ba
 +	skb_queue_purge(&wg->incoming_handshakes);
 +	free_percpu(dev->tstats);
 +	free_percpu(wg->incoming_handshakes_worker);
-+	if (wg->have_creating_net_ref)
-+		put_net(wg->creating_net);
 +	kvfree(wg->index_hashtable);
 +	kvfree(wg->peer_hashtable);
 +	mutex_unlock(&wg->device_update_lock);
 +
-+	pr_debug("%s: Interface deleted\n", dev->name);
++	pr_debug("%s: Interface destroyed\n", dev->name);
 +	free_netdev(dev);
 +}
 +
@@ -44854,6 +44897,7 @@ index 00000000..5ea039ba
 +			     max(sizeof(struct ipv6hdr), sizeof(struct iphdr));
 +
 +	dev->netdev_ops = &netdev_ops;
++	dev->header_ops = &ip_tunnel_header_ops;
 +	dev->hard_header_len = 0;
 +	dev->addr_len = 0;
 +	dev->needed_headroom = DATA_PACKET_HEAD_ROOM;
@@ -44890,7 +44934,7 @@ index 00000000..5ea039ba
 +	struct wg_device *wg = netdev_priv(dev);
 +	int ret = -ENOMEM;
 +
-+	wg->creating_net = src_net;
++	rcu_assign_pointer(wg->creating_net, src_net);
 +	init_rwsem(&wg->static_identity.lock);
 +	mutex_init(&wg->socket_update_lock);
 +	mutex_init(&wg->device_update_lock);
@@ -44991,30 +45035,26 @@ index 00000000..5ea039ba
 +	.newlink		= wg_newlink,
 +};
 +
-+static int wg_netdevice_notification(struct notifier_block *nb,
-+				     unsigned long action, void *data)
++static void wg_netns_pre_exit(struct net *net)
 +{
-+	struct net_device *dev = ((struct netdev_notifier_info *)data)->dev;
-+	struct wg_device *wg = netdev_priv(dev);
++	struct wg_device *wg;
 +
-+	ASSERT_RTNL();
-+
-+	if (action != NETDEV_REGISTER || dev->netdev_ops != &netdev_ops)
-+		return 0;
-+
-+	if (dev_net(dev) == wg->creating_net && wg->have_creating_net_ref) {
-+		put_net(wg->creating_net);
-+		wg->have_creating_net_ref = false;
-+	} else if (dev_net(dev) != wg->creating_net &&
-+		   !wg->have_creating_net_ref) {
-+		wg->have_creating_net_ref = true;
-+		get_net(wg->creating_net);
++	rtnl_lock();
++	list_for_each_entry(wg, &device_list, device_list) {
++		if (rcu_access_pointer(wg->creating_net) == net) {
++			pr_debug("%s: Creating namespace exiting\n", wg->dev->name);
++			netif_carrier_off(wg->dev);
++			mutex_lock(&wg->device_update_lock);
++			rcu_assign_pointer(wg->creating_net, NULL);
++			wg_socket_reinit(wg, NULL, NULL);
++			mutex_unlock(&wg->device_update_lock);
++		}
 +	}
-+	return 0;
++	rtnl_unlock();
 +}
 +
-+static struct notifier_block netdevice_notifier = {
-+	.notifier_call = wg_netdevice_notification
++static struct pernet_operations pernet_ops = {
++	.pre_exit = wg_netns_pre_exit
 +};
 +
 +int __init wg_device_init(void)
@@ -45027,18 +45067,18 @@ index 00000000..5ea039ba
 +		return ret;
 +#endif
 +
-+	ret = register_netdevice_notifier(&netdevice_notifier);
++	ret = register_pernet_device(&pernet_ops);
 +	if (ret)
 +		goto error_pm;
 +
 +	ret = rtnl_link_register(&link_ops);
 +	if (ret)
-+		goto error_netdevice;
++		goto error_pernet;
 +
 +	return 0;
 +
-+error_netdevice:
-+	unregister_netdevice_notifier(&netdevice_notifier);
++error_pernet:
++	unregister_pernet_device(&pernet_ops);
 +error_pm:
 +#ifdef CONFIG_PM_SLEEP
 +	unregister_pm_notifier(&pm_notifier);
@@ -45049,7 +45089,7 @@ index 00000000..5ea039ba
 +void wg_device_uninit(void)
 +{
 +	rtnl_link_unregister(&link_ops);
-+	unregister_netdevice_notifier(&netdevice_notifier);
++	unregister_pernet_device(&pernet_ops);
 +#ifdef CONFIG_PM_SLEEP
 +	unregister_pm_notifier(&pm_notifier);
 +#endif
@@ -45057,10 +45097,10 @@ index 00000000..5ea039ba
 +}
 diff --git a/net/wireguard/device.h b/net/wireguard/device.h
 new file mode 100644
-index 00000000..b15a8be9
+index 00000000..4d0144e1
 --- /dev/null
 +++ b/net/wireguard/device.h
-@@ -0,0 +1,65 @@
+@@ -0,0 +1,64 @@
 +/* SPDX-License-Identifier: GPL-2.0 */
 +/*
 + * Copyright (C) 2015-2019 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
@@ -45103,7 +45143,7 @@ index 00000000..b15a8be9
 +	struct net_device *dev;
 +	struct crypt_queue encrypt_queue, decrypt_queue;
 +	struct sock __rcu *sock4, *sock6;
-+	struct net *creating_net;
++	struct net __rcu *creating_net;
 +	struct noise_static_identity static_identity;
 +	struct workqueue_struct *handshake_receive_wq, *handshake_send_wq;
 +	struct workqueue_struct *packet_crypt_wq;
@@ -45119,7 +45159,6 @@ index 00000000..b15a8be9
 +	unsigned int num_peers, device_update_gen;
 +	u32 fwmark;
 +	u16 incoming_port;
-+	bool have_creating_net_ref;
 +};
 +
 +int wg_device_init(void);
@@ -45337,10 +45376,10 @@ index 00000000..1d1ed18f
 +#endif /* _WG_MESSAGES_H */
 diff --git a/net/wireguard/netlink.c b/net/wireguard/netlink.c
 new file mode 100644
-index 00000000..93cdbfec
+index 00000000..ef239ab1
 --- /dev/null
 +++ b/net/wireguard/netlink.c
-@@ -0,0 +1,654 @@
+@@ -0,0 +1,658 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) 2015-2019 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
@@ -45363,8 +45402,8 @@ index 00000000..93cdbfec
 +static const struct nla_policy device_policy[WGDEVICE_A_MAX + 1] = {
 +	[WGDEVICE_A_IFINDEX]		= { .type = NLA_U32 },
 +	[WGDEVICE_A_IFNAME]		= { .type = NLA_NUL_STRING, .len = IFNAMSIZ - 1 },
-+	[WGDEVICE_A_PRIVATE_KEY]	= { .type = NLA_EXACT_LEN, .len = NOISE_PUBLIC_KEY_LEN },
-+	[WGDEVICE_A_PUBLIC_KEY]		= { .type = NLA_EXACT_LEN, .len = NOISE_PUBLIC_KEY_LEN },
++	[WGDEVICE_A_PRIVATE_KEY]	= NLA_POLICY_EXACT_LEN(NOISE_PUBLIC_KEY_LEN),
++	[WGDEVICE_A_PUBLIC_KEY]		= NLA_POLICY_EXACT_LEN(NOISE_PUBLIC_KEY_LEN),
 +	[WGDEVICE_A_FLAGS]		= { .type = NLA_U32 },
 +	[WGDEVICE_A_LISTEN_PORT]	= { .type = NLA_U16 },
 +	[WGDEVICE_A_FWMARK]		= { .type = NLA_U32 },
@@ -45372,12 +45411,12 @@ index 00000000..93cdbfec
 +};
 +
 +static const struct nla_policy peer_policy[WGPEER_A_MAX + 1] = {
-+	[WGPEER_A_PUBLIC_KEY]				= { .type = NLA_EXACT_LEN, .len = NOISE_PUBLIC_KEY_LEN },
-+	[WGPEER_A_PRESHARED_KEY]			= { .type = NLA_EXACT_LEN, .len = NOISE_SYMMETRIC_KEY_LEN },
++	[WGPEER_A_PUBLIC_KEY]				= NLA_POLICY_EXACT_LEN(NOISE_PUBLIC_KEY_LEN),
++	[WGPEER_A_PRESHARED_KEY]			= NLA_POLICY_EXACT_LEN(NOISE_SYMMETRIC_KEY_LEN),
 +	[WGPEER_A_FLAGS]				= { .type = NLA_U32 },
-+	[WGPEER_A_ENDPOINT]				= { .type = NLA_MIN_LEN, .len = sizeof(struct sockaddr) },
++	[WGPEER_A_ENDPOINT]				= NLA_POLICY_MIN_LEN(sizeof(struct sockaddr)),
 +	[WGPEER_A_PERSISTENT_KEEPALIVE_INTERVAL]	= { .type = NLA_U16 },
-+	[WGPEER_A_LAST_HANDSHAKE_TIME]			= { .type = NLA_EXACT_LEN, .len = sizeof(struct __kernel_timespec) },
++	[WGPEER_A_LAST_HANDSHAKE_TIME]			= NLA_POLICY_EXACT_LEN(sizeof(struct __kernel_timespec)),
 +	[WGPEER_A_RX_BYTES]				= { .type = NLA_U64 },
 +	[WGPEER_A_TX_BYTES]				= { .type = NLA_U64 },
 +	[WGPEER_A_ALLOWEDIPS]				= { .type = NLA_NESTED },
@@ -45386,7 +45425,7 @@ index 00000000..93cdbfec
 +
 +static const struct nla_policy allowedip_policy[WGALLOWEDIP_A_MAX + 1] = {
 +	[WGALLOWEDIP_A_FAMILY]		= { .type = NLA_U16 },
-+	[WGALLOWEDIP_A_IPADDR]		= { .type = NLA_MIN_LEN, .len = sizeof(struct in_addr) },
++	[WGALLOWEDIP_A_IPADDR]		= NLA_POLICY_MIN_LEN(sizeof(struct in_addr)),
 +	[WGALLOWEDIP_A_CIDR_MASK]	= { .type = NLA_U8 }
 +};
 +
@@ -45852,11 +45891,15 @@ index 00000000..93cdbfec
 +	if (flags & ~__WGDEVICE_F_ALL)
 +		goto out;
 +
-+	ret = -EPERM;
-+	if ((info->attrs[WGDEVICE_A_LISTEN_PORT] ||
-+	     info->attrs[WGDEVICE_A_FWMARK]) &&
-+	    !ns_capable(wg->creating_net->user_ns, CAP_NET_ADMIN))
-+		goto out;
++	if (info->attrs[WGDEVICE_A_LISTEN_PORT] || info->attrs[WGDEVICE_A_FWMARK]) {
++		struct net *net;
++		rcu_read_lock();
++		net = rcu_dereference(wg->creating_net);
++		ret = !net || !ns_capable(net->user_ns, CAP_NET_ADMIN) ? -EPERM : 0;
++		rcu_read_unlock();
++		if (ret)
++			goto out;
++	}
 +
 +	++wg->device_update_gen;
 +
@@ -46015,10 +46058,10 @@ index 00000000..15100d92
 +#endif /* _WG_NETLINK_H */
 diff --git a/net/wireguard/noise.c b/net/wireguard/noise.c
 new file mode 100644
-index 00000000..d0987cdd
+index 00000000..baf455e2
 --- /dev/null
 +++ b/net/wireguard/noise.c
-@@ -0,0 +1,833 @@
+@@ -0,0 +1,830 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) 2015-2019 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
@@ -46108,15 +46151,12 @@ index 00000000..d0987cdd
 +
 +void wg_noise_handshake_clear(struct noise_handshake *handshake)
 +{
++	down_write(&handshake->lock);
 +	wg_index_hashtable_remove(
 +			handshake->entry.peer->device->index_hashtable,
 +			&handshake->entry);
-+	down_write(&handshake->lock);
 +	handshake_zero(handshake);
 +	up_write(&handshake->lock);
-+	wg_index_hashtable_remove(
-+			handshake->entry.peer->device->index_hashtable,
-+			&handshake->entry);
 +}
 +
 +static struct noise_keypair *keypair_create(struct wg_peer *peer)
@@ -46135,7 +46175,7 @@ index 00000000..d0987cdd
 +
 +static void keypair_free_rcu(struct rcu_head *rcu)
 +{
-+	kzfree(container_of(rcu, struct noise_keypair, rcu));
++	kfree_sensitive(container_of(rcu, struct noise_keypair, rcu));
 +}
 +
 +static void keypair_free_kref(struct kref *kref)
@@ -46640,8 +46680,8 @@ index 00000000..d0987cdd
 +	memcpy(handshake->hash, hash, NOISE_HASH_LEN);
 +	memcpy(handshake->chaining_key, chaining_key, NOISE_HASH_LEN);
 +	handshake->remote_index = src->sender_index;
-+	if ((s64)(handshake->last_initiation_consumption -
-+	    (initiation_consumption = ktime_get_coarse_boottime_ns())) < 0)
++	initiation_consumption = ktime_get_coarse_boottime_ns();
++	if ((s64)(handshake->last_initiation_consumption - initiation_consumption) < 0)
 +		handshake->last_initiation_consumption = initiation_consumption;
 +	handshake->state = HANDSHAKE_CONSUMED_INITIATION;
 +	up_write(&handshake->lock);
@@ -46844,7 +46884,7 @@ index 00000000..d0987cdd
 +			handshake->entry.peer->device->index_hashtable,
 +			&handshake->entry, &new_keypair->entry);
 +	} else {
-+		kzfree(new_keypair);
++		kfree_sensitive(new_keypair);
 +	}
 +	rcu_read_unlock_bh();
 +
@@ -46995,7 +47035,7 @@ index 00000000..c527253d
 +#endif /* _WG_NOISE_H */
 diff --git a/net/wireguard/peer.c b/net/wireguard/peer.c
 new file mode 100644
-index 00000000..1d634bd3
+index 00000000..b3b6370e
 --- /dev/null
 +++ b/net/wireguard/peer.c
 @@ -0,0 +1,237 @@
@@ -47204,7 +47244,7 @@ index 00000000..1d634bd3
 +	/* The final zeroing takes care of clearing any remaining handshake key
 +	 * material and other potentially sensitive information.
 +	 */
-+	kzfree(peer);
++	kfree_sensitive(peer);
 +}
 +
 +static void kref_release(struct kref *refcount)
@@ -47327,10 +47367,10 @@ index 00000000..23af4092
 +#endif /* _WG_PEER_H */
 diff --git a/net/wireguard/peerlookup.c b/net/wireguard/peerlookup.c
 new file mode 100644
-index 00000000..e4deb331
+index 00000000..f2783aa7
 --- /dev/null
 +++ b/net/wireguard/peerlookup.c
-@@ -0,0 +1,221 @@
+@@ -0,0 +1,226 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) 2015-2019 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
@@ -47500,9 +47540,13 @@ index 00000000..e4deb331
 +				struct index_hashtable_entry *old,
 +				struct index_hashtable_entry *new)
 +{
-+	if (unlikely(hlist_unhashed(&old->index_hash)))
-+		return false;
++	bool ret;
++
 +	spin_lock_bh(&table->lock);
++	ret = !hlist_unhashed(&old->index_hash);
++	if (unlikely(!ret))
++		goto out;
++
 +	new->index = old->index;
 +	hlist_replace_rcu(&old->index_hash, &new->index_hash);
 +
@@ -47513,8 +47557,9 @@ index 00000000..e4deb331
 +	 * simply gets dropped, which isn't terrible.
 +	 */
 +	INIT_HLIST_NODE(&old->index_hash);
++out:
 +	spin_unlock_bh(&table->lock);
-+	return true;
++	return ret;
 +}
 +
 +void wg_index_hashtable_remove(struct index_hashtable *table,
@@ -47685,10 +47730,10 @@ index 00000000..71b8e80b
 +}
 diff --git a/net/wireguard/queueing.h b/net/wireguard/queueing.h
 new file mode 100644
-index 00000000..e88eb93a
+index 00000000..bab170b9
 --- /dev/null
 +++ b/net/wireguard/queueing.h
-@@ -0,0 +1,211 @@
+@@ -0,0 +1,196 @@
 +/* SPDX-License-Identifier: GPL-2.0 */
 +/*
 + * Copyright (C) 2015-2019 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
@@ -47702,6 +47747,7 @@ index 00000000..e88eb93a
 +#include <linux/skbuff.h>
 +#include <linux/ip.h>
 +#include <linux/ipv6.h>
++#include <net/ip_tunnels.h>
 +
 +struct wg_device;
 +struct wg_peer;
@@ -47756,25 +47802,9 @@ index 00000000..e88eb93a
 +#define PACKET_CB(skb) ((struct packet_cb *)((skb)->cb))
 +#define PACKET_PEER(skb) (PACKET_CB(skb)->keypair->entry.peer)
 +
-+/* Returns either the correct skb->protocol value, or 0 if invalid. */
-+static inline __be16 wg_examine_packet_protocol(struct sk_buff *skb)
-+{
-+	if (skb_network_header(skb) >= skb->head &&
-+	    (skb_network_header(skb) + sizeof(struct iphdr)) <=
-+		    skb_tail_pointer(skb) &&
-+	    ip_hdr(skb)->version == 4)
-+		return htons(ETH_P_IP);
-+	if (skb_network_header(skb) >= skb->head &&
-+	    (skb_network_header(skb) + sizeof(struct ipv6hdr)) <=
-+		    skb_tail_pointer(skb) &&
-+	    ipv6_hdr(skb)->version == 6)
-+		return htons(ETH_P_IPV6);
-+	return 0;
-+}
-+
 +static inline bool wg_check_packet_protocol(struct sk_buff *skb)
 +{
-+	__be16 real_protocol = wg_examine_packet_protocol(skb);
++	__be16 real_protocol = ip_tunnel_parse_protocol(skb);
 +	return real_protocol && skb->protocol == real_protocol;
 +}
 +
@@ -48168,10 +48198,10 @@ index 00000000..83067f71
 +#endif /* _WG_RATELIMITER_H */
 diff --git a/net/wireguard/receive.c b/net/wireguard/receive.c
 new file mode 100644
-index 00000000..055d3dd5
+index 00000000..172ef823
 --- /dev/null
 +++ b/net/wireguard/receive.c
-@@ -0,0 +1,605 @@
+@@ -0,0 +1,599 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) 2015-2019 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
@@ -48566,7 +48596,7 @@ index 00000000..055d3dd5
 +#ifndef COMPAT_CANNOT_USE_CSUM_LEVEL
 +	skb->csum_level = ~0; /* All levels */
 +#endif
-+	skb->protocol = wg_examine_packet_protocol(skb);
++	skb->protocol = ip_tunnel_parse_protocol(skb);
 +	if (skb->protocol == htons(ETH_P_IP)) {
 +		len = ntohs(ip_hdr(skb)->tot_len);
 +		if (unlikely(len < sizeof(struct iphdr)))
@@ -48593,14 +48623,8 @@ index 00000000..055d3dd5
 +	if (unlikely(routed_peer != peer))
 +		goto dishonest_packet_peer;
 +
-+	if (unlikely(napi_gro_receive(&peer->napi, skb) == GRO_DROP)) {
-+		++dev->stats.rx_dropped;
-+		net_dbg_ratelimited("%s: Failed to give packet to userspace from peer %llu (%pISpfsc)\n",
-+				    dev->name, peer->internal_id,
-+				    &peer->endpoint.addr);
-+	} else {
-+		update_rx_stats(peer, message_data_len(len_before_trim));
-+	}
++	napi_gro_receive(&peer->napi, skb);
++	update_rx_stats(peer, message_data_len(len_before_trim));
 +	return;
 +
 +dishonest_packet_peer:
@@ -50252,10 +50276,10 @@ index 00000000..828b086a
 +}
 diff --git a/net/wireguard/socket.c b/net/wireguard/socket.c
 new file mode 100644
-index 00000000..f9018027
+index 00000000..e8eceeb0
 --- /dev/null
 +++ b/net/wireguard/socket.c
-@@ -0,0 +1,425 @@
+@@ -0,0 +1,436 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) 2015-2019 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
@@ -50311,7 +50335,7 @@ index 00000000..f9018027
 +		if (unlikely(!inet_confirm_addr(sock_net(sock), NULL, 0,
 +						fl.saddr, RT_SCOPE_HOST))) {
 +			endpoint->src4.s_addr = 0;
-+			*(__force __be32 *)&endpoint->src_if4 = 0;
++			endpoint->src_if4 = 0;
 +			fl.saddr = 0;
 +			if (cache)
 +				dst_cache_reset(cache);
@@ -50321,7 +50345,7 @@ index 00000000..f9018027
 +			     PTR_ERR(rt) == -EINVAL) || (!IS_ERR(rt) &&
 +			     rt->dst.dev->ifindex != endpoint->src_if4)))) {
 +			endpoint->src4.s_addr = 0;
-+			*(__force __be32 *)&endpoint->src_if4 = 0;
++			endpoint->src_if4 = 0;
 +			fl.saddr = 0;
 +			if (cache)
 +				dst_cache_reset(cache);
@@ -50329,7 +50353,7 @@ index 00000000..f9018027
 +				ip_rt_put(rt);
 +			rt = ip_route_output_flow(sock_net(sock), &fl, sock);
 +		}
-+		if (unlikely(IS_ERR(rt))) {
++		if (IS_ERR(rt)) {
 +			ret = PTR_ERR(rt);
 +			net_dbg_ratelimited("%s: No route to %pISpfsc, error %d\n",
 +					    wg->dev->name, &endpoint->addr, ret);
@@ -50396,7 +50420,7 @@ index 00000000..f9018027
 +		}
 +		dst = ipv6_stub->ipv6_dst_lookup_flow(sock_net(sock), sock, &fl,
 +						      NULL);
-+		if (unlikely(IS_ERR(dst))) {
++		if (IS_ERR(dst)) {
 +			ret = PTR_ERR(dst);
 +			net_dbg_ratelimited("%s: No route to %pISpfsc, error %d\n",
 +					    wg->dev->name, &endpoint->addr, ret);
@@ -50605,6 +50629,7 @@ index 00000000..f9018027
 +
 +int wg_socket_init(struct wg_device *wg, u16 port)
 +{
++	struct net *net;
 +	int ret;
 +	struct udp_tunnel_sock_cfg cfg = {
 +		.sk_user_data = wg,
@@ -50629,37 +50654,47 @@ index 00000000..f9018027
 +	};
 +#endif
 +
++	rcu_read_lock();
++	net = rcu_dereference(wg->creating_net);
++	net = net ? maybe_get_net(net) : NULL;
++	rcu_read_unlock();
++	if (unlikely(!net))
++		return -ENONET;
++
 +#if IS_ENABLED(CONFIG_IPV6)
 +retry:
 +#endif
 +
-+	ret = udp_sock_create(wg->creating_net, &port4, &new4);
++	ret = udp_sock_create(net, &port4, &new4);
 +	if (ret < 0) {
 +		pr_err("%s: Could not create IPv4 socket\n", wg->dev->name);
-+		return ret;
++		goto out;
 +	}
 +	set_sock_opts(new4);
-+	setup_udp_tunnel_sock(wg->creating_net, new4, &cfg);
++	setup_udp_tunnel_sock(net, new4, &cfg);
 +
 +#if IS_ENABLED(CONFIG_IPV6)
 +	if (ipv6_mod_enabled()) {
 +		port6.local_udp_port = inet_sk(new4->sk)->inet_sport;
-+		ret = udp_sock_create(wg->creating_net, &port6, &new6);
++		ret = udp_sock_create(net, &port6, &new6);
 +		if (ret < 0) {
 +			udp_tunnel_sock_release(new4);
 +			if (ret == -EADDRINUSE && !port && retries++ < 100)
 +				goto retry;
 +			pr_err("%s: Could not create IPv6 socket\n",
 +			       wg->dev->name);
-+			return ret;
++			goto out;
 +		}
 +		set_sock_opts(new6);
-+		setup_udp_tunnel_sock(wg->creating_net, new6, &cfg);
++		setup_udp_tunnel_sock(net, new6, &cfg);
 +	}
 +#endif
 +
 +	wg_socket_reinit(wg, new4->sk, new6 ? new6->sk : NULL);
-+	return 0;
++	ret = 0;
++out:
++	put_net(net);
++	return ret;
 +}
 +
 +void wg_socket_reinit(struct wg_device *wg, struct sock *new4,
@@ -51221,13 +51256,10 @@ index 00000000..ae88be14
 +#endif /* _WG_UAPI_WIREGUARD_H */
 diff --git a/net/wireguard/version.h b/net/wireguard/version.h
 new file mode 100644
-index 00000000..b8361d4b
+index 00000000..fc144d11
 --- /dev/null
 +++ b/net/wireguard/version.h
 @@ -0,0 +1,3 @@
 +#ifndef WIREGUARD_VERSION
-+#define WIREGUARD_VERSION "1.0.20200611"
++#define WIREGUARD_VERSION "1.0.20210124"
 +#endif
--- 
-https://clearlinux.org
-
