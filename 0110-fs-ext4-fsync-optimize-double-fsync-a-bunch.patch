@@ -21,7 +21,7 @@ barrier to complete. Any consecutive IO will block on the barrier correctly.
  5 files changed, 70 insertions(+), 1 deletion(-)
 
 diff --git a/block/bio.c b/block/bio.c
-index 1384f9790882..9cd4a6e191a6 100644
+index 30df1b45dde8..6db418e7353a 100644
 --- a/block/bio.c
 +++ b/block/bio.c
 @@ -1016,6 +1016,25 @@ int submit_bio_wait(struct bio *bio)
