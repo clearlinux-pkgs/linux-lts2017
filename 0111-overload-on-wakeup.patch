@@ -14,10 +14,10 @@ a more permanent/elegant solution.
  1 file changed, 26 insertions(+)
 
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 81096dd0ca0c..66f0b50a2a3c 100644
+index 37ac76dce908..de7354d6d549 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
-@@ -5943,6 +5943,8 @@ static int wake_cap(struct task_struct *p, int cpu, int prev_cpu)
+@@ -5944,6 +5944,8 @@ static int wake_cap(struct task_struct *p, int cpu, int prev_cpu)
  	return min_cap * 1024 < task_util(p) * capacity_margin;
  }
  
@@ -26,7 +26,7 @@ index 81096dd0ca0c..66f0b50a2a3c 100644
  /*
   * select_task_rq_fair: Select target runqueue for the waking task in domains
   * that have the 'sd_flag' flag set. In practice, this is SD_BALANCE_WAKE,
-@@ -5971,6 +5973,30 @@ select_task_rq_fair(struct task_struct *p, int prev_cpu, int sd_flag, int wake_f
+@@ -5972,6 +5974,30 @@ select_task_rq_fair(struct task_struct *p, int prev_cpu, int sd_flag, int wake_f
  	}
  
  	rcu_read_lock();

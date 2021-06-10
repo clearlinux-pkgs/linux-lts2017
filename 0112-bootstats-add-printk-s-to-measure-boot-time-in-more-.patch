@@ -52,7 +52,7 @@ index 4b57cf5bc81d..218031ac9269 100644
  	__module_get(THIS_MODULE);
  	ret = _request_firmware(firmware_p, name, device, NULL, 0,
 diff --git a/init/main.c b/init/main.c
-index 603b1ad88cb6..348c29d74e00 100644
+index f0b2411a5fbf..81182600c557 100644
 --- a/init/main.c
 +++ b/init/main.c
 @@ -799,7 +799,7 @@ static int __init_or_module do_one_initcall_debug(initcall_t fn)
