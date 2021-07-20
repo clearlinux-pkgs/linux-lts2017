@@ -1,6 +1,6 @@
 #
 # Automatically generated file; DO NOT EDIT.
-# Linux/x86 4.14.239 Kernel Configuration
+# Linux/x86 4.14.240 Kernel Configuration
 #
 CONFIG_64BIT=y
 CONFIG_X86_64=y
@@ -3470,6 +3470,7 @@ CONFIG_BATTERY_MAX17042=m
 # CONFIG_CHARGER_BQ25890 is not set
 CONFIG_CHARGER_SMB347=m
 # CONFIG_BATTERY_GAUGE_LTC2941 is not set
+# CONFIG_BATTERY_RT5033 is not set
 # CONFIG_CHARGER_RT9455 is not set
 CONFIG_HWMON=y
 CONFIG_HWMON_VID=m
@@ -7130,5 +7131,5 @@ CONFIG_SBITMAP=y
 
 
 # kernel-config sources:
-# FILEVER=/usr/share/kernel-config/base-4.14-5-49
-# FILEVER=/usr/share/kernel-config/mandatory-4.14-5-49
+# FILEVER=/usr/share/kernel-config/base-4.14-5-51
+# FILEVER=/usr/share/kernel-config/mandatory-4.14-5-51
