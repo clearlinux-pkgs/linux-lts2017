@@ -33,10 +33,10 @@ index 8cc0e4873815..cdbbbaad2e9d 100644
  	.err_handler = &e1000_err_handler
  };
 diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
-index c9e8592d00f6..be0ae093b504 100644
+index e0482955711d..3b4f49f5c496 100644
 --- a/drivers/net/ethernet/intel/e1000e/netdev.c
 +++ b/drivers/net/ethernet/intel/e1000e/netdev.c
-@@ -7594,9 +7594,6 @@ static struct pci_driver e1000_driver = {
+@@ -7595,9 +7595,6 @@ static struct pci_driver e1000_driver = {
  	.id_table = e1000_pci_tbl,
  	.probe    = e1000_probe,
  	.remove   = e1000_remove,
@@ -47,7 +47,7 @@ index c9e8592d00f6..be0ae093b504 100644
  	.err_handler = &e1000_err_handler
  };
 diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
-index 50fa0401c701..696e50fafc4c 100644
+index 6bd30d51dafc..e01948e2e825 100644
 --- a/drivers/net/ethernet/intel/igb/igb_main.c
 +++ b/drivers/net/ethernet/intel/igb/igb_main.c
 @@ -239,9 +239,6 @@ static struct pci_driver igb_driver = {

@@ -14,7 +14,7 @@ a more permanent/elegant solution.
  1 file changed, 26 insertions(+)
 
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 37ac76dce908..de7354d6d549 100644
+index 3ff60230710c..a3892567e55d 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
 @@ -5944,6 +5944,8 @@ static int wake_cap(struct task_struct *p, int cpu, int prev_cpu)
