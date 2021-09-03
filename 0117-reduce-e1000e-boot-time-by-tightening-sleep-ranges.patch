@@ -120,7 +120,7 @@ index 003cbd605799..6295b607c555 100644
  		}
  		/* Fall Through */
 diff --git a/drivers/net/ethernet/intel/e1000e/ich8lan.c b/drivers/net/ethernet/intel/e1000e/ich8lan.c
-index 1e990f9dd379..20d3e1ebfe39 100644
+index 9d5fe4ea9cee..7ba000c4be8c 100644
 --- a/drivers/net/ethernet/intel/e1000e/ich8lan.c
 +++ b/drivers/net/ethernet/intel/e1000e/ich8lan.c
 @@ -289,7 +289,7 @@ static void e1000_toggle_lanphypc_pch_lpt(struct e1000_hw *hw)
@@ -150,7 +150,7 @@ index 1e990f9dd379..20d3e1ebfe39 100644
  		ret_val = e1000e_get_phy_id(hw);
  		if (ret_val)
  			return ret_val;
-@@ -1262,7 +1262,7 @@ static s32 e1000_disable_ulp_lpt_lp(struct e1000_hw *hw, bool force)
+@@ -1274,7 +1274,7 @@ static s32 e1000_disable_ulp_lpt_lp(struct e1000_hw *hw, bool force)
  				goto out;
  			}
  
@@ -159,7 +159,7 @@ index 1e990f9dd379..20d3e1ebfe39 100644
  		}
  		e_dbg("ULP_CONFIG_DONE cleared after %dmsec\n", i * 10);
  
-@@ -2027,7 +2027,7 @@ static s32 e1000_check_reset_block_ich8lan(struct e1000_hw *hw)
+@@ -2039,7 +2039,7 @@ static s32 e1000_check_reset_block_ich8lan(struct e1000_hw *hw)
  
  	while ((blocked = !(er32(FWSM) & E1000_ICH_FWSM_RSPCIPHY)) &&
  	       (i++ < 30))
@@ -168,7 +168,7 @@ index 1e990f9dd379..20d3e1ebfe39 100644
  	return blocked ? E1000_BLK_PHY_RESET : 0;
  }
  
-@@ -2846,7 +2846,7 @@ static s32 e1000_post_phy_reset_ich8lan(struct e1000_hw *hw)
+@@ -2858,7 +2858,7 @@ static s32 e1000_post_phy_reset_ich8lan(struct e1000_hw *hw)
  		return 0;
  
  	/* Allow time for h/w to get to quiescent state after reset */
@@ -177,7 +177,7 @@ index 1e990f9dd379..20d3e1ebfe39 100644
  
  	/* Perform any necessary post-reset workarounds */
  	switch (hw->mac.type) {
-@@ -2882,7 +2882,7 @@ static s32 e1000_post_phy_reset_ich8lan(struct e1000_hw *hw)
+@@ -2894,7 +2894,7 @@ static s32 e1000_post_phy_reset_ich8lan(struct e1000_hw *hw)
  	if (hw->mac.type == e1000_pch2lan) {
  		/* Ungate automatic PHY configuration on non-managed 82579 */
  		if (!(er32(FWSM) & E1000_ICH_FWSM_FW_VALID)) {
@@ -186,7 +186,7 @@ index 1e990f9dd379..20d3e1ebfe39 100644
  			e1000_gate_hw_phy_config_ich8lan(hw, false);
  		}
  
-@@ -3903,7 +3903,7 @@ static s32 e1000_update_nvm_checksum_spt(struct e1000_hw *hw)
+@@ -3915,7 +3915,7 @@ static s32 e1000_update_nvm_checksum_spt(struct e1000_hw *hw)
  	 */
  	if (!ret_val) {
  		nvm->ops.reload(hw);
@@ -195,7 +195,7 @@ index 1e990f9dd379..20d3e1ebfe39 100644
  	}
  
  out:
-@@ -4054,7 +4054,7 @@ static s32 e1000_update_nvm_checksum_ich8lan(struct e1000_hw *hw)
+@@ -4066,7 +4066,7 @@ static s32 e1000_update_nvm_checksum_ich8lan(struct e1000_hw *hw)
  	 */
  	if (!ret_val) {
  		nvm->ops.reload(hw);
@@ -204,7 +204,7 @@ index 1e990f9dd379..20d3e1ebfe39 100644
  	}
  
  out:
-@@ -4678,7 +4678,7 @@ static s32 e1000_reset_hw_ich8lan(struct e1000_hw *hw)
+@@ -4690,7 +4690,7 @@ static s32 e1000_reset_hw_ich8lan(struct e1000_hw *hw)
  	ew32(TCTL, E1000_TCTL_PSP);
  	e1e_flush();
  
