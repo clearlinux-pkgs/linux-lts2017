@@ -120,7 +120,7 @@ index 003cbd605799..6295b607c555 100644
  		}
  		/* Fall Through */
 diff --git a/drivers/net/ethernet/intel/e1000e/ich8lan.c b/drivers/net/ethernet/intel/e1000e/ich8lan.c
-index 9d5fe4ea9cee..7ba000c4be8c 100644
+index 60f0d2053a0a..b7276d22862b 100644
 --- a/drivers/net/ethernet/intel/e1000e/ich8lan.c
 +++ b/drivers/net/ethernet/intel/e1000e/ich8lan.c
 @@ -289,7 +289,7 @@ static void e1000_toggle_lanphypc_pch_lpt(struct e1000_hw *hw)
