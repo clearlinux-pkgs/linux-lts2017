@@ -55,7 +55,7 @@ diff --git a/init/main.c b/init/main.c
 index 621cedd9173a..e449ee9271e4 100644
 --- a/init/main.c
 +++ b/init/main.c
-@@ -799,7 +799,7 @@ static int __init_or_module do_one_initcall_debug(initcall_t fn)
+@@ -803,7 +803,7 @@ static int __init_or_module do_one_initcall_debug(initcall_t fn)
  	unsigned long long duration;
  	int ret;
  

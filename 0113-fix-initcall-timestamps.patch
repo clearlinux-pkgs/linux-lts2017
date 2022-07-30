@@ -14,7 +14,7 @@ diff --git a/init/main.c b/init/main.c
 index e449ee9271e4..19afd640b820 100644
 --- a/init/main.c
 +++ b/init/main.c
-@@ -795,16 +795,16 @@ __setup("initcall_blacklist=", initcall_blacklist);
+@@ -799,16 +799,16 @@ __setup("initcall_blacklist=", initcall_blacklist);
  
  static int __init_or_module do_one_initcall_debug(initcall_t fn)
  {
