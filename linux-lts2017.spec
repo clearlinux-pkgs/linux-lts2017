@@ -55,7 +55,6 @@ Patch0114: 0114-smpboot-reuse-timer-calibration.patch
 Patch0115: 0115-raid6-add-Kconfig-option-to-skip-raid6-benchmarking.patch
 Patch0116: 0116-Initialize-ata-before-graphics.patch
 Patch0117: 0117-reduce-e1000e-boot-time-by-tightening-sleep-ranges.patch
-Patch0118: 0118-give-rdrand-some-credit.patch
 Patch0119: 0119-e1000e-change-default-policy.patch
 Patch0120: 0120-ipv4-tcp-allow-the-memory-tuning-for-tcp-to-go-a-lit.patch
 Patch0121: 0121-disable-PM-on-some-NICs.patch
@@ -147,7 +146,6 @@ Linux kernel build files
 %patch0115 -p1
 %patch0116 -p1
 %patch0117 -p1
-%patch0118 -p1
 %patch0119 -p1
 %patch0120 -p1
 %patch0121 -p1
