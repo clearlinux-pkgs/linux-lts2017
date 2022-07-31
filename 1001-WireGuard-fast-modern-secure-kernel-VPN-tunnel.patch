@@ -17,15 +17,16 @@ This project is released under the [GPLv2](COPYING).
  net/Kconfig                                   |    1 +
  net/Makefile                                  |    1 +
  net/wireguard/Kconfig                         |   33 +
- net/wireguard/Makefile                        |   16 +
- net/wireguard/allowedips.c                    |  382 +
+ net/wireguard/Makefile                        |   15 +
+ net/wireguard/allowedips.c                    |  386 +
  net/wireguard/allowedips.h                    |   59 +
- net/wireguard/compat/Makefile.include         |  102 +
+ net/wireguard/compat/Makefile.include         |  111 +
  .../compat/checksum/checksum_partial_compat.h |  208 +
  net/wireguard/compat/compat-asm.h             |   89 +
- net/wireguard/compat/compat.h                 | 1115 ++
- net/wireguard/compat/dst_cache/dst_cache.c    |  175 +
+ net/wireguard/compat/compat.h                 | 1202 +++
+ net/wireguard/compat/dst_cache/dst_cache.c    |  177 +
  .../compat/dst_cache/include/net/dst_cache.h  |   97 +
+ .../dstmetadata/include/net/dst_metadata.h    |    3 +
  .../compat/fpu-x86/include/asm/fpu/api.h      |    1 +
  .../include/asm/intel-family.h                |   73 +
  net/wireguard/compat/memneq/include.h         |    5 +
@@ -33,12 +34,14 @@ This project is released under the [GPLv2](COPYING).
  .../compat/neon-arm/include/asm/neon.h        |    7 +
  .../compat/ptr_ring/include/linux/ptr_ring.h  |  674 ++
  .../compat/simd-asm/include/asm/simd.h        |   21 +
- .../compat/simd/include/linux/simd.h          |   70 +
- .../compat/siphash/include/linux/siphash.h    |  140 +
+ .../compat/simd/include/linux/simd.h          |   69 +
+ .../compat/siphash/include/linux/siphash.h    |  134 +
  net/wireguard/compat/siphash/siphash.c        |  539 +
+ .../skb_array/include/linux/skb_array.h       |   11 +
  .../udp_tunnel/include/net/udp_tunnel.h       |   94 +
- net/wireguard/compat/udp_tunnel/udp_tunnel.c  |  394 +
+ net/wireguard/compat/udp_tunnel/udp_tunnel.c  |  396 +
  .../udp_tunnel/udp_tunnel_partial_compat.h    |  226 +
+ net/wireguard/compat/version/linux/version.h  |   10 +
  net/wireguard/cookie.c                        |  236 +
  net/wireguard/cookie.h                        |   59 +
  net/wireguard/crypto/Makefile.include         |   57 +
@@ -66,8 +69,8 @@ This project is released under the [GPLv2](COPYING).
  .../zinc/curve25519/curve25519-fiat32.c       |  860 ++
  .../zinc/curve25519/curve25519-hacl64.c       |  779 ++
  .../zinc/curve25519/curve25519-x86_64-glue.c  |   44 +
- .../zinc/curve25519/curve25519-x86_64.c       | 1369 +++
- .../crypto/zinc/curve25519/curve25519.c       |  110 +
+ .../zinc/curve25519/curve25519-x86_64.c       | 1580 +++
+ .../crypto/zinc/curve25519/curve25519.c       |  109 +
  .../crypto/zinc/poly1305/poly1305-arm-glue.c  |  140 +
  .../crypto/zinc/poly1305/poly1305-arm.pl      | 1276 +++
  .../crypto/zinc/poly1305/poly1305-arm64.pl    |  974 ++
@@ -85,34 +88,34 @@ This project is released under the [GPLv2](COPYING).
  .../crypto/zinc/selftest/curve25519.c         | 1315 +++
  net/wireguard/crypto/zinc/selftest/poly1305.c | 1107 ++
  net/wireguard/crypto/zinc/selftest/run.h      |   48 +
- net/wireguard/device.c                        |  470 +
- net/wireguard/device.h                        |   64 +
- net/wireguard/main.c                          |   69 +
+ net/wireguard/device.c                        |  475 +
+ net/wireguard/device.h                        |   62 +
+ net/wireguard/main.c                          |   84 +
  net/wireguard/messages.h                      |  128 +
  net/wireguard/netlink.c                       |  658 ++
  net/wireguard/netlink.h                       |   12 +
  net/wireguard/noise.c                         |  830 ++
  net/wireguard/noise.h                         |  135 +
- net/wireguard/peer.c                          |  237 +
- net/wireguard/peer.h                          |   83 +
+ net/wireguard/peer.c                          |  240 +
+ net/wireguard/peer.h                          |   86 +
  net/wireguard/peerlookup.c                    |  226 +
  net/wireguard/peerlookup.h                    |   64 +
- net/wireguard/queueing.c                      |   55 +
- net/wireguard/queueing.h                      |  196 +
+ net/wireguard/queueing.c                      |  108 +
+ net/wireguard/queueing.h                      |  217 +
  net/wireguard/ratelimiter.c                   |  235 +
  net/wireguard/ratelimiter.h                   |   19 +
- net/wireguard/receive.c                       |  599 ++
- net/wireguard/selftest/allowedips.c           |  683 ++
+ net/wireguard/receive.c                       |  602 ++
+ net/wireguard/selftest/allowedips.c           |  676 ++
  net/wireguard/selftest/counter.c              |  111 +
  net/wireguard/selftest/ratelimiter.c          |  226 +
- net/wireguard/send.c                          |  429 +
- net/wireguard/socket.c                        |  436 +
+ net/wireguard/send.c                          |  420 +
+ net/wireguard/socket.c                        |  437 +
  net/wireguard/socket.h                        |   44 +
  net/wireguard/timers.c                        |  243 +
  net/wireguard/timers.h                        |   31 +
  net/wireguard/uapi/wireguard.h                |  196 +
  net/wireguard/version.h                       |    3 +
- 98 files changed, 50455 insertions(+)
+ 101 files changed, 50871 insertions(+)
  create mode 100644 net/wireguard/Kconfig
  create mode 100644 net/wireguard/Makefile
  create mode 100644 net/wireguard/allowedips.c
@@ -123,6 +126,7 @@ This project is released under the [GPLv2](COPYING).
  create mode 100644 net/wireguard/compat/compat.h
  create mode 100644 net/wireguard/compat/dst_cache/dst_cache.c
  create mode 100644 net/wireguard/compat/dst_cache/include/net/dst_cache.h
+ create mode 100644 net/wireguard/compat/dstmetadata/include/net/dst_metadata.h
  create mode 100644 net/wireguard/compat/fpu-x86/include/asm/fpu/api.h
  create mode 100644 net/wireguard/compat/intel-family-x86/include/asm/intel-family.h
  create mode 100644 net/wireguard/compat/memneq/include.h
@@ -133,9 +137,11 @@ This project is released under the [GPLv2](COPYING).
  create mode 100644 net/wireguard/compat/simd/include/linux/simd.h
  create mode 100644 net/wireguard/compat/siphash/include/linux/siphash.h
  create mode 100644 net/wireguard/compat/siphash/siphash.c
+ create mode 100644 net/wireguard/compat/skb_array/include/linux/skb_array.h
  create mode 100644 net/wireguard/compat/udp_tunnel/include/net/udp_tunnel.h
  create mode 100644 net/wireguard/compat/udp_tunnel/udp_tunnel.c
  create mode 100644 net/wireguard/compat/udp_tunnel/udp_tunnel_partial_compat.h
+ create mode 100644 net/wireguard/compat/version/linux/version.h
  create mode 100644 net/wireguard/cookie.c
  create mode 100644 net/wireguard/cookie.h
  create mode 100644 net/wireguard/crypto/Makefile.include
@@ -223,7 +229,7 @@ index 9dba2715..05afe161 100644
  source "net/ipv6/Kconfig"
  source "net/netlabel/Kconfig"
 diff --git a/net/Makefile b/net/Makefile
-index 14fede52..cb3489d9 100644
+index d05dc719..0c2662b8 100644
 --- a/net/Makefile
 +++ b/net/Makefile
 @@ -15,6 +15,7 @@ obj-$(CONFIG_NET)		+= $(tmp-y)
@@ -275,18 +281,17 @@ index 00000000..156e9dbf
 +	  Say N here unless you know what you're doing.
 diff --git a/net/wireguard/Makefile b/net/wireguard/Makefile
 new file mode 100644
-index 00000000..42795ac0
+index 00000000..c17546ea
 --- /dev/null
 +++ b/net/wireguard/Makefile
-@@ -0,0 +1,16 @@
+@@ -0,0 +1,15 @@
 +# SPDX-License-Identifier: GPL-2.0
 +#
 +# Copyright (C) 2015-2019 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
 +
-+ccflags-y := -O3
-+ccflags-$(CONFIG_WIREGUARD_DEBUG) += -DDEBUG -g
-+ccflags-y += -D'pr_fmt(fmt)=KBUILD_MODNAME ": " fmt'
++ccflags-y := -D'pr_fmt(fmt)=KBUILD_MODNAME ": " fmt'
 +ccflags-y += -Wframe-larger-than=2048
++ccflags-$(CONFIG_WIREGUARD_DEBUG) += -DDEBUG -g
 +ccflags-$(if $(WIREGUARD_VERSION),y,) += -D'WIREGUARD_VERSION="$(WIREGUARD_VERSION)"'
 +
 +wireguard-y := main.o noise.o device.o peer.o timers.o queueing.o send.o receive.o socket.o peerlookup.o allowedips.o ratelimiter.o cookie.o netlink.o
@@ -297,10 +302,10 @@ index 00000000..42795ac0
 +obj-$(if $(KBUILD_EXTMOD),m,$(CONFIG_WIREGUARD)) := wireguard.o
 diff --git a/net/wireguard/allowedips.c b/net/wireguard/allowedips.c
 new file mode 100644
-index 00000000..23c2285c
+index 00000000..9a4c8ff3
 --- /dev/null
 +++ b/net/wireguard/allowedips.c
-@@ -0,0 +1,382 @@
+@@ -0,0 +1,386 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) 2015-2019 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
@@ -308,6 +313,8 @@ index 00000000..23c2285c
 +
 +#include "allowedips.h"
 +#include "peer.h"
++
++static struct kmem_cache *node_cache;
 +
 +static void swap_endian(u8 *dst, const u8 *src, u8 bits)
 +{
@@ -331,12 +338,10 @@ index 00000000..23c2285c
 +	node->bitlen = bits;
 +	memcpy(node->bits, src, bits / 8U);
 +}
-+#define CHOOSE_NODE(parent, key) \
-+	parent->bit[(key[parent->bit_at_a] >> parent->bit_at_b) & 1]
 +
-+static void node_free_rcu(struct rcu_head *rcu)
++static inline u8 choose(struct allowedips_node *node, const u8 *key)
 +{
-+	kfree(container_of(rcu, struct allowedips_node, rcu));
++	return (key[node->bit_at_a] >> node->bit_at_b) & 1;
 +}
 +
 +static void push_rcu(struct allowedips_node **stack,
@@ -348,6 +353,11 @@ index 00000000..23c2285c
 +	}
 +}
 +
++static void node_free_rcu(struct rcu_head *rcu)
++{
++	kmem_cache_free(node_cache, container_of(rcu, struct allowedips_node, rcu));
++}
++
 +static void root_free_rcu(struct rcu_head *rcu)
 +{
 +	struct allowedips_node *node, *stack[128] = {
@@ -357,7 +367,7 @@ index 00000000..23c2285c
 +	while (len > 0 && (node = stack[--len])) {
 +		push_rcu(stack, node->bit[0], &len);
 +		push_rcu(stack, node->bit[1], &len);
-+		kfree(node);
++		kmem_cache_free(node_cache, node);
 +	}
 +}
 +
@@ -372,60 +382,6 @@ index 00000000..23c2285c
 +		if (rcu_access_pointer(node->peer))
 +			list_del(&node->peer_list);
 +	}
-+}
-+
-+static void walk_remove_by_peer(struct allowedips_node __rcu **top,
-+				struct wg_peer *peer, struct mutex *lock)
-+{
-+#define REF(p) rcu_access_pointer(p)
-+#define DEREF(p) rcu_dereference_protected(*(p), lockdep_is_held(lock))
-+#define PUSH(p) ({                                                             \
-+		WARN_ON(IS_ENABLED(DEBUG) && len >= 128);                      \
-+		stack[len++] = p;                                              \
-+	})
-+
-+	struct allowedips_node __rcu **stack[128], **nptr;
-+	struct allowedips_node *node, *prev;
-+	unsigned int len;
-+
-+	if (unlikely(!peer || !REF(*top)))
-+		return;
-+
-+	for (prev = NULL, len = 0, PUSH(top); len > 0; prev = node) {
-+		nptr = stack[len - 1];
-+		node = DEREF(nptr);
-+		if (!node) {
-+			--len;
-+			continue;
-+		}
-+		if (!prev || REF(prev->bit[0]) == node ||
-+		    REF(prev->bit[1]) == node) {
-+			if (REF(node->bit[0]))
-+				PUSH(&node->bit[0]);
-+			else if (REF(node->bit[1]))
-+				PUSH(&node->bit[1]);
-+		} else if (REF(node->bit[0]) == prev) {
-+			if (REF(node->bit[1]))
-+				PUSH(&node->bit[1]);
-+		} else {
-+			if (rcu_dereference_protected(node->peer,
-+				lockdep_is_held(lock)) == peer) {
-+				RCU_INIT_POINTER(node->peer, NULL);
-+				list_del_init(&node->peer_list);
-+				if (!node->bit[0] || !node->bit[1]) {
-+					rcu_assign_pointer(*nptr, DEREF(
-+					       &node->bit[!REF(node->bit[0])]));
-+					call_rcu(&node->rcu, node_free_rcu);
-+					node = DEREF(nptr);
-+				}
-+			}
-+			--len;
-+		}
-+	}
-+
-+#undef REF
-+#undef DEREF
-+#undef PUSH
 +}
 +
 +static unsigned int fls128(u64 a, u64 b)
@@ -467,7 +423,7 @@ index 00000000..23c2285c
 +			found = node;
 +		if (node->cidr == bits)
 +			break;
-+		node = rcu_dereference_bh(CHOOSE_NODE(node, key));
++		node = rcu_dereference_bh(node->bit[choose(node, key)]);
 +	}
 +	return found;
 +}
@@ -499,8 +455,7 @@ index 00000000..23c2285c
 +			   u8 cidr, u8 bits, struct allowedips_node **rnode,
 +			   struct mutex *lock)
 +{
-+	struct allowedips_node *node = rcu_dereference_protected(trie,
-+						lockdep_is_held(lock));
++	struct allowedips_node *node = rcu_dereference_protected(trie, lockdep_is_held(lock));
 +	struct allowedips_node *parent = NULL;
 +	bool exact = false;
 +
@@ -510,11 +465,22 @@ index 00000000..23c2285c
 +			exact = true;
 +			break;
 +		}
-+		node = rcu_dereference_protected(CHOOSE_NODE(parent, key),
-+						 lockdep_is_held(lock));
++		node = rcu_dereference_protected(parent->bit[choose(parent, key)], lockdep_is_held(lock));
 +	}
 +	*rnode = parent;
 +	return exact;
++}
++
++static inline void connect_node(struct allowedips_node __rcu **parent, u8 bit, struct allowedips_node *node)
++{
++	node->parent_bit_packed = (unsigned long)parent | bit;
++	rcu_assign_pointer(*parent, node);
++}
++
++static inline void choose_and_connect_node(struct allowedips_node *parent, struct allowedips_node *node)
++{
++	u8 bit = choose(parent, node->bits);
++	connect_node(&parent->bit[bit], bit, node);
 +}
 +
 +static int add(struct allowedips_node __rcu **trie, u8 bits, const u8 *key,
@@ -526,13 +492,13 @@ index 00000000..23c2285c
 +		return -EINVAL;
 +
 +	if (!rcu_access_pointer(*trie)) {
-+		node = kzalloc(sizeof(*node), GFP_KERNEL);
++		node = kmem_cache_zalloc(node_cache, GFP_KERNEL);
 +		if (unlikely(!node))
 +			return -ENOMEM;
 +		RCU_INIT_POINTER(node->peer, peer);
 +		list_add_tail(&node->peer_list, &peer->allowedips_list);
 +		copy_and_assign_cidr(node, key, cidr, bits);
-+		rcu_assign_pointer(*trie, node);
++		connect_node(trie, 2, node);
 +		return 0;
 +	}
 +	if (node_placement(*trie, key, cidr, bits, &node, lock)) {
@@ -541,7 +507,7 @@ index 00000000..23c2285c
 +		return 0;
 +	}
 +
-+	newnode = kzalloc(sizeof(*newnode), GFP_KERNEL);
++	newnode = kmem_cache_zalloc(node_cache, GFP_KERNEL);
 +	if (unlikely(!newnode))
 +		return -ENOMEM;
 +	RCU_INIT_POINTER(newnode->peer, peer);
@@ -551,10 +517,10 @@ index 00000000..23c2285c
 +	if (!node) {
 +		down = rcu_dereference_protected(*trie, lockdep_is_held(lock));
 +	} else {
-+		down = rcu_dereference_protected(CHOOSE_NODE(node, key),
-+						 lockdep_is_held(lock));
++		const u8 bit = choose(node, key);
++		down = rcu_dereference_protected(node->bit[bit], lockdep_is_held(lock));
 +		if (!down) {
-+			rcu_assign_pointer(CHOOSE_NODE(node, key), newnode);
++			connect_node(&node->bit[bit], bit, newnode);
 +			return 0;
 +		}
 +	}
@@ -562,30 +528,29 @@ index 00000000..23c2285c
 +	parent = node;
 +
 +	if (newnode->cidr == cidr) {
-+		rcu_assign_pointer(CHOOSE_NODE(newnode, down->bits), down);
++		choose_and_connect_node(newnode, down);
 +		if (!parent)
-+			rcu_assign_pointer(*trie, newnode);
++			connect_node(trie, 2, newnode);
 +		else
-+			rcu_assign_pointer(CHOOSE_NODE(parent, newnode->bits),
-+					   newnode);
-+	} else {
-+		node = kzalloc(sizeof(*node), GFP_KERNEL);
-+		if (unlikely(!node)) {
-+			list_del(&newnode->peer_list);
-+			kfree(newnode);
-+			return -ENOMEM;
-+		}
-+		INIT_LIST_HEAD(&node->peer_list);
-+		copy_and_assign_cidr(node, newnode->bits, cidr, bits);
-+
-+		rcu_assign_pointer(CHOOSE_NODE(node, down->bits), down);
-+		rcu_assign_pointer(CHOOSE_NODE(node, newnode->bits), newnode);
-+		if (!parent)
-+			rcu_assign_pointer(*trie, node);
-+		else
-+			rcu_assign_pointer(CHOOSE_NODE(parent, node->bits),
-+					   node);
++			choose_and_connect_node(parent, newnode);
++		return 0;
 +	}
++
++	node = kmem_cache_zalloc(node_cache, GFP_KERNEL);
++	if (unlikely(!node)) {
++		list_del(&newnode->peer_list);
++		kmem_cache_free(node_cache, newnode);
++		return -ENOMEM;
++	}
++	INIT_LIST_HEAD(&node->peer_list);
++	copy_and_assign_cidr(node, newnode->bits, cidr, bits);
++
++	choose_and_connect_node(node, down);
++	choose_and_connect_node(node, newnode);
++	if (!parent)
++		connect_node(trie, 2, node);
++	else
++		choose_and_connect_node(parent, node);
 +	return 0;
 +}
 +
@@ -643,9 +608,41 @@ index 00000000..23c2285c
 +void wg_allowedips_remove_by_peer(struct allowedips *table,
 +				  struct wg_peer *peer, struct mutex *lock)
 +{
++	struct allowedips_node *node, *child, **parent_bit, *parent, *tmp;
++	bool free_parent;
++
++	if (list_empty(&peer->allowedips_list))
++		return;
 +	++table->seq;
-+	walk_remove_by_peer(&table->root4, peer, lock);
-+	walk_remove_by_peer(&table->root6, peer, lock);
++	list_for_each_entry_safe(node, tmp, &peer->allowedips_list, peer_list) {
++		list_del_init(&node->peer_list);
++		RCU_INIT_POINTER(node->peer, NULL);
++		if (node->bit[0] && node->bit[1])
++			continue;
++		child = rcu_dereference_protected(node->bit[!rcu_access_pointer(node->bit[0])],
++						  lockdep_is_held(lock));
++		if (child)
++			child->parent_bit_packed = node->parent_bit_packed;
++		parent_bit = (struct allowedips_node **)(node->parent_bit_packed & ~3UL);
++		*parent_bit = child;
++		parent = (void *)parent_bit -
++			 offsetof(struct allowedips_node, bit[node->parent_bit_packed & 1]);
++		free_parent = !rcu_access_pointer(node->bit[0]) &&
++			      !rcu_access_pointer(node->bit[1]) &&
++			      (node->parent_bit_packed & 3) <= 1 &&
++			      !rcu_access_pointer(parent->peer);
++		if (free_parent)
++			child = rcu_dereference_protected(
++					parent->bit[!(node->parent_bit_packed & 1)],
++					lockdep_is_held(lock));
++		call_rcu(&node->rcu, node_free_rcu);
++		if (!free_parent)
++			continue;
++		if (child)
++			child->parent_bit_packed = parent->parent_bit_packed;
++		*(struct allowedips_node **)(parent->parent_bit_packed & ~3UL) = child;
++		call_rcu(&parent->rcu, node_free_rcu);
++	}
 +}
 +
 +int wg_allowedips_read_node(struct allowedips_node *node, u8 ip[16], u8 *cidr)
@@ -682,10 +679,22 @@ index 00000000..23c2285c
 +	return NULL;
 +}
 +
++int __init wg_allowedips_slab_init(void)
++{
++	node_cache = KMEM_CACHE(allowedips_node, 0);
++	return node_cache ? 0 : -ENOMEM;
++}
++
++void wg_allowedips_slab_uninit(void)
++{
++	rcu_barrier();
++	kmem_cache_destroy(node_cache);
++}
++
 +#include "selftest/allowedips.c"
 diff --git a/net/wireguard/allowedips.h b/net/wireguard/allowedips.h
 new file mode 100644
-index 00000000..e5c83caf
+index 00000000..2346c797
 --- /dev/null
 +++ b/net/wireguard/allowedips.h
 @@ -0,0 +1,59 @@
@@ -706,14 +715,11 @@ index 00000000..e5c83caf
 +struct allowedips_node {
 +	struct wg_peer __rcu *peer;
 +	struct allowedips_node __rcu *bit[2];
-+	/* While it may seem scandalous that we waste space for v4,
-+	 * we're alloc'ing to the nearest power of 2 anyway, so this
-+	 * doesn't actually make a difference.
-+	 */
-+	u8 bits[16] __aligned(__alignof(u64));
 +	u8 cidr, bit_at_a, bit_at_b, bitlen;
++	u8 bits[16] __aligned(__alignof(u64));
 +
-+	/* Keep rarely used list at bottom to be beyond cache line. */
++	/* Keep rarely used members at bottom to be beyond cache line. */
++	unsigned long parent_bit_packed;
 +	union {
 +		struct list_head peer_list;
 +		struct rcu_head rcu;
@@ -724,7 +730,7 @@ index 00000000..e5c83caf
 +	struct allowedips_node __rcu *root4;
 +	struct allowedips_node __rcu *root6;
 +	u64 seq;
-+};
++} __aligned(4); /* We pack the lower 2 bits of &root, but m68k only gives 16-bit alignment. */
 +
 +void wg_allowedips_init(struct allowedips *table);
 +void wg_allowedips_free(struct allowedips *table, struct mutex *mutex);
@@ -747,13 +753,16 @@ index 00000000..e5c83caf
 +bool wg_allowedips_selftest(void);
 +#endif
 +
++int wg_allowedips_slab_init(void);
++void wg_allowedips_slab_uninit(void);
++
 +#endif /* _WG_ALLOWEDIPS_H */
 diff --git a/net/wireguard/compat/Makefile.include b/net/wireguard/compat/Makefile.include
 new file mode 100644
-index 00000000..513dba44
+index 00000000..df7670ae
 --- /dev/null
 +++ b/net/wireguard/compat/Makefile.include
-@@ -0,0 +1,102 @@
+@@ -0,0 +1,111 @@
 +# SPDX-License-Identifier: GPL-2.0
 +#
 +# Copyright (C) 2015-2019 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
@@ -762,9 +771,14 @@ index 00000000..513dba44
 +
 +ccflags-y += -include $(kbuild-dir)/compat/compat.h
 +asflags-y += -include $(kbuild-dir)/compat/compat-asm.h
++LINUXINCLUDE := -DCOMPAT_VERSION=$(VERSION) -DCOMPAT_PATCHLEVEL=$(PATCHLEVEL) -DCOMPAT_SUBLEVEL=$(SUBLEVEL) -I$(kbuild-dir)/compat/version $(LINUXINCLUDE)
 +
 +ifeq ($(wildcard $(srctree)/include/linux/ptr_ring.h),)
 +ccflags-y += -I$(kbuild-dir)/compat/ptr_ring/include
++endif
++
++ifeq ($(wildcard $(srctree)/include/linux/skb_array.h),)
++ccflags-y += -I$(kbuild-dir)/compat/skb_array/include
 +endif
 +
 +ifeq ($(wildcard $(srctree)/include/linux/siphash.h),)
@@ -818,6 +832,10 @@ index 00000000..513dba44
 +endif
 +ifeq ($(wildcard $(srctree)/arch/arm64/include/asm/neon.h)$(CONFIG_ARM64),y)
 +ccflags-y += -I$(kbuild-dir)/compat/neon-arm/include
++endif
++
++ifeq ($(wildcard $(srctree)/include/net/dst_metadata.h),)
++ccflags-y += -I$(kbuild-dir)/compat/dstmetadata/include
 +endif
 +
 +ifeq ($(CONFIG_X86_64),y)
@@ -1072,7 +1090,7 @@ index 00000000..3dfe5397
 +}
 diff --git a/net/wireguard/compat/compat-asm.h b/net/wireguard/compat/compat-asm.h
 new file mode 100644
-index 00000000..7067afd9
+index 00000000..951fc109
 --- /dev/null
 +++ b/net/wireguard/compat/compat-asm.h
 @@ -0,0 +1,89 @@
@@ -1093,14 +1111,14 @@ index 00000000..7067afd9
 +#define ISRHEL7
 +#elif RHEL_MAJOR == 8
 +#define ISRHEL8
-+#if RHEL_MINOR == 4
++#if RHEL_MINOR >= 6
 +#define ISCENTOS8S
 +#endif
 +#endif
 +#endif
 +
 +/* PaX compatibility */
-+#if defined(RAP_PLUGIN)
++#if defined(RAP_PLUGIN) && defined(RAP_ENTRY)
 +#undef ENTRY
 +#define ENTRY RAP_ENTRY
 +#endif
@@ -1129,7 +1147,7 @@ index 00000000..7067afd9
 +#undef pull
 +#endif
 +
-+#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 4, 76) && !defined(ISCENTOS8S)
++#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 4, 76) && !defined(ISRHEL8) && !defined(SYM_FUNC_START)
 +#define SYM_FUNC_START ENTRY
 +#define SYM_FUNC_END ENDPROC
 +#endif
@@ -1167,10 +1185,10 @@ index 00000000..7067afd9
 +#endif /* _WG_COMPATASM_H */
 diff --git a/net/wireguard/compat/compat.h b/net/wireguard/compat/compat.h
 new file mode 100644
-index 00000000..edc05027
+index 00000000..d166ac23
 --- /dev/null
 +++ b/net/wireguard/compat/compat.h
-@@ -0,0 +1,1115 @@
+@@ -0,0 +1,1202 @@
 +/* SPDX-License-Identifier: GPL-2.0 */
 +/*
 + * Copyright (C) 2015-2019 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
@@ -1189,15 +1207,13 @@ index 00000000..edc05027
 +#define ISRHEL7
 +#elif RHEL_MAJOR == 8
 +#define ISRHEL8
-+#if RHEL_MINOR == 4
++#if RHEL_MINOR >= 6
 +#define ISCENTOS8S
 +#endif
 +#endif
 +#endif
 +#ifdef UTS_UBUNTU_RELEASE_ABI
-+#if LINUX_VERSION_CODE == KERNEL_VERSION(3, 13, 11)
-+#define ISUBUNTU1404
-+#elif LINUX_VERSION_CODE < KERNEL_VERSION(4, 5, 0) && LINUX_VERSION_CODE >= KERNEL_VERSION(4, 4, 0)
++#if LINUX_VERSION_CODE < KERNEL_VERSION(4, 5, 0) && LINUX_VERSION_CODE >= KERNEL_VERSION(4, 4, 0)
 +#define ISUBUNTU1604
 +#elif LINUX_VERSION_CODE < KERNEL_VERSION(4, 16, 0) && LINUX_VERSION_CODE >= KERNEL_VERSION(4, 15, 0)
 +#define ISUBUNTU1804
@@ -1392,7 +1408,7 @@ index 00000000..edc05027
 +#define skb_scrub_packet(a, b) skb_scrub_packet(a)
 +#endif
 +
-+#if ((LINUX_VERSION_CODE < KERNEL_VERSION(3, 14, 0) && LINUX_VERSION_CODE >= KERNEL_VERSION(3, 13, 0)) || LINUX_VERSION_CODE < KERNEL_VERSION(3, 12, 63) || defined(ISUBUNTU1404)) && !defined(ISRHEL7)
++#if ((LINUX_VERSION_CODE < KERNEL_VERSION(3, 14, 0) && LINUX_VERSION_CODE >= KERNEL_VERSION(3, 13, 0)) || LINUX_VERSION_CODE < KERNEL_VERSION(3, 12, 63)) && !defined(ISRHEL7)
 +#include <linux/random.h>
 +static inline u32 __compat_prandom_u32_max(u32 ep_ro)
 +{
@@ -1441,7 +1457,7 @@ index 00000000..edc05027
 +#endif
 +#endif
 +
-+#if (LINUX_VERSION_CODE < KERNEL_VERSION(3, 17, 3) && LINUX_VERSION_CODE >= KERNEL_VERSION(3, 17, 0)) || (LINUX_VERSION_CODE < KERNEL_VERSION(3, 16, 35) && LINUX_VERSION_CODE >= KERNEL_VERSION(3, 15, 0)) || (LINUX_VERSION_CODE < KERNEL_VERSION(3, 14, 24) && LINUX_VERSION_CODE >= KERNEL_VERSION(3, 13, 0) && !defined(ISUBUNTU1404)) || (LINUX_VERSION_CODE < KERNEL_VERSION(3, 12, 33) && LINUX_VERSION_CODE >= KERNEL_VERSION(3, 11, 0)) || (LINUX_VERSION_CODE < KERNEL_VERSION(3, 10, 60) && !defined(ISRHEL7))
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(3, 17, 3) && LINUX_VERSION_CODE >= KERNEL_VERSION(3, 17, 0)) || (LINUX_VERSION_CODE < KERNEL_VERSION(3, 16, 35) && LINUX_VERSION_CODE >= KERNEL_VERSION(3, 15, 0)) || (LINUX_VERSION_CODE < KERNEL_VERSION(3, 14, 24) && LINUX_VERSION_CODE >= KERNEL_VERSION(3, 13, 0)) || (LINUX_VERSION_CODE < KERNEL_VERSION(3, 12, 33) && LINUX_VERSION_CODE >= KERNEL_VERSION(3, 11, 0)) || (LINUX_VERSION_CODE < KERNEL_VERSION(3, 10, 60) && !defined(ISRHEL7))
 +static inline void memzero_explicit(void *s, size_t count)
 +{
 +	memset(s, 0, count);
@@ -1454,7 +1470,7 @@ index 00000000..edc05027
 +#define in6addr_any __compat_in6addr_any
 +#endif
 +
-+#if LINUX_VERSION_CODE < KERNEL_VERSION(4, 13, 0) && LINUX_VERSION_CODE >= KERNEL_VERSION(4, 2, 0)
++#if LINUX_VERSION_CODE < KERNEL_VERSION(4, 13, 0) && LINUX_VERSION_CODE >= KERNEL_VERSION(4, 2, 0) && (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 10, 0) || LINUX_VERSION_CODE < KERNEL_VERSION(4, 9, 320))
 +#include <linux/completion.h>
 +#include <linux/random.h>
 +#include <linux/errno.h>
@@ -1498,7 +1514,7 @@ index 00000000..edc05027
 +}
 +#endif
 +
-+#if LINUX_VERSION_CODE < KERNEL_VERSION(4, 19, 0) && LINUX_VERSION_CODE >= KERNEL_VERSION(4, 2, 0) && !defined(ISRHEL8)
++#if LINUX_VERSION_CODE < KERNEL_VERSION(4, 19, 0) && LINUX_VERSION_CODE >= KERNEL_VERSION(4, 2, 0) && (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 15, 0) || LINUX_VERSION_CODE < KERNEL_VERSION(4, 14, 285)) && (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 10, 0) || LINUX_VERSION_CODE < KERNEL_VERSION(4, 9, 320)) && !defined(ISRHEL8)
 +#include <linux/random.h>
 +#include <linux/slab.h>
 +struct rng_is_initialized_callback {
@@ -1550,7 +1566,7 @@ index 00000000..edc05027
 +}
 +#endif
 +
-+#if LINUX_VERSION_CODE < KERNEL_VERSION(4, 13, 0)
++#if LINUX_VERSION_CODE < KERNEL_VERSION(4, 13, 0) && (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 10, 0) || LINUX_VERSION_CODE < KERNEL_VERSION(4, 9, 320))
 +static inline int get_random_bytes_wait(void *buf, int nbytes)
 +{
 +	int ret = wait_for_random_bytes();
@@ -1675,7 +1691,7 @@ index 00000000..edc05027
 +#define kvzalloc __compat_kvzalloc
 +#endif
 +
-+#if ((LINUX_VERSION_CODE < KERNEL_VERSION(3, 15, 0) && LINUX_VERSION_CODE >= KERNEL_VERSION(3, 13, 0)) || LINUX_VERSION_CODE < KERNEL_VERSION(3, 12, 41)) && !defined(ISUBUNTU1404)
++#if ((LINUX_VERSION_CODE < KERNEL_VERSION(3, 15, 0) && LINUX_VERSION_CODE >= KERNEL_VERSION(3, 13, 0)) || LINUX_VERSION_CODE < KERNEL_VERSION(3, 12, 41))
 +#include <linux/vmalloc.h>
 +#include <linux/mm.h>
 +static inline void __compat_kvfree(const void *addr)
@@ -1686,6 +1702,28 @@ index 00000000..edc05027
 +		kfree(addr);
 +}
 +#define kvfree __compat_kvfree
++#endif
++
++#if LINUX_VERSION_CODE < KERNEL_VERSION(4, 12, 0)
++#include <linux/vmalloc.h>
++#include <linux/mm.h>
++static inline void *__compat_kvmalloc_array(size_t n, size_t size, gfp_t flags)
++{
++	if (n != 0 && SIZE_MAX / n < size)
++		return NULL;
++	return kvmalloc(n * size, flags);
++}
++#define kvmalloc_array __compat_kvmalloc_array
++#endif
++
++#if LINUX_VERSION_CODE < KERNEL_VERSION(4, 18, 0)
++#include <linux/vmalloc.h>
++#include <linux/mm.h>
++static inline void *__compat_kvcalloc(size_t n, size_t size, gfp_t flags)
++{
++        return kvmalloc_array(n, size, flags | __GFP_ZERO);
++}
++#define kvcalloc __compat_kvcalloc
 +#endif
 +
 +#if LINUX_VERSION_CODE < KERNEL_VERSION(4, 11, 9)
@@ -1877,7 +1915,7 @@ index 00000000..edc05027
 +#endif
 +#endif
 +
-+#if LINUX_VERSION_CODE < KERNEL_VERSION(4, 17, 0)
++#if LINUX_VERSION_CODE < KERNEL_VERSION(4, 17, 0) && (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 15, 0) || LINUX_VERSION_CODE < KERNEL_VERSION(4, 14, 285)) && (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 10, 0) || LINUX_VERSION_CODE < KERNEL_VERSION(4, 9, 320))
 +static inline void le32_to_cpu_array(u32 *buf, unsigned int words)
 +{
 +	while (words--) {
@@ -1930,7 +1968,7 @@ index 00000000..edc05027
 +#define hlist_add_behind(a, b) hlist_add_after(b, a)
 +#endif
 +
-+#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 0, 0) && !defined(ISCENTOS8S)
++#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 0, 0) && !defined(ISRHEL8)
 +#define totalram_pages() totalram_pages
 +#endif
 +
@@ -2004,10 +2042,16 @@ index 00000000..edc05027
 +#endif
 +
 +#if LINUX_VERSION_CODE < KERNEL_VERSION(4, 20, 0) && !defined(ISRHEL8)
++#include <net/netlink.h>
++#ifndef NLA_POLICY_EXACT_LEN
 +#define NLA_POLICY_EXACT_LEN(_len) { .type = NLA_UNSPEC, .len = _len }
 +#endif
++#endif
 +#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 2, 0) && !defined(ISRHEL8)
++#include <net/netlink.h>
++#ifndef NLA_POLICY_MIN_LEN
 +#define NLA_POLICY_MIN_LEN(_len) { .type = NLA_UNSPEC, .len = _len }
++#endif
 +#define COMPAT_CANNOT_INDIVIDUAL_NETLINK_OPS_POLICY
 +#endif
 +
@@ -2022,7 +2066,7 @@ index 00000000..edc05027
 +#endif
 +#endif
 +
-+#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 5, 0)
++#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 5, 0) && !defined(ISRHEL8)
 +#define genl_dumpit_info(cb) ({ \
 +	struct { struct nlattr **attrs; } *a = (void *)((u8 *)cb->args + offsetofend(struct dump_ctx, next_allowedip)); \
 +	BUILD_BUG_ON(sizeof(cb->args) < offsetofend(struct dump_ctx, next_allowedip) + sizeof(*a)); \
@@ -2042,11 +2086,13 @@ index 00000000..edc05027
 +#endif
 +#endif
 +
-+#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 5, 0)
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 4, 200) || (LINUX_VERSION_CODE < KERNEL_VERSION(4, 20, 0) && LINUX_VERSION_CODE >= KERNEL_VERSION(4, 19, 249)) || (LINUX_VERSION_CODE < KERNEL_VERSION(4, 15, 0) && LINUX_VERSION_CODE >= KERNEL_VERSION(4, 14, 285)) || (LINUX_VERSION_CODE < KERNEL_VERSION(4, 10, 0) && LINUX_VERSION_CODE >= KERNEL_VERSION(4, 9, 320))
 +#define blake2s_init zinc_blake2s_init
 +#define blake2s_init_key zinc_blake2s_init_key
 +#define blake2s_update zinc_blake2s_update
 +#define blake2s_final zinc_blake2s_final
++#endif
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 5, 0)
 +#define blake2s_hmac zinc_blake2s_hmac
 +#define chacha20 zinc_chacha20
 +#define hchacha20 zinc_hchacha20
@@ -2105,12 +2151,12 @@ index 00000000..edc05027
 +}
 +#endif
 +
-+#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 6, 0)
++#if (LINUX_VERSION_CODE < KERNEL_VERSION(5, 6, 0) && LINUX_VERSION_CODE >= KERNEL_VERSION(5, 5, 0)) || (LINUX_VERSION_CODE < KERNEL_VERSION(5, 4, 102) && LINUX_VERSION_CODE >= KERNEL_VERSION(4, 20, 0)) || (LINUX_VERSION_CODE < KERNEL_VERSION(4, 19, 178) && LINUX_VERSION_CODE >= KERNEL_VERSION(4, 15, 0)) || (LINUX_VERSION_CODE < KERNEL_VERSION(4, 14, 223) && LINUX_VERSION_CODE > KERNEL_VERSION(4, 10, 0)) || LINUX_VERSION_CODE < KERNEL_VERSION(4, 9, 259) || defined(ISRHEL8) || defined(ISUBUNTU1804)
++#include <linux/icmpv6.h>
++#include <net/icmp.h>
 +#if IS_ENABLED(CONFIG_NF_NAT)
 +#include <linux/ip.h>
-+#include <linux/icmpv6.h>
 +#include <net/ipv6.h>
-+#include <net/icmp.h>
 +#include <net/netfilter/nf_conntrack.h>
 +#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 1, 0) && !defined(ISRHEL8)
 +#include <net/netfilter/nf_nat_core.h>
@@ -2124,6 +2170,7 @@ index 00000000..edc05027
 +
 +	ct = nf_ct_get(skb_in, &ctinfo);
 +	if (!ct || !(ct->status & IPS_SRC_NAT)) {
++		memset(skb_in->cb, 0, sizeof(skb_in->cb));
 +		icmp_send(skb_in, type, code, info);
 +		return;
 +	}
@@ -2139,6 +2186,7 @@ index 00000000..edc05027
 +
 +	orig_ip = ip_hdr(skb_in)->saddr;
 +	ip_hdr(skb_in)->saddr = ct->tuplehash[0].tuple.src.u3.ip;
++	memset(skb_in->cb, 0, sizeof(skb_in->cb));
 +	icmp_send(skb_in, type, code, info);
 +	ip_hdr(skb_in)->saddr = orig_ip;
 +out:
@@ -2153,6 +2201,7 @@ index 00000000..edc05027
 +
 +	ct = nf_ct_get(skb_in, &ctinfo);
 +	if (!ct || !(ct->status & IPS_SRC_NAT)) {
++		memset(skb_in->cb, 0, sizeof(skb_in->cb));
 +		icmpv6_send(skb_in, type, code, info);
 +		return;
 +	}
@@ -2168,14 +2217,23 @@ index 00000000..edc05027
 +
 +	orig_ip = ipv6_hdr(skb_in)->saddr;
 +	ipv6_hdr(skb_in)->saddr = ct->tuplehash[0].tuple.src.u3.in6;
++	memset(skb_in->cb, 0, sizeof(skb_in->cb));
 +	icmpv6_send(skb_in, type, code, info);
 +	ipv6_hdr(skb_in)->saddr = orig_ip;
 +out:
 +	consume_skb(cloned_skb);
 +}
 +#else
-+#define __compat_icmp_ndo_send icmp_send
-+#define __compat_icmpv6_ndo_send icmpv6_send
++static inline void __compat_icmp_ndo_send(struct sk_buff *skb_in, int type, int code, __be32 info)
++{
++	memset(skb_in->cb, 0, sizeof(skb_in->cb));
++	icmp_send(skb_in, type, code, info);
++}
++static inline void __compat_icmpv6_ndo_send(struct sk_buff *skb_in, u8 type, u8 code, __u32 info)
++{
++	memset(skb_in->cb, 0, sizeof(skb_in->cb));
++	icmpv6_send(skb_in, type, code, info);
++}
 +#endif
 +#define icmp_ndo_send __compat_icmp_ndo_send
 +#define icmpv6_ndo_send __compat_icmpv6_ndo_send
@@ -2241,6 +2299,53 @@ index 00000000..edc05027
 +#define kfree_sensitive(a) kzfree(a)
 +#endif
 +
++#if LINUX_VERSION_CODE < KERNEL_VERSION(4, 3, 0) && !defined(ISRHEL7)
++#define xchg_release xchg
++#endif
++
++#if LINUX_VERSION_CODE < KERNEL_VERSION(3, 14, 0) && !defined(ISRHEL7)
++#include <asm/barrier.h>
++#ifndef smp_load_acquire
++#define smp_load_acquire(p)                                            \
++({                                                                     \
++       typeof(*p) ___p1 = ACCESS_ONCE(*p);                             \
++       smp_mb();                                                       \
++       ___p1;                                                          \
++})
++#endif
++#endif
++
++#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 16, 0)
++#include <net/dst_cache.h>
++struct dst_cache_pcpu {
++	unsigned long refresh_ts;
++	struct dst_entry *dst;
++	u32 cookie;
++	union {
++		struct in_addr in_saddr;
++		struct in6_addr in6_saddr;
++	};
++};
++#define COMPAT_HAS_DEFINED_DST_CACHE_PCPU
++static inline void dst_cache_reset_now(struct dst_cache *dst_cache)
++{
++	int i;
++
++	if (!dst_cache->cache)
++		return;
++
++	dst_cache->reset_ts = jiffies;
++	for_each_possible_cpu(i) {
++		struct dst_cache_pcpu *idst = per_cpu_ptr(dst_cache->cache, i);
++		struct dst_entry *dst = idst->dst;
++
++		idst->cookie = 0;
++		idst->dst = NULL;
++		dst_release(dst);
++	}
++}
++#endif
++
 +#if defined(ISUBUNTU1604) || defined(ISRHEL7)
 +#include <linux/siphash.h>
 +#ifndef _WG_LINUX_SIPHASH_H
@@ -2272,7 +2377,7 @@ index 00000000..edc05027
 +#undef __read_mostly
 +#define __read_mostly
 +#endif
-+#if (defined(RAP_PLUGIN) || defined(CONFIG_CFI_CLANG)) && LINUX_VERSION_CODE < KERNEL_VERSION(4, 15, 0)
++#if (defined(CONFIG_PAX) || defined(CONFIG_CFI_CLANG)) && LINUX_VERSION_CODE < KERNEL_VERSION(4, 15, 0)
 +#include <linux/timer.h>
 +#define wg_expired_retransmit_handshake(a) wg_expired_retransmit_handshake(unsigned long timer)
 +#define wg_expired_send_keepalive(a) wg_expired_send_keepalive(unsigned long timer)
@@ -2288,10 +2393,10 @@ index 00000000..edc05027
 +#endif /* _WG_COMPAT_H */
 diff --git a/net/wireguard/compat/dst_cache/dst_cache.c b/net/wireguard/compat/dst_cache/dst_cache.c
 new file mode 100644
-index 00000000..7ec22f76
+index 00000000..f74c43c5
 --- /dev/null
 +++ b/net/wireguard/compat/dst_cache/dst_cache.c
-@@ -0,0 +1,175 @@
+@@ -0,0 +1,177 @@
 +/*
 + * net/core/dst_cache.c - dst entry cache
 + *
@@ -2321,6 +2426,7 @@ index 00000000..7ec22f76
 +#endif
 +#include <uapi/linux/in.h>
 +
++#ifndef COMPAT_HAS_DEFINED_DST_CACHE_PCPU
 +struct dst_cache_pcpu {
 +	unsigned long refresh_ts;
 +	struct dst_entry *dst;
@@ -2330,6 +2436,7 @@ index 00000000..7ec22f76
 +		struct in6_addr in6_saddr;
 +	};
 +};
++#endif
 +
 +static void dst_cache_per_cpu_dst_set(struct dst_cache_pcpu *dst_cache,
 +				      struct dst_entry *dst, u32 cookie)
@@ -2570,6 +2677,15 @@ index 00000000..48021c0d
 +void dst_cache_destroy(struct dst_cache *dst_cache);
 +
 +#endif /* _WG_NET_DST_CACHE_H */
+diff --git a/net/wireguard/compat/dstmetadata/include/net/dst_metadata.h b/net/wireguard/compat/dstmetadata/include/net/dst_metadata.h
+new file mode 100644
+index 00000000..995094d4
+--- /dev/null
++++ b/net/wireguard/compat/dstmetadata/include/net/dst_metadata.h
+@@ -0,0 +1,3 @@
++#ifndef skb_valid_dst
++#define skb_valid_dst(skb) (!!skb_dst(skb))
++#endif
 diff --git a/net/wireguard/compat/fpu-x86/include/asm/fpu/api.h b/net/wireguard/compat/fpu-x86/include/asm/fpu/api.h
 new file mode 100644
 index 00000000..f3f9117b
@@ -3565,10 +3681,10 @@ index 00000000..a975b38b
 +#endif
 diff --git a/net/wireguard/compat/simd/include/linux/simd.h b/net/wireguard/compat/simd/include/linux/simd.h
 new file mode 100644
-index 00000000..3ff8a027
+index 00000000..e7f25503
 --- /dev/null
 +++ b/net/wireguard/compat/simd/include/linux/simd.h
-@@ -0,0 +1,70 @@
+@@ -0,0 +1,69 @@
 +/* SPDX-License-Identifier: GPL-2.0 */
 +/*
 + * Copyright (C) 2015-2019 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
@@ -3580,7 +3696,6 @@ index 00000000..3ff8a027
 +#include <linux/sched.h>
 +#include <asm/simd.h>
 +#if defined(CONFIG_X86_64)
-+#include <linux/version.h>
 +#include <asm/fpu/api.h>
 +#elif defined(CONFIG_KERNEL_MODE_NEON)
 +#include <asm/neon.h>
@@ -3641,10 +3756,10 @@ index 00000000..3ff8a027
 +#endif /* _WG_SIMD_H */
 diff --git a/net/wireguard/compat/siphash/include/linux/siphash.h b/net/wireguard/compat/siphash/include/linux/siphash.h
 new file mode 100644
-index 00000000..1e5e337d
+index 00000000..3b30b3c4
 --- /dev/null
 +++ b/net/wireguard/compat/siphash/include/linux/siphash.h
-@@ -0,0 +1,140 @@
+@@ -0,0 +1,134 @@
 +/* Copyright (C) 2015-2019 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
 + *
 + * This file is provided under a dual BSD/GPLv2 license.
@@ -3669,9 +3784,7 @@ index 00000000..1e5e337d
 +} siphash_key_t;
 +
 +u64 __siphash_aligned(const void *data, size_t len, const siphash_key_t *key);
-+#ifndef CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
 +u64 __siphash_unaligned(const void *data, size_t len, const siphash_key_t *key);
-+#endif
 +
 +u64 siphash_1u64(const u64 a, const siphash_key_t *key);
 +u64 siphash_2u64(const u64 a, const u64 b, const siphash_key_t *key);
@@ -3724,10 +3837,9 @@ index 00000000..1e5e337d
 +static inline u64 siphash(const void *data, size_t len,
 +			  const siphash_key_t *key)
 +{
-+#ifndef CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
-+	if (!IS_ALIGNED((unsigned long)data, SIPHASH_ALIGNMENT))
++	if (IS_ENABLED(CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS) ||
++	    !IS_ALIGNED((unsigned long)data, SIPHASH_ALIGNMENT))
 +		return __siphash_unaligned(data, len, key);
-+#endif
 +	return ___siphash_aligned(data, len, key);
 +}
 +
@@ -3738,10 +3850,8 @@ index 00000000..1e5e337d
 +
 +u32 __hsiphash_aligned(const void *data, size_t len,
 +		       const hsiphash_key_t *key);
-+#ifndef CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
 +u32 __hsiphash_unaligned(const void *data, size_t len,
 +			 const hsiphash_key_t *key);
-+#endif
 +
 +u32 hsiphash_1u32(const u32 a, const hsiphash_key_t *key);
 +u32 hsiphash_2u32(const u32 a, const u32 b, const hsiphash_key_t *key);
@@ -3777,17 +3887,16 @@ index 00000000..1e5e337d
 +static inline u32 hsiphash(const void *data, size_t len,
 +			   const hsiphash_key_t *key)
 +{
-+#ifndef CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
-+	if (!IS_ALIGNED((unsigned long)data, HSIPHASH_ALIGNMENT))
++	if (IS_ENABLED(CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS) ||
++	    !IS_ALIGNED((unsigned long)data, HSIPHASH_ALIGNMENT))
 +		return __hsiphash_unaligned(data, len, key);
-+#endif
 +	return ___hsiphash_aligned(data, len, key);
 +}
 +
 +#endif /* _WG_LINUX_SIPHASH_H */
 diff --git a/net/wireguard/compat/siphash/siphash.c b/net/wireguard/compat/siphash/siphash.c
 new file mode 100644
-index 00000000..58855328
+index 00000000..7dc72cb4
 --- /dev/null
 +++ b/net/wireguard/compat/siphash/siphash.c
 @@ -0,0 +1,539 @@
@@ -3850,6 +3959,7 @@ index 00000000..58855328
 +	SIPROUND; \
 +	return (v0 ^ v1) ^ (v2 ^ v3);
 +
++#ifndef CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
 +u64 __siphash_aligned(const void *data, size_t len, const siphash_key_t *key)
 +{
 +	const u8 *end = data + len - (len % sizeof(u64));
@@ -3869,19 +3979,19 @@ index 00000000..58855328
 +						  bytemask_from_count(left)));
 +#else
 +	switch (left) {
-+	case 7: b |= ((u64)end[6]) << 48;
-+	case 6: b |= ((u64)end[5]) << 40;
-+	case 5: b |= ((u64)end[4]) << 32;
++	case 7: b |= ((u64)end[6]) << 48; fallthrough;
++	case 6: b |= ((u64)end[5]) << 40; fallthrough;
++	case 5: b |= ((u64)end[4]) << 32; fallthrough;
 +	case 4: b |= le32_to_cpup(data); break;
-+	case 3: b |= ((u64)end[2]) << 16;
++	case 3: b |= ((u64)end[2]) << 16; fallthrough;
 +	case 2: b |= le16_to_cpup(data); break;
 +	case 1: b |= end[0];
 +	}
 +#endif
 +	POSTAMBLE
 +}
++#endif
 +
-+#ifndef CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
 +u64 __siphash_unaligned(const void *data, size_t len, const siphash_key_t *key)
 +{
 +	const u8 *end = data + len - (len % sizeof(u64));
@@ -3901,18 +4011,17 @@ index 00000000..58855328
 +						  bytemask_from_count(left)));
 +#else
 +	switch (left) {
-+	case 7: b |= ((u64)end[6]) << 48;
-+	case 6: b |= ((u64)end[5]) << 40;
-+	case 5: b |= ((u64)end[4]) << 32;
++	case 7: b |= ((u64)end[6]) << 48; fallthrough;
++	case 6: b |= ((u64)end[5]) << 40; fallthrough;
++	case 5: b |= ((u64)end[4]) << 32; fallthrough;
 +	case 4: b |= get_unaligned_le32(end); break;
-+	case 3: b |= ((u64)end[2]) << 16;
++	case 3: b |= ((u64)end[2]) << 16; fallthrough;
 +	case 2: b |= get_unaligned_le16(end); break;
 +	case 1: b |= end[0];
 +	}
 +#endif
 +	POSTAMBLE
 +}
-+#endif
 +
 +/**
 + * siphash_1u64 - compute 64-bit siphash PRF value of a u64
@@ -4043,6 +4152,7 @@ index 00000000..58855328
 +	HSIPROUND; \
 +	return (v0 ^ v1) ^ (v2 ^ v3);
 +
++#ifndef CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
 +u32 __hsiphash_aligned(const void *data, size_t len, const hsiphash_key_t *key)
 +{
 +	const u8 *end = data + len - (len % sizeof(u64));
@@ -4061,19 +4171,19 @@ index 00000000..58855328
 +						  bytemask_from_count(left)));
 +#else
 +	switch (left) {
-+	case 7: b |= ((u64)end[6]) << 48;
-+	case 6: b |= ((u64)end[5]) << 40;
-+	case 5: b |= ((u64)end[4]) << 32;
++	case 7: b |= ((u64)end[6]) << 48; fallthrough;
++	case 6: b |= ((u64)end[5]) << 40; fallthrough;
++	case 5: b |= ((u64)end[4]) << 32; fallthrough;
 +	case 4: b |= le32_to_cpup(data); break;
-+	case 3: b |= ((u64)end[2]) << 16;
++	case 3: b |= ((u64)end[2]) << 16; fallthrough;
 +	case 2: b |= le16_to_cpup(data); break;
 +	case 1: b |= end[0];
 +	}
 +#endif
 +	HPOSTAMBLE
 +}
++#endif
 +
-+#ifndef CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
 +u32 __hsiphash_unaligned(const void *data, size_t len,
 +			 const hsiphash_key_t *key)
 +{
@@ -4093,18 +4203,17 @@ index 00000000..58855328
 +						  bytemask_from_count(left)));
 +#else
 +	switch (left) {
-+	case 7: b |= ((u64)end[6]) << 48;
-+	case 6: b |= ((u64)end[5]) << 40;
-+	case 5: b |= ((u64)end[4]) << 32;
++	case 7: b |= ((u64)end[6]) << 48; fallthrough;
++	case 6: b |= ((u64)end[5]) << 40; fallthrough;
++	case 5: b |= ((u64)end[4]) << 32; fallthrough;
 +	case 4: b |= get_unaligned_le32(end); break;
-+	case 3: b |= ((u64)end[2]) << 16;
++	case 3: b |= ((u64)end[2]) << 16; fallthrough;
 +	case 2: b |= get_unaligned_le16(end); break;
 +	case 1: b |= end[0];
 +	}
 +#endif
 +	HPOSTAMBLE
 +}
-+#endif
 +
 +/**
 + * hsiphash_1u32 - compute 64-bit hsiphash PRF value of a u32
@@ -4205,6 +4314,7 @@ index 00000000..58855328
 +	HSIPROUND; \
 +	return v1 ^ v3;
 +
++#ifndef CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
 +u32 __hsiphash_aligned(const void *data, size_t len, const hsiphash_key_t *key)
 +{
 +	const u8 *end = data + len - (len % sizeof(u32));
@@ -4218,14 +4328,14 @@ index 00000000..58855328
 +		v0 ^= m;
 +	}
 +	switch (left) {
-+	case 3: b |= ((u32)end[2]) << 16;
++	case 3: b |= ((u32)end[2]) << 16; fallthrough;
 +	case 2: b |= le16_to_cpup(data); break;
 +	case 1: b |= end[0];
 +	}
 +	HPOSTAMBLE
 +}
++#endif
 +
-+#ifndef CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
 +u32 __hsiphash_unaligned(const void *data, size_t len,
 +			 const hsiphash_key_t *key)
 +{
@@ -4240,13 +4350,12 @@ index 00000000..58855328
 +		v0 ^= m;
 +	}
 +	switch (left) {
-+	case 3: b |= ((u32)end[2]) << 16;
++	case 3: b |= ((u32)end[2]) << 16; fallthrough;
 +	case 2: b |= get_unaligned_le16(end); break;
 +	case 1: b |= end[0];
 +	}
 +	HPOSTAMBLE
 +}
-+#endif
 +
 +/**
 + * hsiphash_1u32 - compute 32-bit hsiphash PRF value of a u32
@@ -4329,6 +4438,23 @@ index 00000000..58855328
 +	v0 ^= forth;
 +	HPOSTAMBLE
 +}
++#endif
+diff --git a/net/wireguard/compat/skb_array/include/linux/skb_array.h b/net/wireguard/compat/skb_array/include/linux/skb_array.h
+new file mode 100644
+index 00000000..c91fedcd
+--- /dev/null
++++ b/net/wireguard/compat/skb_array/include/linux/skb_array.h
+@@ -0,0 +1,11 @@
++#ifndef _WG_SKB_ARRAY_H
++#define _WG_SKB_ARRAY_H
++
++#include <linux/skbuff.h>
++
++static void __skb_array_destroy_skb(void *ptr)
++{
++	kfree_skb(ptr);
++}
++
 +#endif
 diff --git a/net/wireguard/compat/udp_tunnel/include/net/udp_tunnel.h b/net/wireguard/compat/udp_tunnel/include/net/udp_tunnel.h
 new file mode 100644
@@ -4432,10 +4558,10 @@ index 00000000..8999527d
 +#endif /* _WG_NET_UDP_TUNNEL_H */
 diff --git a/net/wireguard/compat/udp_tunnel/udp_tunnel.c b/net/wireguard/compat/udp_tunnel/udp_tunnel.c
 new file mode 100644
-index 00000000..9b8770ae
+index 00000000..d287b917
 --- /dev/null
 +++ b/net/wireguard/compat/udp_tunnel/udp_tunnel.c
-@@ -0,0 +1,394 @@
+@@ -0,0 +1,396 @@
 +#include <linux/module.h>
 +#include <linux/errno.h>
 +#include <linux/socket.h>
@@ -4476,9 +4602,10 @@ index 00000000..9b8770ae
 +	struct socket *sock = NULL;
 +	struct sockaddr_in udp_addr;
 +
-+	err = __sock_create(net, AF_INET, SOCK_DGRAM, 0, &sock, 1);
++	err = sock_create_kern(AF_INET, SOCK_DGRAM, 0, &sock);
 +	if (err < 0)
 +		goto error;
++	sk_change_net(sock->sk, net);
 +
 +	udp_addr.sin_family = AF_INET;
 +	udp_addr.sin_addr = cfg->local_ip;
@@ -4510,7 +4637,7 @@ index 00000000..9b8770ae
 +error:
 +	if (sock) {
 +		kernel_sock_shutdown(sock, SHUT_RDWR);
-+		sock_release(sock);
++		sk_release_kernel(sock->sk);
 +	}
 +	*sockp = NULL;
 +	return err;
@@ -4667,7 +4794,7 @@ index 00000000..9b8770ae
 +{
 +	rcu_assign_sk_user_data(sock->sk, NULL);
 +	kernel_sock_shutdown(sock, SHUT_RDWR);
-+	sock_release(sock);
++	sk_release_kernel(sock->sk);
 +}
 +
 +#if IS_ENABLED(CONFIG_IPV6)
@@ -4692,9 +4819,10 @@ index 00000000..9b8770ae
 +	int err;
 +	struct socket *sock = NULL;
 +
-+	err = __sock_create(net, AF_INET6, SOCK_DGRAM, 0, &sock, 1);
++	err = sock_create_kern(AF_INET6, SOCK_DGRAM, 0, &sock);
 +	if (err < 0)
 +		goto error;
++	sk_change_net(sock->sk, net);
 +
 +	if (cfg->ipv6_v6only) {
 +		int val = 1;
@@ -4739,7 +4867,7 @@ index 00000000..9b8770ae
 +error:
 +	if (sock) {
 +		kernel_sock_shutdown(sock, SHUT_RDWR);
-+		sock_release(sock);
++		sk_release_kernel(sock->sk);
 +	}
 +	*sockp = NULL;
 +	return err;
@@ -5062,6 +5190,22 @@ index 00000000..0605896e
 +#define udp_port_cfg __compat_udp_port_cfg
 +#define udp_sock_create(a, b, c) __compat_udp_sock_create(a, b, c)
 +#endif
+diff --git a/net/wireguard/compat/version/linux/version.h b/net/wireguard/compat/version/linux/version.h
+new file mode 100644
+index 00000000..90988b37
+--- /dev/null
++++ b/net/wireguard/compat/version/linux/version.h
+@@ -0,0 +1,10 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Copyright (C) 2015-2021 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
++ */
++
++#include_next <linux/version.h>
++#undef KERNEL_VERSION
++#define KERNEL_VERSION(a, b, c) (((a) << 24) + ((b) << 16) + (c))
++#undef LINUX_VERSION_CODE
++#define LINUX_VERSION_CODE KERNEL_VERSION(COMPAT_VERSION, COMPAT_PATCHLEVEL, COMPAT_SUBLEVEL)
 diff --git a/net/wireguard/cookie.c b/net/wireguard/cookie.c
 new file mode 100644
 index 00000000..8b7d1fe0
@@ -18419,10 +18563,10 @@ index 00000000..e08cc2ba
 +}
 diff --git a/net/wireguard/crypto/zinc/curve25519/curve25519-x86_64.c b/net/wireguard/crypto/zinc/curve25519/curve25519-x86_64.c
 new file mode 100644
-index 00000000..79716c42
+index 00000000..8b6872a2
 --- /dev/null
 +++ b/net/wireguard/crypto/zinc/curve25519/curve25519-x86_64.c
-@@ -0,0 +1,1369 @@
+@@ -0,0 +1,1580 @@
 +// SPDX-License-Identifier: GPL-2.0 OR MIT
 +/*
 + * Copyright (C) 2020 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
@@ -18459,11 +18603,11 @@ index 00000000..79716c42
 +
 +	asm volatile(
 +		/* Clear registers to propagate the carry bit */
-+		"  xor %%r8, %%r8;"
-+		"  xor %%r9, %%r9;"
-+		"  xor %%r10, %%r10;"
-+		"  xor %%r11, %%r11;"
-+		"  xor %1, %1;"
++		"  xor %%r8d, %%r8d;"
++		"  xor %%r9d, %%r9d;"
++		"  xor %%r10d, %%r10d;"
++		"  xor %%r11d, %%r11d;"
++		"  xor %k1, %k1;"
 +
 +		/* Begin addition chain */
 +		"  addq 0(%3), %0;"
@@ -18477,10 +18621,9 @@ index 00000000..79716c42
 +
 +		/* Return the carry bit in a register */
 +		"  adcx %%r11, %1;"
-+	: "+&r" (f2), "=&r" (carry_r)
-+	: "r" (out), "r" (f1)
-+	: "%r8", "%r9", "%r10", "%r11", "memory", "cc"
-+	);
++		: "+&r"(f2), "=&r"(carry_r)
++		: "r"(out), "r"(f1)
++		: "%r8", "%r9", "%r10", "%r11", "memory", "cc");
 +
 +	return carry_r;
 +}
@@ -18507,7 +18650,7 @@ index 00000000..79716c42
 +		"  cmovc %0, %%rax;"
 +
 +		/* Step 2: Add carry*38 to the original sum */
-+		"  xor %%rcx, %%rcx;"
++		"  xor %%ecx, %%ecx;"
 +		"  add %%rax, %%r8;"
 +		"  adcx %%rcx, %%r9;"
 +		"  movq %%r9, 8(%1);"
@@ -18521,17 +18664,16 @@ index 00000000..79716c42
 +		"  cmovc %0, %%rax;"
 +		"  add %%rax, %%r8;"
 +		"  movq %%r8, 0(%1);"
-+	: "+&r" (f2)
-+	: "r" (out), "r" (f1)
-+	: "%rax", "%rcx", "%r8", "%r9", "%r10", "%r11", "memory", "cc"
-+	);
++		: "+&r"(f2)
++		: "r"(out), "r"(f1)
++		: "%rax", "%rcx", "%r8", "%r9", "%r10", "%r11", "memory", "cc");
 +}
 +
-+/* Computes the field substraction of two field elements */
++/* Computes the field subtraction of two field elements */
 +static inline void fsub(u64 *out, const u64 *f1, const u64 *f2)
 +{
 +	asm volatile(
-+		/* Compute the raw substraction of f1-f2 */
++		/* Compute the raw subtraction of f1-f2 */
 +		"  movq 0(%1), %%r8;"
 +		"  subq 0(%2), %%r8;"
 +		"  movq 8(%1), %%r9;"
@@ -18548,7 +18690,7 @@ index 00000000..79716c42
 +		"  mov $38, %%rcx;"
 +		"  cmovc %%rcx, %%rax;"
 +
-+		/* Step 2: Substract carry*38 from the original difference */
++		/* Step 2: Subtract carry*38 from the original difference */
 +		"  sub %%rax, %%r8;"
 +		"  sbb $0, %%r9;"
 +		"  sbb $0, %%r10;"
@@ -18564,10 +18706,9 @@ index 00000000..79716c42
 +		"  movq %%r9, 8(%0);"
 +		"  movq %%r10, 16(%0);"
 +		"  movq %%r11, 24(%0);"
-+	:
-+	: "r" (out), "r" (f1), "r" (f2)
-+	: "%rax", "%rcx", "%r8", "%r9", "%r10", "%r11", "memory", "cc"
-+	);
++		:
++		: "r"(out), "r"(f1), "r"(f2)
++		: "%rax", "%rcx", "%r8", "%r9", "%r10", "%r11", "memory", "cc");
 +}
 +
 +/* Computes a field multiplication: out <- f1 * f2
@@ -18575,239 +18716,400 @@ index 00000000..79716c42
 +static inline void fmul(u64 *out, const u64 *f1, const u64 *f2, u64 *tmp)
 +{
 +	asm volatile(
++
 +		/* Compute the raw multiplication: tmp <- src1 * src2 */
 +
 +		/* Compute src1[0] * src2 */
-+		"  movq 0(%1), %%rdx;"
-+		"  mulxq 0(%3), %%r8, %%r9;"       "  xor %%r10, %%r10;"     "  movq %%r8, 0(%0);"
-+		"  mulxq 8(%3), %%r10, %%r11;"     "  adox %%r9, %%r10;"     "  movq %%r10, 8(%0);"
-+		"  mulxq 16(%3), %%rbx, %%r13;"    "  adox %%r11, %%rbx;"
-+		"  mulxq 24(%3), %%r14, %%rdx;"    "  adox %%r13, %%r14;"    "  mov $0, %%rax;"
-+		                                   "  adox %%rdx, %%rax;"
++		"  movq 0(%0), %%rdx;"
++		"  mulxq 0(%1), %%r8, %%r9;"
++		"  xor %%r10d, %%r10d;"
++		"  movq %%r8, 0(%2);"
++		"  mulxq 8(%1), %%r10, %%r11;"
++		"  adox %%r9, %%r10;"
++		"  movq %%r10, 8(%2);"
++		"  mulxq 16(%1), %%rbx, %%r13;"
++		"  adox %%r11, %%rbx;"
++		"  mulxq 24(%1), %%r14, %%rdx;"
++		"  adox %%r13, %%r14;"
++		"  mov $0, %%rax;"
++		"  adox %%rdx, %%rax;"
++
 +		/* Compute src1[1] * src2 */
-+		"  movq 8(%1), %%rdx;"
-+		"  mulxq 0(%3), %%r8, %%r9;"       "  xor %%r10, %%r10;"     "  adcxq 8(%0), %%r8;"    "  movq %%r8, 8(%0);"
-+		"  mulxq 8(%3), %%r10, %%r11;"     "  adox %%r9, %%r10;"     "  adcx %%rbx, %%r10;"    "  movq %%r10, 16(%0);"
-+		"  mulxq 16(%3), %%rbx, %%r13;"    "  adox %%r11, %%rbx;"    "  adcx %%r14, %%rbx;"    "  mov $0, %%r8;"
-+		"  mulxq 24(%3), %%r14, %%rdx;"    "  adox %%r13, %%r14;"    "  adcx %%rax, %%r14;"    "  mov $0, %%rax;"
-+		                                   "  adox %%rdx, %%rax;"    "  adcx %%r8, %%rax;"
++		"  movq 8(%0), %%rdx;"
++		"  mulxq 0(%1), %%r8, %%r9;"
++		"  xor %%r10d, %%r10d;"
++		"  adcxq 8(%2), %%r8;"
++		"  movq %%r8, 8(%2);"
++		"  mulxq 8(%1), %%r10, %%r11;"
++		"  adox %%r9, %%r10;"
++		"  adcx %%rbx, %%r10;"
++		"  movq %%r10, 16(%2);"
++		"  mulxq 16(%1), %%rbx, %%r13;"
++		"  adox %%r11, %%rbx;"
++		"  adcx %%r14, %%rbx;"
++		"  mov $0, %%r8;"
++		"  mulxq 24(%1), %%r14, %%rdx;"
++		"  adox %%r13, %%r14;"
++		"  adcx %%rax, %%r14;"
++		"  mov $0, %%rax;"
++		"  adox %%rdx, %%rax;"
++		"  adcx %%r8, %%rax;"
++
 +		/* Compute src1[2] * src2 */
-+		"  movq 16(%1), %%rdx;"
-+		"  mulxq 0(%3), %%r8, %%r9;"       "  xor %%r10, %%r10;"    "  adcxq 16(%0), %%r8;"    "  movq %%r8, 16(%0);"
-+		"  mulxq 8(%3), %%r10, %%r11;"     "  adox %%r9, %%r10;"     "  adcx %%rbx, %%r10;"    "  movq %%r10, 24(%0);"
-+		"  mulxq 16(%3), %%rbx, %%r13;"    "  adox %%r11, %%rbx;"    "  adcx %%r14, %%rbx;"    "  mov $0, %%r8;"
-+		"  mulxq 24(%3), %%r14, %%rdx;"    "  adox %%r13, %%r14;"    "  adcx %%rax, %%r14;"    "  mov $0, %%rax;"
-+		                                   "  adox %%rdx, %%rax;"    "  adcx %%r8, %%rax;"
++		"  movq 16(%0), %%rdx;"
++		"  mulxq 0(%1), %%r8, %%r9;"
++		"  xor %%r10d, %%r10d;"
++		"  adcxq 16(%2), %%r8;"
++		"  movq %%r8, 16(%2);"
++		"  mulxq 8(%1), %%r10, %%r11;"
++		"  adox %%r9, %%r10;"
++		"  adcx %%rbx, %%r10;"
++		"  movq %%r10, 24(%2);"
++		"  mulxq 16(%1), %%rbx, %%r13;"
++		"  adox %%r11, %%rbx;"
++		"  adcx %%r14, %%rbx;"
++		"  mov $0, %%r8;"
++		"  mulxq 24(%1), %%r14, %%rdx;"
++		"  adox %%r13, %%r14;"
++		"  adcx %%rax, %%r14;"
++		"  mov $0, %%rax;"
++		"  adox %%rdx, %%rax;"
++		"  adcx %%r8, %%rax;"
++
 +		/* Compute src1[3] * src2 */
-+		"  movq 24(%1), %%rdx;"
-+		"  mulxq 0(%3), %%r8, %%r9;"       "  xor %%r10, %%r10;"    "  adcxq 24(%0), %%r8;"    "  movq %%r8, 24(%0);"
-+		"  mulxq 8(%3), %%r10, %%r11;"     "  adox %%r9, %%r10;"     "  adcx %%rbx, %%r10;"    "  movq %%r10, 32(%0);"
-+		"  mulxq 16(%3), %%rbx, %%r13;"    "  adox %%r11, %%rbx;"    "  adcx %%r14, %%rbx;"    "  movq %%rbx, 40(%0);"    "  mov $0, %%r8;"
-+		"  mulxq 24(%3), %%r14, %%rdx;"    "  adox %%r13, %%r14;"    "  adcx %%rax, %%r14;"    "  movq %%r14, 48(%0);"    "  mov $0, %%rax;"
-+		                                   "  adox %%rdx, %%rax;"    "  adcx %%r8, %%rax;"     "  movq %%rax, 56(%0);"
++		"  movq 24(%0), %%rdx;"
++		"  mulxq 0(%1), %%r8, %%r9;"
++		"  xor %%r10d, %%r10d;"
++		"  adcxq 24(%2), %%r8;"
++		"  movq %%r8, 24(%2);"
++		"  mulxq 8(%1), %%r10, %%r11;"
++		"  adox %%r9, %%r10;"
++		"  adcx %%rbx, %%r10;"
++		"  movq %%r10, 32(%2);"
++		"  mulxq 16(%1), %%rbx, %%r13;"
++		"  adox %%r11, %%rbx;"
++		"  adcx %%r14, %%rbx;"
++		"  movq %%rbx, 40(%2);"
++		"  mov $0, %%r8;"
++		"  mulxq 24(%1), %%r14, %%rdx;"
++		"  adox %%r13, %%r14;"
++		"  adcx %%rax, %%r14;"
++		"  movq %%r14, 48(%2);"
++		"  mov $0, %%rax;"
++		"  adox %%rdx, %%rax;"
++		"  adcx %%r8, %%rax;"
++		"  movq %%rax, 56(%2);"
++
 +		/* Line up pointers */
-+		"  mov %0, %1;"
 +		"  mov %2, %0;"
++		"  mov %3, %2;"
 +
 +		/* Wrap the result back into the field */
 +
 +		/* Step 1: Compute dst + carry == tmp_hi * 38 + tmp_lo */
 +		"  mov $38, %%rdx;"
-+		"  mulxq 32(%1), %%r8, %%r13;"
-+		"  xor %3, %3;"
-+		"  adoxq 0(%1), %%r8;"
-+		"  mulxq 40(%1), %%r9, %%rbx;"
++		"  mulxq 32(%0), %%r8, %%r13;"
++		"  xor %k1, %k1;"
++		"  adoxq 0(%0), %%r8;"
++		"  mulxq 40(%0), %%r9, %%rbx;"
 +		"  adcx %%r13, %%r9;"
-+		"  adoxq 8(%1), %%r9;"
-+		"  mulxq 48(%1), %%r10, %%r13;"
++		"  adoxq 8(%0), %%r9;"
++		"  mulxq 48(%0), %%r10, %%r13;"
 +		"  adcx %%rbx, %%r10;"
-+		"  adoxq 16(%1), %%r10;"
-+		"  mulxq 56(%1), %%r11, %%rax;"
++		"  adoxq 16(%0), %%r10;"
++		"  mulxq 56(%0), %%r11, %%rax;"
 +		"  adcx %%r13, %%r11;"
-+		"  adoxq 24(%1), %%r11;"
-+		"  adcx %3, %%rax;"
-+		"  adox %3, %%rax;"
++		"  adoxq 24(%0), %%r11;"
++		"  adcx %1, %%rax;"
++		"  adox %1, %%rax;"
 +		"  imul %%rdx, %%rax;"
 +
 +		/* Step 2: Fold the carry back into dst */
 +		"  add %%rax, %%r8;"
-+		"  adcx %3, %%r9;"
-+		"  movq %%r9, 8(%0);"
-+		"  adcx %3, %%r10;"
-+		"  movq %%r10, 16(%0);"
-+		"  adcx %3, %%r11;"
-+		"  movq %%r11, 24(%0);"
++		"  adcx %1, %%r9;"
++		"  movq %%r9, 8(%2);"
++		"  adcx %1, %%r10;"
++		"  movq %%r10, 16(%2);"
++		"  adcx %1, %%r11;"
++		"  movq %%r11, 24(%2);"
 +
 +		/* Step 3: Fold the carry bit back in; guaranteed not to carry at this point */
 +		"  mov $0, %%rax;"
 +		"  cmovc %%rdx, %%rax;"
 +		"  add %%rax, %%r8;"
-+		"  movq %%r8, 0(%0);"
-+	: "+&r" (tmp), "+&r" (f1), "+&r" (out), "+&r" (f2)
-+	:
-+	: "%rax", "%rdx", "%r8", "%r9", "%r10", "%r11", "%rbx", "%r13", "%r14", "memory", "cc"
-+	);
++		"  movq %%r8, 0(%2);"
++		: "+&r"(f1), "+&r"(f2), "+&r"(tmp)
++		: "r"(out)
++		: "%rax", "%rbx", "%rdx", "%r8", "%r9", "%r10", "%r11", "%r13",
++		  "%r14", "memory", "cc");
 +}
 +
 +/* Computes two field multiplications:
-+ * out[0] <- f1[0] * f2[0]
-+ * out[1] <- f1[1] * f2[1]
-+ * Uses the 16-element buffer tmp for intermediate results. */
++ *   out[0] <- f1[0] * f2[0]
++ *   out[1] <- f1[1] * f2[1]
++ * Uses the 16-element buffer tmp for intermediate results: */
 +static inline void fmul2(u64 *out, const u64 *f1, const u64 *f2, u64 *tmp)
 +{
 +	asm volatile(
++
 +		/* Compute the raw multiplication tmp[0] <- f1[0] * f2[0] */
 +
 +		/* Compute src1[0] * src2 */
-+		"  movq 0(%1), %%rdx;"
-+		"  mulxq 0(%3), %%r8, %%r9;"       "  xor %%r10, %%r10;"     "  movq %%r8, 0(%0);"
-+		"  mulxq 8(%3), %%r10, %%r11;"     "  adox %%r9, %%r10;"     "  movq %%r10, 8(%0);"
-+		"  mulxq 16(%3), %%rbx, %%r13;"    "  adox %%r11, %%rbx;"
-+		"  mulxq 24(%3), %%r14, %%rdx;"    "  adox %%r13, %%r14;"    "  mov $0, %%rax;"
-+		                                   "  adox %%rdx, %%rax;"
++		"  movq 0(%0), %%rdx;"
++		"  mulxq 0(%1), %%r8, %%r9;"
++		"  xor %%r10d, %%r10d;"
++		"  movq %%r8, 0(%2);"
++		"  mulxq 8(%1), %%r10, %%r11;"
++		"  adox %%r9, %%r10;"
++		"  movq %%r10, 8(%2);"
++		"  mulxq 16(%1), %%rbx, %%r13;"
++		"  adox %%r11, %%rbx;"
++		"  mulxq 24(%1), %%r14, %%rdx;"
++		"  adox %%r13, %%r14;"
++		"  mov $0, %%rax;"
++		"  adox %%rdx, %%rax;"
++
 +		/* Compute src1[1] * src2 */
-+		"  movq 8(%1), %%rdx;"
-+		"  mulxq 0(%3), %%r8, %%r9;"       "  xor %%r10, %%r10;"     "  adcxq 8(%0), %%r8;"    "  movq %%r8, 8(%0);"
-+		"  mulxq 8(%3), %%r10, %%r11;"     "  adox %%r9, %%r10;"     "  adcx %%rbx, %%r10;"    "  movq %%r10, 16(%0);"
-+		"  mulxq 16(%3), %%rbx, %%r13;"    "  adox %%r11, %%rbx;"    "  adcx %%r14, %%rbx;"    "  mov $0, %%r8;"
-+		"  mulxq 24(%3), %%r14, %%rdx;"    "  adox %%r13, %%r14;"    "  adcx %%rax, %%r14;"    "  mov $0, %%rax;"
-+		                                   "  adox %%rdx, %%rax;"    "  adcx %%r8, %%rax;"
++		"  movq 8(%0), %%rdx;"
++		"  mulxq 0(%1), %%r8, %%r9;"
++		"  xor %%r10d, %%r10d;"
++		"  adcxq 8(%2), %%r8;"
++		"  movq %%r8, 8(%2);"
++		"  mulxq 8(%1), %%r10, %%r11;"
++		"  adox %%r9, %%r10;"
++		"  adcx %%rbx, %%r10;"
++		"  movq %%r10, 16(%2);"
++		"  mulxq 16(%1), %%rbx, %%r13;"
++		"  adox %%r11, %%rbx;"
++		"  adcx %%r14, %%rbx;"
++		"  mov $0, %%r8;"
++		"  mulxq 24(%1), %%r14, %%rdx;"
++		"  adox %%r13, %%r14;"
++		"  adcx %%rax, %%r14;"
++		"  mov $0, %%rax;"
++		"  adox %%rdx, %%rax;"
++		"  adcx %%r8, %%rax;"
++
 +		/* Compute src1[2] * src2 */
-+		"  movq 16(%1), %%rdx;"
-+		"  mulxq 0(%3), %%r8, %%r9;"       "  xor %%r10, %%r10;"    "  adcxq 16(%0), %%r8;"    "  movq %%r8, 16(%0);"
-+		"  mulxq 8(%3), %%r10, %%r11;"     "  adox %%r9, %%r10;"     "  adcx %%rbx, %%r10;"    "  movq %%r10, 24(%0);"
-+		"  mulxq 16(%3), %%rbx, %%r13;"    "  adox %%r11, %%rbx;"    "  adcx %%r14, %%rbx;"    "  mov $0, %%r8;"
-+		"  mulxq 24(%3), %%r14, %%rdx;"    "  adox %%r13, %%r14;"    "  adcx %%rax, %%r14;"    "  mov $0, %%rax;"
-+		                                   "  adox %%rdx, %%rax;"    "  adcx %%r8, %%rax;"
++		"  movq 16(%0), %%rdx;"
++		"  mulxq 0(%1), %%r8, %%r9;"
++		"  xor %%r10d, %%r10d;"
++		"  adcxq 16(%2), %%r8;"
++		"  movq %%r8, 16(%2);"
++		"  mulxq 8(%1), %%r10, %%r11;"
++		"  adox %%r9, %%r10;"
++		"  adcx %%rbx, %%r10;"
++		"  movq %%r10, 24(%2);"
++		"  mulxq 16(%1), %%rbx, %%r13;"
++		"  adox %%r11, %%rbx;"
++		"  adcx %%r14, %%rbx;"
++		"  mov $0, %%r8;"
++		"  mulxq 24(%1), %%r14, %%rdx;"
++		"  adox %%r13, %%r14;"
++		"  adcx %%rax, %%r14;"
++		"  mov $0, %%rax;"
++		"  adox %%rdx, %%rax;"
++		"  adcx %%r8, %%rax;"
++
 +		/* Compute src1[3] * src2 */
-+		"  movq 24(%1), %%rdx;"
-+		"  mulxq 0(%3), %%r8, %%r9;"       "  xor %%r10, %%r10;"    "  adcxq 24(%0), %%r8;"    "  movq %%r8, 24(%0);"
-+		"  mulxq 8(%3), %%r10, %%r11;"     "  adox %%r9, %%r10;"     "  adcx %%rbx, %%r10;"    "  movq %%r10, 32(%0);"
-+		"  mulxq 16(%3), %%rbx, %%r13;"    "  adox %%r11, %%rbx;"    "  adcx %%r14, %%rbx;"    "  movq %%rbx, 40(%0);"    "  mov $0, %%r8;"
-+		"  mulxq 24(%3), %%r14, %%rdx;"    "  adox %%r13, %%r14;"    "  adcx %%rax, %%r14;"    "  movq %%r14, 48(%0);"    "  mov $0, %%rax;"
-+		                                   "  adox %%rdx, %%rax;"    "  adcx %%r8, %%rax;"     "  movq %%rax, 56(%0);"
++		"  movq 24(%0), %%rdx;"
++		"  mulxq 0(%1), %%r8, %%r9;"
++		"  xor %%r10d, %%r10d;"
++		"  adcxq 24(%2), %%r8;"
++		"  movq %%r8, 24(%2);"
++		"  mulxq 8(%1), %%r10, %%r11;"
++		"  adox %%r9, %%r10;"
++		"  adcx %%rbx, %%r10;"
++		"  movq %%r10, 32(%2);"
++		"  mulxq 16(%1), %%rbx, %%r13;"
++		"  adox %%r11, %%rbx;"
++		"  adcx %%r14, %%rbx;"
++		"  movq %%rbx, 40(%2);"
++		"  mov $0, %%r8;"
++		"  mulxq 24(%1), %%r14, %%rdx;"
++		"  adox %%r13, %%r14;"
++		"  adcx %%rax, %%r14;"
++		"  movq %%r14, 48(%2);"
++		"  mov $0, %%rax;"
++		"  adox %%rdx, %%rax;"
++		"  adcx %%r8, %%rax;"
++		"  movq %%rax, 56(%2);"
 +
 +		/* Compute the raw multiplication tmp[1] <- f1[1] * f2[1] */
 +
 +		/* Compute src1[0] * src2 */
-+		"  movq 32(%1), %%rdx;"
-+		"  mulxq 32(%3), %%r8, %%r9;"       "  xor %%r10, %%r10;"     "  movq %%r8, 64(%0);"
-+		"  mulxq 40(%3), %%r10, %%r11;"     "  adox %%r9, %%r10;"     "  movq %%r10, 72(%0);"
-+		"  mulxq 48(%3), %%rbx, %%r13;"    "  adox %%r11, %%rbx;"
-+		"  mulxq 56(%3), %%r14, %%rdx;"    "  adox %%r13, %%r14;"    "  mov $0, %%rax;"
-+		                                   "  adox %%rdx, %%rax;"
++		"  movq 32(%0), %%rdx;"
++		"  mulxq 32(%1), %%r8, %%r9;"
++		"  xor %%r10d, %%r10d;"
++		"  movq %%r8, 64(%2);"
++		"  mulxq 40(%1), %%r10, %%r11;"
++		"  adox %%r9, %%r10;"
++		"  movq %%r10, 72(%2);"
++		"  mulxq 48(%1), %%rbx, %%r13;"
++		"  adox %%r11, %%rbx;"
++		"  mulxq 56(%1), %%r14, %%rdx;"
++		"  adox %%r13, %%r14;"
++		"  mov $0, %%rax;"
++		"  adox %%rdx, %%rax;"
++
 +		/* Compute src1[1] * src2 */
-+		"  movq 40(%1), %%rdx;"
-+		"  mulxq 32(%3), %%r8, %%r9;"       "  xor %%r10, %%r10;"     "  adcxq 72(%0), %%r8;"    "  movq %%r8, 72(%0);"
-+		"  mulxq 40(%3), %%r10, %%r11;"     "  adox %%r9, %%r10;"     "  adcx %%rbx, %%r10;"    "  movq %%r10, 80(%0);"
-+		"  mulxq 48(%3), %%rbx, %%r13;"    "  adox %%r11, %%rbx;"    "  adcx %%r14, %%rbx;"    "  mov $0, %%r8;"
-+		"  mulxq 56(%3), %%r14, %%rdx;"    "  adox %%r13, %%r14;"    "  adcx %%rax, %%r14;"    "  mov $0, %%rax;"
-+		                                   "  adox %%rdx, %%rax;"    "  adcx %%r8, %%rax;"
++		"  movq 40(%0), %%rdx;"
++		"  mulxq 32(%1), %%r8, %%r9;"
++		"  xor %%r10d, %%r10d;"
++		"  adcxq 72(%2), %%r8;"
++		"  movq %%r8, 72(%2);"
++		"  mulxq 40(%1), %%r10, %%r11;"
++		"  adox %%r9, %%r10;"
++		"  adcx %%rbx, %%r10;"
++		"  movq %%r10, 80(%2);"
++		"  mulxq 48(%1), %%rbx, %%r13;"
++		"  adox %%r11, %%rbx;"
++		"  adcx %%r14, %%rbx;"
++		"  mov $0, %%r8;"
++		"  mulxq 56(%1), %%r14, %%rdx;"
++		"  adox %%r13, %%r14;"
++		"  adcx %%rax, %%r14;"
++		"  mov $0, %%rax;"
++		"  adox %%rdx, %%rax;"
++		"  adcx %%r8, %%rax;"
++
 +		/* Compute src1[2] * src2 */
-+		"  movq 48(%1), %%rdx;"
-+		"  mulxq 32(%3), %%r8, %%r9;"       "  xor %%r10, %%r10;"    "  adcxq 80(%0), %%r8;"    "  movq %%r8, 80(%0);"
-+		"  mulxq 40(%3), %%r10, %%r11;"     "  adox %%r9, %%r10;"     "  adcx %%rbx, %%r10;"    "  movq %%r10, 88(%0);"
-+		"  mulxq 48(%3), %%rbx, %%r13;"    "  adox %%r11, %%rbx;"    "  adcx %%r14, %%rbx;"    "  mov $0, %%r8;"
-+		"  mulxq 56(%3), %%r14, %%rdx;"    "  adox %%r13, %%r14;"    "  adcx %%rax, %%r14;"    "  mov $0, %%rax;"
-+		                                   "  adox %%rdx, %%rax;"    "  adcx %%r8, %%rax;"
++		"  movq 48(%0), %%rdx;"
++		"  mulxq 32(%1), %%r8, %%r9;"
++		"  xor %%r10d, %%r10d;"
++		"  adcxq 80(%2), %%r8;"
++		"  movq %%r8, 80(%2);"
++		"  mulxq 40(%1), %%r10, %%r11;"
++		"  adox %%r9, %%r10;"
++		"  adcx %%rbx, %%r10;"
++		"  movq %%r10, 88(%2);"
++		"  mulxq 48(%1), %%rbx, %%r13;"
++		"  adox %%r11, %%rbx;"
++		"  adcx %%r14, %%rbx;"
++		"  mov $0, %%r8;"
++		"  mulxq 56(%1), %%r14, %%rdx;"
++		"  adox %%r13, %%r14;"
++		"  adcx %%rax, %%r14;"
++		"  mov $0, %%rax;"
++		"  adox %%rdx, %%rax;"
++		"  adcx %%r8, %%rax;"
++
 +		/* Compute src1[3] * src2 */
-+		"  movq 56(%1), %%rdx;"
-+		"  mulxq 32(%3), %%r8, %%r9;"       "  xor %%r10, %%r10;"    "  adcxq 88(%0), %%r8;"    "  movq %%r8, 88(%0);"
-+		"  mulxq 40(%3), %%r10, %%r11;"     "  adox %%r9, %%r10;"     "  adcx %%rbx, %%r10;"    "  movq %%r10, 96(%0);"
-+		"  mulxq 48(%3), %%rbx, %%r13;"    "  adox %%r11, %%rbx;"    "  adcx %%r14, %%rbx;"    "  movq %%rbx, 104(%0);"    "  mov $0, %%r8;"
-+		"  mulxq 56(%3), %%r14, %%rdx;"    "  adox %%r13, %%r14;"    "  adcx %%rax, %%r14;"    "  movq %%r14, 112(%0);"    "  mov $0, %%rax;"
-+		                                   "  adox %%rdx, %%rax;"    "  adcx %%r8, %%rax;"     "  movq %%rax, 120(%0);"
++		"  movq 56(%0), %%rdx;"
++		"  mulxq 32(%1), %%r8, %%r9;"
++		"  xor %%r10d, %%r10d;"
++		"  adcxq 88(%2), %%r8;"
++		"  movq %%r8, 88(%2);"
++		"  mulxq 40(%1), %%r10, %%r11;"
++		"  adox %%r9, %%r10;"
++		"  adcx %%rbx, %%r10;"
++		"  movq %%r10, 96(%2);"
++		"  mulxq 48(%1), %%rbx, %%r13;"
++		"  adox %%r11, %%rbx;"
++		"  adcx %%r14, %%rbx;"
++		"  movq %%rbx, 104(%2);"
++		"  mov $0, %%r8;"
++		"  mulxq 56(%1), %%r14, %%rdx;"
++		"  adox %%r13, %%r14;"
++		"  adcx %%rax, %%r14;"
++		"  movq %%r14, 112(%2);"
++		"  mov $0, %%rax;"
++		"  adox %%rdx, %%rax;"
++		"  adcx %%r8, %%rax;"
++		"  movq %%rax, 120(%2);"
++
 +		/* Line up pointers */
-+		"  mov %0, %1;"
 +		"  mov %2, %0;"
++		"  mov %3, %2;"
 +
 +		/* Wrap the results back into the field */
 +
 +		/* Step 1: Compute dst + carry == tmp_hi * 38 + tmp_lo */
 +		"  mov $38, %%rdx;"
-+		"  mulxq 32(%1), %%r8, %%r13;"
-+		"  xor %3, %3;"
-+		"  adoxq 0(%1), %%r8;"
-+		"  mulxq 40(%1), %%r9, %%rbx;"
++		"  mulxq 32(%0), %%r8, %%r13;"
++		"  xor %k1, %k1;"
++		"  adoxq 0(%0), %%r8;"
++		"  mulxq 40(%0), %%r9, %%rbx;"
 +		"  adcx %%r13, %%r9;"
-+		"  adoxq 8(%1), %%r9;"
-+		"  mulxq 48(%1), %%r10, %%r13;"
++		"  adoxq 8(%0), %%r9;"
++		"  mulxq 48(%0), %%r10, %%r13;"
 +		"  adcx %%rbx, %%r10;"
-+		"  adoxq 16(%1), %%r10;"
-+		"  mulxq 56(%1), %%r11, %%rax;"
++		"  adoxq 16(%0), %%r10;"
++		"  mulxq 56(%0), %%r11, %%rax;"
 +		"  adcx %%r13, %%r11;"
-+		"  adoxq 24(%1), %%r11;"
-+		"  adcx %3, %%rax;"
-+		"  adox %3, %%rax;"
++		"  adoxq 24(%0), %%r11;"
++		"  adcx %1, %%rax;"
++		"  adox %1, %%rax;"
 +		"  imul %%rdx, %%rax;"
 +
 +		/* Step 2: Fold the carry back into dst */
 +		"  add %%rax, %%r8;"
-+		"  adcx %3, %%r9;"
-+		"  movq %%r9, 8(%0);"
-+		"  adcx %3, %%r10;"
-+		"  movq %%r10, 16(%0);"
-+		"  adcx %3, %%r11;"
-+		"  movq %%r11, 24(%0);"
++		"  adcx %1, %%r9;"
++		"  movq %%r9, 8(%2);"
++		"  adcx %1, %%r10;"
++		"  movq %%r10, 16(%2);"
++		"  adcx %1, %%r11;"
++		"  movq %%r11, 24(%2);"
 +
 +		/* Step 3: Fold the carry bit back in; guaranteed not to carry at this point */
 +		"  mov $0, %%rax;"
 +		"  cmovc %%rdx, %%rax;"
 +		"  add %%rax, %%r8;"
-+		"  movq %%r8, 0(%0);"
++		"  movq %%r8, 0(%2);"
 +
 +		/* Step 1: Compute dst + carry == tmp_hi * 38 + tmp_lo */
 +		"  mov $38, %%rdx;"
-+		"  mulxq 96(%1), %%r8, %%r13;"
-+		"  xor %3, %3;"
-+		"  adoxq 64(%1), %%r8;"
-+		"  mulxq 104(%1), %%r9, %%rbx;"
++		"  mulxq 96(%0), %%r8, %%r13;"
++		"  xor %k1, %k1;"
++		"  adoxq 64(%0), %%r8;"
++		"  mulxq 104(%0), %%r9, %%rbx;"
 +		"  adcx %%r13, %%r9;"
-+		"  adoxq 72(%1), %%r9;"
-+		"  mulxq 112(%1), %%r10, %%r13;"
++		"  adoxq 72(%0), %%r9;"
++		"  mulxq 112(%0), %%r10, %%r13;"
 +		"  adcx %%rbx, %%r10;"
-+		"  adoxq 80(%1), %%r10;"
-+		"  mulxq 120(%1), %%r11, %%rax;"
++		"  adoxq 80(%0), %%r10;"
++		"  mulxq 120(%0), %%r11, %%rax;"
 +		"  adcx %%r13, %%r11;"
-+		"  adoxq 88(%1), %%r11;"
-+		"  adcx %3, %%rax;"
-+		"  adox %3, %%rax;"
++		"  adoxq 88(%0), %%r11;"
++		"  adcx %1, %%rax;"
++		"  adox %1, %%rax;"
 +		"  imul %%rdx, %%rax;"
 +
 +		/* Step 2: Fold the carry back into dst */
 +		"  add %%rax, %%r8;"
-+		"  adcx %3, %%r9;"
-+		"  movq %%r9, 40(%0);"
-+		"  adcx %3, %%r10;"
-+		"  movq %%r10, 48(%0);"
-+		"  adcx %3, %%r11;"
-+		"  movq %%r11, 56(%0);"
++		"  adcx %1, %%r9;"
++		"  movq %%r9, 40(%2);"
++		"  adcx %1, %%r10;"
++		"  movq %%r10, 48(%2);"
++		"  adcx %1, %%r11;"
++		"  movq %%r11, 56(%2);"
 +
 +		/* Step 3: Fold the carry bit back in; guaranteed not to carry at this point */
 +		"  mov $0, %%rax;"
 +		"  cmovc %%rdx, %%rax;"
 +		"  add %%rax, %%r8;"
-+		"  movq %%r8, 32(%0);"
-+	: "+&r" (tmp), "+&r" (f1), "+&r" (out), "+&r" (f2)
-+	:
-+	: "%rax", "%rdx", "%r8", "%r9", "%r10", "%r11", "%rbx", "%r13", "%r14", "memory", "cc"
-+	);
++		"  movq %%r8, 32(%2);"
++		: "+&r"(f1), "+&r"(f2), "+&r"(tmp)
++		: "r"(out)
++		: "%rax", "%rbx", "%rdx", "%r8", "%r9", "%r10", "%r11", "%r13",
++		  "%r14", "memory", "cc");
 +}
 +
-+/* Computes the field multiplication of four-element f1 with value in f2 */
++/* Computes the field multiplication of four-element f1 with value in f2
++ * Requires f2 to be smaller than 2^17 */
 +static inline void fmul_scalar(u64 *out, const u64 *f1, u64 f2)
 +{
 +	register u64 f2_r asm("rdx") = f2;
 +
 +	asm volatile(
 +		/* Compute the raw multiplication of f1*f2 */
-+		"  mulxq 0(%2), %%r8, %%rcx;"      /* f1[0]*f2 */
-+		"  mulxq 8(%2), %%r9, %%rbx;"      /* f1[1]*f2 */
++		"  mulxq 0(%2), %%r8, %%rcx;" /* f1[0]*f2 */
++		"  mulxq 8(%2), %%r9, %%rbx;" /* f1[1]*f2 */
 +		"  add %%rcx, %%r9;"
 +		"  mov $0, %%rcx;"
-+		"  mulxq 16(%2), %%r10, %%r13;"    /* f1[2]*f2 */
++		"  mulxq 16(%2), %%r10, %%r13;" /* f1[2]*f2 */
 +		"  adcx %%rbx, %%r10;"
-+		"  mulxq 24(%2), %%r11, %%rax;"    /* f1[3]*f2 */
++		"  mulxq 24(%2), %%r11, %%rax;" /* f1[3]*f2 */
 +		"  adcx %%r13, %%r11;"
 +		"  adcx %%rcx, %%rax;"
 +
@@ -18831,17 +19133,17 @@ index 00000000..79716c42
 +		"  cmovc %%rdx, %%rax;"
 +		"  add %%rax, %%r8;"
 +		"  movq %%r8, 0(%1);"
-+	: "+&r" (f2_r)
-+	: "r" (out), "r" (f1)
-+	: "%rax", "%rcx", "%r8", "%r9", "%r10", "%r11", "%rbx", "%r13", "memory", "cc"
-+	);
++		: "+&r"(f2_r)
++		: "r"(out), "r"(f1)
++		: "%rax", "%rbx", "%rcx", "%r8", "%r9", "%r10", "%r11", "%r13",
++		  "memory", "cc");
 +}
 +
 +/* Computes p1 <- bit ? p2 : p1 in constant time */
 +static inline void cswap2(u64 bit, const u64 *p1, const u64 *p2)
 +{
 +	asm volatile(
-+		/* Invert the polarity of bit to match cmov expectations */
++		/* Transfer bit into CF flag */
 +		"  add $18446744073709551615, %0;"
 +
 +		/* cswap p1[0], p2[0] */
@@ -18915,10 +19217,9 @@ index 00000000..79716c42
 +		"  cmovc %%r10, %%r9;"
 +		"  movq %%r8, 56(%1);"
 +		"  movq %%r9, 56(%2);"
-+	: "+&r" (bit)
-+	: "r" (p1), "r" (p2)
-+	: "%r8", "%r9", "%r10", "memory", "cc"
-+	);
++		: "+&r"(bit)
++		: "r"(p1), "r"(p2)
++		: "%r8", "%r9", "%r10", "memory", "cc");
 +}
 +
 +/* Computes the square of a field element: out <- f * f
@@ -18929,18 +19230,25 @@ index 00000000..79716c42
 +		/* Compute the raw multiplication: tmp <- f * f */
 +
 +		/* Step 1: Compute all partial products */
-+		"  movq 0(%1), %%rdx;"                                       /* f[0] */
-+		"  mulxq 8(%1), %%r8, %%r14;"      "  xor %%r15, %%r15;"     /* f[1]*f[0] */
-+		"  mulxq 16(%1), %%r9, %%r10;"     "  adcx %%r14, %%r9;"     /* f[2]*f[0] */
-+		"  mulxq 24(%1), %%rax, %%rcx;"    "  adcx %%rax, %%r10;"    /* f[3]*f[0] */
-+		"  movq 24(%1), %%rdx;"                                      /* f[3] */
-+		"  mulxq 8(%1), %%r11, %%rbx;"     "  adcx %%rcx, %%r11;"    /* f[1]*f[3] */
-+		"  mulxq 16(%1), %%rax, %%r13;"    "  adcx %%rax, %%rbx;"    /* f[2]*f[3] */
-+		"  movq 8(%1), %%rdx;"             "  adcx %%r15, %%r13;"    /* f1 */
-+		"  mulxq 16(%1), %%rax, %%rcx;"    "  mov $0, %%r14;"        /* f[2]*f[1] */
++		"  movq 0(%0), %%rdx;" /* f[0] */
++		"  mulxq 8(%0), %%r8, %%r14;"
++		"  xor %%r15d, %%r15d;" /* f[1]*f[0] */
++		"  mulxq 16(%0), %%r9, %%r10;"
++		"  adcx %%r14, %%r9;" /* f[2]*f[0] */
++		"  mulxq 24(%0), %%rax, %%rcx;"
++		"  adcx %%rax, %%r10;" /* f[3]*f[0] */
++		"  movq 24(%0), %%rdx;" /* f[3] */
++		"  mulxq 8(%0), %%r11, %%rbx;"
++		"  adcx %%rcx, %%r11;" /* f[1]*f[3] */
++		"  mulxq 16(%0), %%rax, %%r13;"
++		"  adcx %%rax, %%rbx;" /* f[2]*f[3] */
++		"  movq 8(%0), %%rdx;"
++		"  adcx %%r15, %%r13;" /* f1 */
++		"  mulxq 16(%0), %%rax, %%rcx;"
++		"  mov $0, %%r14;" /* f[2]*f[1] */
 +
 +		/* Step 2: Compute two parallel carry chains */
-+		"  xor %%r15, %%r15;"
++		"  xor %%r15d, %%r15d;"
 +		"  adox %%rax, %%r10;"
 +		"  adcx %%r8, %%r8;"
 +		"  adox %%rcx, %%r11;"
@@ -18955,39 +19263,50 @@ index 00000000..79716c42
 +		"  adcx %%r14, %%r14;"
 +
 +		/* Step 3: Compute intermediate squares */
-+		"  movq 0(%1), %%rdx;"     "  mulx %%rdx, %%rax, %%rcx;"    /* f[0]^2 */
-+		                           "  movq %%rax, 0(%0);"
-+		"  add %%rcx, %%r8;"       "  movq %%r8, 8(%0);"
-+		"  movq 8(%1), %%rdx;"     "  mulx %%rdx, %%rax, %%rcx;"    /* f[1]^2 */
-+		"  adcx %%rax, %%r9;"      "  movq %%r9, 16(%0);"
-+		"  adcx %%rcx, %%r10;"     "  movq %%r10, 24(%0);"
-+		"  movq 16(%1), %%rdx;"    "  mulx %%rdx, %%rax, %%rcx;"    /* f[2]^2 */
-+		"  adcx %%rax, %%r11;"     "  movq %%r11, 32(%0);"
-+		"  adcx %%rcx, %%rbx;"     "  movq %%rbx, 40(%0);"
-+		"  movq 24(%1), %%rdx;"    "  mulx %%rdx, %%rax, %%rcx;"    /* f[3]^2 */
-+		"  adcx %%rax, %%r13;"     "  movq %%r13, 48(%0);"
-+		"  adcx %%rcx, %%r14;"     "  movq %%r14, 56(%0);"
++		"  movq 0(%0), %%rdx;"
++		"  mulx %%rdx, %%rax, %%rcx;" /* f[0]^2 */
++		"  movq %%rax, 0(%1);"
++		"  add %%rcx, %%r8;"
++		"  movq %%r8, 8(%1);"
++		"  movq 8(%0), %%rdx;"
++		"  mulx %%rdx, %%rax, %%rcx;" /* f[1]^2 */
++		"  adcx %%rax, %%r9;"
++		"  movq %%r9, 16(%1);"
++		"  adcx %%rcx, %%r10;"
++		"  movq %%r10, 24(%1);"
++		"  movq 16(%0), %%rdx;"
++		"  mulx %%rdx, %%rax, %%rcx;" /* f[2]^2 */
++		"  adcx %%rax, %%r11;"
++		"  movq %%r11, 32(%1);"
++		"  adcx %%rcx, %%rbx;"
++		"  movq %%rbx, 40(%1);"
++		"  movq 24(%0), %%rdx;"
++		"  mulx %%rdx, %%rax, %%rcx;" /* f[3]^2 */
++		"  adcx %%rax, %%r13;"
++		"  movq %%r13, 48(%1);"
++		"  adcx %%rcx, %%r14;"
++		"  movq %%r14, 56(%1);"
 +
 +		/* Line up pointers */
-+		"  mov %0, %1;"
-+		"  mov %2, %0;"
++		"  mov %1, %0;"
++		"  mov %2, %1;"
 +
 +		/* Wrap the result back into the field */
 +
 +		/* Step 1: Compute dst + carry == tmp_hi * 38 + tmp_lo */
 +		"  mov $38, %%rdx;"
-+		"  mulxq 32(%1), %%r8, %%r13;"
-+		"  xor %%rcx, %%rcx;"
-+		"  adoxq 0(%1), %%r8;"
-+		"  mulxq 40(%1), %%r9, %%rbx;"
++		"  mulxq 32(%0), %%r8, %%r13;"
++		"  xor %%ecx, %%ecx;"
++		"  adoxq 0(%0), %%r8;"
++		"  mulxq 40(%0), %%r9, %%rbx;"
 +		"  adcx %%r13, %%r9;"
-+		"  adoxq 8(%1), %%r9;"
-+		"  mulxq 48(%1), %%r10, %%r13;"
++		"  adoxq 8(%0), %%r9;"
++		"  mulxq 48(%0), %%r10, %%r13;"
 +		"  adcx %%rbx, %%r10;"
-+		"  adoxq 16(%1), %%r10;"
-+		"  mulxq 56(%1), %%r11, %%rax;"
++		"  adoxq 16(%0), %%r10;"
++		"  mulxq 56(%0), %%r11, %%rax;"
 +		"  adcx %%r13, %%r11;"
-+		"  adoxq 24(%1), %%r11;"
++		"  adoxq 24(%0), %%r11;"
 +		"  adcx %%rcx, %%rax;"
 +		"  adox %%rcx, %%rax;"
 +		"  imul %%rdx, %%rax;"
@@ -18995,43 +19314,50 @@ index 00000000..79716c42
 +		/* Step 2: Fold the carry back into dst */
 +		"  add %%rax, %%r8;"
 +		"  adcx %%rcx, %%r9;"
-+		"  movq %%r9, 8(%0);"
++		"  movq %%r9, 8(%1);"
 +		"  adcx %%rcx, %%r10;"
-+		"  movq %%r10, 16(%0);"
++		"  movq %%r10, 16(%1);"
 +		"  adcx %%rcx, %%r11;"
-+		"  movq %%r11, 24(%0);"
++		"  movq %%r11, 24(%1);"
 +
 +		/* Step 3: Fold the carry bit back in; guaranteed not to carry at this point */
 +		"  mov $0, %%rax;"
 +		"  cmovc %%rdx, %%rax;"
 +		"  add %%rax, %%r8;"
-+		"  movq %%r8, 0(%0);"
-+	: "+&r" (tmp), "+&r" (f), "+&r" (out)
-+	:
-+	: "%rax", "%rcx", "%rdx", "%r8", "%r9", "%r10", "%r11", "%rbx", "%r13", "%r14", "%r15", "memory", "cc"
-+	);
++		"  movq %%r8, 0(%1);"
++		: "+&r,&r"(f), "+&r,&r"(tmp)
++		: "r,m"(out)
++		: "%rax", "%rbx", "%rcx", "%rdx", "%r8", "%r9", "%r10", "%r11",
++		  "%r13", "%r14", "%r15", "memory", "cc");
 +}
 +
 +/* Computes two field squarings:
-+ * out[0] <- f[0] * f[0]
-+ * out[1] <- f[1] * f[1]
++ *   out[0] <- f[0] * f[0]
++ *   out[1] <- f[1] * f[1]
 + * Uses the 16-element buffer tmp for intermediate results */
 +static inline void fsqr2(u64 *out, const u64 *f, u64 *tmp)
 +{
 +	asm volatile(
 +		/* Step 1: Compute all partial products */
-+		"  movq 0(%1), %%rdx;"                                       /* f[0] */
-+		"  mulxq 8(%1), %%r8, %%r14;"      "  xor %%r15, %%r15;"     /* f[1]*f[0] */
-+		"  mulxq 16(%1), %%r9, %%r10;"     "  adcx %%r14, %%r9;"     /* f[2]*f[0] */
-+		"  mulxq 24(%1), %%rax, %%rcx;"    "  adcx %%rax, %%r10;"    /* f[3]*f[0] */
-+		"  movq 24(%1), %%rdx;"                                      /* f[3] */
-+		"  mulxq 8(%1), %%r11, %%rbx;"     "  adcx %%rcx, %%r11;"    /* f[1]*f[3] */
-+		"  mulxq 16(%1), %%rax, %%r13;"    "  adcx %%rax, %%rbx;"    /* f[2]*f[3] */
-+		"  movq 8(%1), %%rdx;"             "  adcx %%r15, %%r13;"    /* f1 */
-+		"  mulxq 16(%1), %%rax, %%rcx;"    "  mov $0, %%r14;"        /* f[2]*f[1] */
++		"  movq 0(%0), %%rdx;" /* f[0] */
++		"  mulxq 8(%0), %%r8, %%r14;"
++		"  xor %%r15d, %%r15d;" /* f[1]*f[0] */
++		"  mulxq 16(%0), %%r9, %%r10;"
++		"  adcx %%r14, %%r9;" /* f[2]*f[0] */
++		"  mulxq 24(%0), %%rax, %%rcx;"
++		"  adcx %%rax, %%r10;" /* f[3]*f[0] */
++		"  movq 24(%0), %%rdx;" /* f[3] */
++		"  mulxq 8(%0), %%r11, %%rbx;"
++		"  adcx %%rcx, %%r11;" /* f[1]*f[3] */
++		"  mulxq 16(%0), %%rax, %%r13;"
++		"  adcx %%rax, %%rbx;" /* f[2]*f[3] */
++		"  movq 8(%0), %%rdx;"
++		"  adcx %%r15, %%r13;" /* f1 */
++		"  mulxq 16(%0), %%rax, %%rcx;"
++		"  mov $0, %%r14;" /* f[2]*f[1] */
 +
 +		/* Step 2: Compute two parallel carry chains */
-+		"  xor %%r15, %%r15;"
++		"  xor %%r15d, %%r15d;"
 +		"  adox %%rax, %%r10;"
 +		"  adcx %%r8, %%r8;"
 +		"  adox %%rcx, %%r11;"
@@ -19046,32 +19372,50 @@ index 00000000..79716c42
 +		"  adcx %%r14, %%r14;"
 +
 +		/* Step 3: Compute intermediate squares */
-+		"  movq 0(%1), %%rdx;"     "  mulx %%rdx, %%rax, %%rcx;"    /* f[0]^2 */
-+		                           "  movq %%rax, 0(%0);"
-+		"  add %%rcx, %%r8;"       "  movq %%r8, 8(%0);"
-+		"  movq 8(%1), %%rdx;"     "  mulx %%rdx, %%rax, %%rcx;"    /* f[1]^2 */
-+		"  adcx %%rax, %%r9;"      "  movq %%r9, 16(%0);"
-+		"  adcx %%rcx, %%r10;"     "  movq %%r10, 24(%0);"
-+		"  movq 16(%1), %%rdx;"    "  mulx %%rdx, %%rax, %%rcx;"    /* f[2]^2 */
-+		"  adcx %%rax, %%r11;"     "  movq %%r11, 32(%0);"
-+		"  adcx %%rcx, %%rbx;"     "  movq %%rbx, 40(%0);"
-+		"  movq 24(%1), %%rdx;"    "  mulx %%rdx, %%rax, %%rcx;"    /* f[3]^2 */
-+		"  adcx %%rax, %%r13;"     "  movq %%r13, 48(%0);"
-+		"  adcx %%rcx, %%r14;"     "  movq %%r14, 56(%0);"
++		"  movq 0(%0), %%rdx;"
++		"  mulx %%rdx, %%rax, %%rcx;" /* f[0]^2 */
++		"  movq %%rax, 0(%1);"
++		"  add %%rcx, %%r8;"
++		"  movq %%r8, 8(%1);"
++		"  movq 8(%0), %%rdx;"
++		"  mulx %%rdx, %%rax, %%rcx;" /* f[1]^2 */
++		"  adcx %%rax, %%r9;"
++		"  movq %%r9, 16(%1);"
++		"  adcx %%rcx, %%r10;"
++		"  movq %%r10, 24(%1);"
++		"  movq 16(%0), %%rdx;"
++		"  mulx %%rdx, %%rax, %%rcx;" /* f[2]^2 */
++		"  adcx %%rax, %%r11;"
++		"  movq %%r11, 32(%1);"
++		"  adcx %%rcx, %%rbx;"
++		"  movq %%rbx, 40(%1);"
++		"  movq 24(%0), %%rdx;"
++		"  mulx %%rdx, %%rax, %%rcx;" /* f[3]^2 */
++		"  adcx %%rax, %%r13;"
++		"  movq %%r13, 48(%1);"
++		"  adcx %%rcx, %%r14;"
++		"  movq %%r14, 56(%1);"
 +
 +		/* Step 1: Compute all partial products */
-+		"  movq 32(%1), %%rdx;"                                       /* f[0] */
-+		"  mulxq 40(%1), %%r8, %%r14;"      "  xor %%r15, %%r15;"     /* f[1]*f[0] */
-+		"  mulxq 48(%1), %%r9, %%r10;"     "  adcx %%r14, %%r9;"     /* f[2]*f[0] */
-+		"  mulxq 56(%1), %%rax, %%rcx;"    "  adcx %%rax, %%r10;"    /* f[3]*f[0] */
-+		"  movq 56(%1), %%rdx;"                                      /* f[3] */
-+		"  mulxq 40(%1), %%r11, %%rbx;"     "  adcx %%rcx, %%r11;"    /* f[1]*f[3] */
-+		"  mulxq 48(%1), %%rax, %%r13;"    "  adcx %%rax, %%rbx;"    /* f[2]*f[3] */
-+		"  movq 40(%1), %%rdx;"             "  adcx %%r15, %%r13;"    /* f1 */
-+		"  mulxq 48(%1), %%rax, %%rcx;"    "  mov $0, %%r14;"        /* f[2]*f[1] */
++		"  movq 32(%0), %%rdx;" /* f[0] */
++		"  mulxq 40(%0), %%r8, %%r14;"
++		"  xor %%r15d, %%r15d;" /* f[1]*f[0] */
++		"  mulxq 48(%0), %%r9, %%r10;"
++		"  adcx %%r14, %%r9;" /* f[2]*f[0] */
++		"  mulxq 56(%0), %%rax, %%rcx;"
++		"  adcx %%rax, %%r10;" /* f[3]*f[0] */
++		"  movq 56(%0), %%rdx;" /* f[3] */
++		"  mulxq 40(%0), %%r11, %%rbx;"
++		"  adcx %%rcx, %%r11;" /* f[1]*f[3] */
++		"  mulxq 48(%0), %%rax, %%r13;"
++		"  adcx %%rax, %%rbx;" /* f[2]*f[3] */
++		"  movq 40(%0), %%rdx;"
++		"  adcx %%r15, %%r13;" /* f1 */
++		"  mulxq 48(%0), %%rax, %%rcx;"
++		"  mov $0, %%r14;" /* f[2]*f[1] */
 +
 +		/* Step 2: Compute two parallel carry chains */
-+		"  xor %%r15, %%r15;"
++		"  xor %%r15d, %%r15d;"
 +		"  adox %%rax, %%r10;"
 +		"  adcx %%r8, %%r8;"
 +		"  adox %%rcx, %%r11;"
@@ -19086,37 +19430,48 @@ index 00000000..79716c42
 +		"  adcx %%r14, %%r14;"
 +
 +		/* Step 3: Compute intermediate squares */
-+		"  movq 32(%1), %%rdx;"     "  mulx %%rdx, %%rax, %%rcx;"    /* f[0]^2 */
-+		                           "  movq %%rax, 64(%0);"
-+		"  add %%rcx, %%r8;"       "  movq %%r8, 72(%0);"
-+		"  movq 40(%1), %%rdx;"     "  mulx %%rdx, %%rax, %%rcx;"    /* f[1]^2 */
-+		"  adcx %%rax, %%r9;"      "  movq %%r9, 80(%0);"
-+		"  adcx %%rcx, %%r10;"     "  movq %%r10, 88(%0);"
-+		"  movq 48(%1), %%rdx;"    "  mulx %%rdx, %%rax, %%rcx;"    /* f[2]^2 */
-+		"  adcx %%rax, %%r11;"     "  movq %%r11, 96(%0);"
-+		"  adcx %%rcx, %%rbx;"     "  movq %%rbx, 104(%0);"
-+		"  movq 56(%1), %%rdx;"    "  mulx %%rdx, %%rax, %%rcx;"    /* f[3]^2 */
-+		"  adcx %%rax, %%r13;"     "  movq %%r13, 112(%0);"
-+		"  adcx %%rcx, %%r14;"     "  movq %%r14, 120(%0);"
++		"  movq 32(%0), %%rdx;"
++		"  mulx %%rdx, %%rax, %%rcx;" /* f[0]^2 */
++		"  movq %%rax, 64(%1);"
++		"  add %%rcx, %%r8;"
++		"  movq %%r8, 72(%1);"
++		"  movq 40(%0), %%rdx;"
++		"  mulx %%rdx, %%rax, %%rcx;" /* f[1]^2 */
++		"  adcx %%rax, %%r9;"
++		"  movq %%r9, 80(%1);"
++		"  adcx %%rcx, %%r10;"
++		"  movq %%r10, 88(%1);"
++		"  movq 48(%0), %%rdx;"
++		"  mulx %%rdx, %%rax, %%rcx;" /* f[2]^2 */
++		"  adcx %%rax, %%r11;"
++		"  movq %%r11, 96(%1);"
++		"  adcx %%rcx, %%rbx;"
++		"  movq %%rbx, 104(%1);"
++		"  movq 56(%0), %%rdx;"
++		"  mulx %%rdx, %%rax, %%rcx;" /* f[3]^2 */
++		"  adcx %%rax, %%r13;"
++		"  movq %%r13, 112(%1);"
++		"  adcx %%rcx, %%r14;"
++		"  movq %%r14, 120(%1);"
 +
 +		/* Line up pointers */
-+		"  mov %0, %1;"
-+		"  mov %2, %0;"
++		"  mov %1, %0;"
++		"  mov %2, %1;"
 +
 +		/* Step 1: Compute dst + carry == tmp_hi * 38 + tmp_lo */
 +		"  mov $38, %%rdx;"
-+		"  mulxq 32(%1), %%r8, %%r13;"
-+		"  xor %%rcx, %%rcx;"
-+		"  adoxq 0(%1), %%r8;"
-+		"  mulxq 40(%1), %%r9, %%rbx;"
++		"  mulxq 32(%0), %%r8, %%r13;"
++		"  xor %%ecx, %%ecx;"
++		"  adoxq 0(%0), %%r8;"
++		"  mulxq 40(%0), %%r9, %%rbx;"
 +		"  adcx %%r13, %%r9;"
-+		"  adoxq 8(%1), %%r9;"
-+		"  mulxq 48(%1), %%r10, %%r13;"
++		"  adoxq 8(%0), %%r9;"
++		"  mulxq 48(%0), %%r10, %%r13;"
 +		"  adcx %%rbx, %%r10;"
-+		"  adoxq 16(%1), %%r10;"
-+		"  mulxq 56(%1), %%r11, %%rax;"
++		"  adoxq 16(%0), %%r10;"
++		"  mulxq 56(%0), %%r11, %%rax;"
 +		"  adcx %%r13, %%r11;"
-+		"  adoxq 24(%1), %%r11;"
++		"  adoxq 24(%0), %%r11;"
 +		"  adcx %%rcx, %%rax;"
 +		"  adox %%rcx, %%rax;"
 +		"  imul %%rdx, %%rax;"
@@ -19124,32 +19479,32 @@ index 00000000..79716c42
 +		/* Step 2: Fold the carry back into dst */
 +		"  add %%rax, %%r8;"
 +		"  adcx %%rcx, %%r9;"
-+		"  movq %%r9, 8(%0);"
++		"  movq %%r9, 8(%1);"
 +		"  adcx %%rcx, %%r10;"
-+		"  movq %%r10, 16(%0);"
++		"  movq %%r10, 16(%1);"
 +		"  adcx %%rcx, %%r11;"
-+		"  movq %%r11, 24(%0);"
++		"  movq %%r11, 24(%1);"
 +
 +		/* Step 3: Fold the carry bit back in; guaranteed not to carry at this point */
 +		"  mov $0, %%rax;"
 +		"  cmovc %%rdx, %%rax;"
 +		"  add %%rax, %%r8;"
-+		"  movq %%r8, 0(%0);"
++		"  movq %%r8, 0(%1);"
 +
 +		/* Step 1: Compute dst + carry == tmp_hi * 38 + tmp_lo */
 +		"  mov $38, %%rdx;"
-+		"  mulxq 96(%1), %%r8, %%r13;"
-+		"  xor %%rcx, %%rcx;"
-+		"  adoxq 64(%1), %%r8;"
-+		"  mulxq 104(%1), %%r9, %%rbx;"
++		"  mulxq 96(%0), %%r8, %%r13;"
++		"  xor %%ecx, %%ecx;"
++		"  adoxq 64(%0), %%r8;"
++		"  mulxq 104(%0), %%r9, %%rbx;"
 +		"  adcx %%r13, %%r9;"
-+		"  adoxq 72(%1), %%r9;"
-+		"  mulxq 112(%1), %%r10, %%r13;"
++		"  adoxq 72(%0), %%r9;"
++		"  mulxq 112(%0), %%r10, %%r13;"
 +		"  adcx %%rbx, %%r10;"
-+		"  adoxq 80(%1), %%r10;"
-+		"  mulxq 120(%1), %%r11, %%rax;"
++		"  adoxq 80(%0), %%r10;"
++		"  mulxq 120(%0), %%r11, %%rax;"
 +		"  adcx %%r13, %%r11;"
-+		"  adoxq 88(%1), %%r11;"
++		"  adoxq 88(%0), %%r11;"
 +		"  adcx %%rcx, %%rax;"
 +		"  adox %%rcx, %%rax;"
 +		"  imul %%rdx, %%rax;"
@@ -19157,21 +19512,21 @@ index 00000000..79716c42
 +		/* Step 2: Fold the carry back into dst */
 +		"  add %%rax, %%r8;"
 +		"  adcx %%rcx, %%r9;"
-+		"  movq %%r9, 40(%0);"
++		"  movq %%r9, 40(%1);"
 +		"  adcx %%rcx, %%r10;"
-+		"  movq %%r10, 48(%0);"
++		"  movq %%r10, 48(%1);"
 +		"  adcx %%rcx, %%r11;"
-+		"  movq %%r11, 56(%0);"
++		"  movq %%r11, 56(%1);"
 +
 +		/* Step 3: Fold the carry bit back in; guaranteed not to carry at this point */
 +		"  mov $0, %%rax;"
 +		"  cmovc %%rdx, %%rax;"
 +		"  add %%rax, %%r8;"
-+		"  movq %%r8, 32(%0);"
-+	: "+&r" (tmp), "+&r" (f), "+&r" (out)
-+	:
-+	: "%rax", "%rcx", "%rdx", "%r8", "%r9", "%r10", "%r11", "%rbx", "%r13", "%r14", "%r15", "memory", "cc"
-+	);
++		"  movq %%r8, 32(%1);"
++		: "+&r,&r"(f), "+&r,&r"(tmp)
++		: "r,m"(out)
++		: "%rax", "%rbx", "%rcx", "%rdx", "%r8", "%r9", "%r10", "%r11",
++		  "%r13", "%r14", "%r15", "memory", "cc");
 +}
 +
 +static void point_add_and_double(u64 *q, u64 *p01_tmp1, u64 *tmp2)
@@ -19794,10 +20149,10 @@ index 00000000..79716c42
 +}
 diff --git a/net/wireguard/crypto/zinc/curve25519/curve25519.c b/net/wireguard/crypto/zinc/curve25519/curve25519.c
 new file mode 100644
-index 00000000..d4066fe1
+index 00000000..dffaa09c
 --- /dev/null
 +++ b/net/wireguard/crypto/zinc/curve25519/curve25519.c
-@@ -0,0 +1,110 @@
+@@ -0,0 +1,109 @@
 +// SPDX-License-Identifier: GPL-2.0 OR MIT
 +/*
 + * Copyright (C) 2015-2019 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
@@ -19813,7 +20168,6 @@ index 00000000..d4066fe1
 +#include "../selftest/run.h"
 +
 +#include <asm/unaligned.h>
-+#include <linux/version.h>
 +#include <linux/string.h>
 +#include <linux/random.h>
 +#include <linux/module.h>
@@ -44621,10 +44975,10 @@ index 00000000..4ffaf608
 +#endif
 diff --git a/net/wireguard/device.c b/net/wireguard/device.c
 new file mode 100644
-index 00000000..c6734463
+index 00000000..062490f1
 --- /dev/null
 +++ b/net/wireguard/device.c
-@@ -0,0 +1,470 @@
+@@ -0,0 +1,475 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) 2015-2019 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
@@ -44646,6 +45000,7 @@ index 00000000..c6734463
 +#include <linux/if_arp.h>
 +#include <linux/icmp.h>
 +#include <linux/suspend.h>
++#include <net/dst_metadata.h>
 +#include <net/icmp.h>
 +#include <net/rtnetlink.h>
 +#include <net/ip_tunnels.h>
@@ -44733,6 +45088,7 @@ index 00000000..c6734463
 +{
 +	struct wg_device *wg = netdev_priv(dev);
 +	struct wg_peer *peer;
++	struct sk_buff *skb;
 +
 +	mutex_lock(&wg->device_update_lock);
 +	list_for_each_entry(peer, &wg->peer_list, peer_list) {
@@ -44743,7 +45099,9 @@ index 00000000..c6734463
 +		wg_noise_reset_last_sent_handshake(&peer->last_sent_handshake);
 +	}
 +	mutex_unlock(&wg->device_update_lock);
-+	skb_queue_purge(&wg->incoming_handshakes);
++	while ((skb = ptr_ring_consume(&wg->handshake_queue.ring)) != NULL)
++		kfree_skb(skb);
++	atomic_set(&wg->handshake_queue_len, 0);
 +	wg_socket_reinit(wg, NULL, NULL);
 +	return 0;
 +}
@@ -44773,7 +45131,7 @@ index 00000000..c6734463
 +		else if (skb->protocol == htons(ETH_P_IPV6))
 +			net_dbg_ratelimited("%s: No peer has allowed IPs matching %pI6\n",
 +					    dev->name, &ipv6_hdr(skb)->daddr);
-+		goto err;
++		goto err_icmp;
 +	}
 +
 +	family = READ_ONCE(peer->endpoint.addr.sa_family);
@@ -44784,7 +45142,7 @@ index 00000000..c6734463
 +		goto err_peer;
 +	}
 +
-+	mtu = skb_dst(skb) ? dst_mtu(skb_dst(skb)) : dev->mtu;
++	mtu = skb_valid_dst(skb) ? dst_mtu(skb_dst(skb)) : dev->mtu;
 +
 +	__skb_queue_head_init(&packets);
 +	if (!skb_is_gso(skb)) {
@@ -44836,12 +45194,13 @@ index 00000000..c6734463
 +
 +err_peer:
 +	wg_peer_put(peer);
-+err:
-+	++dev->stats.tx_errors;
++err_icmp:
 +	if (skb->protocol == htons(ETH_P_IP))
 +		icmp_ndo_send(skb, ICMP_DEST_UNREACH, ICMP_HOST_UNREACH, 0);
 +	else if (skb->protocol == htons(ETH_P_IPV6))
 +		icmpv6_ndo_send(skb, ICMPV6_DEST_UNREACH, ICMPV6_ADDR_UNREACH, 0);
++err:
++	++dev->stats.tx_errors;
 +	kfree_skb(skb);
 +	return ret;
 +}
@@ -44869,14 +45228,13 @@ index 00000000..c6734463
 +	destroy_workqueue(wg->handshake_receive_wq);
 +	destroy_workqueue(wg->handshake_send_wq);
 +	destroy_workqueue(wg->packet_crypt_wq);
-+	wg_packet_queue_free(&wg->decrypt_queue, true);
-+	wg_packet_queue_free(&wg->encrypt_queue, true);
++	wg_packet_queue_free(&wg->handshake_queue, true);
++	wg_packet_queue_free(&wg->decrypt_queue, false);
++	wg_packet_queue_free(&wg->encrypt_queue, false);
 +	rcu_barrier(); /* Wait for all the peers to be actually freed. */
 +	wg_ratelimiter_uninit();
 +	memzero_explicit(&wg->static_identity, sizeof(wg->static_identity));
-+	skb_queue_purge(&wg->incoming_handshakes);
 +	free_percpu(dev->tstats);
-+	free_percpu(wg->incoming_handshakes_worker);
 +	kvfree(wg->index_hashtable);
 +	kvfree(wg->peer_hashtable);
 +	mutex_unlock(&wg->device_update_lock);
@@ -44938,7 +45296,6 @@ index 00000000..c6734463
 +	init_rwsem(&wg->static_identity.lock);
 +	mutex_init(&wg->socket_update_lock);
 +	mutex_init(&wg->device_update_lock);
-+	skb_queue_head_init(&wg->incoming_handshakes);
 +	wg_allowedips_init(&wg->peer_allowedips);
 +	wg_cookie_checker_init(&wg->cookie_checker, wg);
 +	INIT_LIST_HEAD(&wg->peer_list);
@@ -44956,16 +45313,10 @@ index 00000000..c6734463
 +	if (!dev->tstats)
 +		goto err_free_index_hashtable;
 +
-+	wg->incoming_handshakes_worker =
-+		wg_packet_percpu_multicore_worker_alloc(
-+				wg_packet_handshake_receive_worker, wg);
-+	if (!wg->incoming_handshakes_worker)
-+		goto err_free_tstats;
-+
 +	wg->handshake_receive_wq = alloc_workqueue("wg-kex-%s",
 +			WQ_CPU_INTENSIVE | WQ_FREEZABLE, 0, dev->name);
 +	if (!wg->handshake_receive_wq)
-+		goto err_free_incoming_handshakes;
++		goto err_free_tstats;
 +
 +	wg->handshake_send_wq = alloc_workqueue("wg-kex-%s",
 +			WQ_UNBOUND | WQ_FREEZABLE, 0, dev->name);
@@ -44978,18 +45329,23 @@ index 00000000..c6734463
 +		goto err_destroy_handshake_send;
 +
 +	ret = wg_packet_queue_init(&wg->encrypt_queue, wg_packet_encrypt_worker,
-+				   true, MAX_QUEUED_PACKETS);
++				   MAX_QUEUED_PACKETS);
 +	if (ret < 0)
 +		goto err_destroy_packet_crypt;
 +
 +	ret = wg_packet_queue_init(&wg->decrypt_queue, wg_packet_decrypt_worker,
-+				   true, MAX_QUEUED_PACKETS);
++				   MAX_QUEUED_PACKETS);
 +	if (ret < 0)
 +		goto err_free_encrypt_queue;
 +
-+	ret = wg_ratelimiter_init();
++	ret = wg_packet_queue_init(&wg->handshake_queue, wg_packet_handshake_receive_worker,
++				   MAX_QUEUED_INCOMING_HANDSHAKES);
 +	if (ret < 0)
 +		goto err_free_decrypt_queue;
++
++	ret = wg_ratelimiter_init();
++	if (ret < 0)
++		goto err_free_handshake_queue;
 +
 +	ret = register_netdevice(dev);
 +	if (ret < 0)
@@ -45007,18 +45363,18 @@ index 00000000..c6734463
 +
 +err_uninit_ratelimiter:
 +	wg_ratelimiter_uninit();
++err_free_handshake_queue:
++	wg_packet_queue_free(&wg->handshake_queue, false);
 +err_free_decrypt_queue:
-+	wg_packet_queue_free(&wg->decrypt_queue, true);
++	wg_packet_queue_free(&wg->decrypt_queue, false);
 +err_free_encrypt_queue:
-+	wg_packet_queue_free(&wg->encrypt_queue, true);
++	wg_packet_queue_free(&wg->encrypt_queue, false);
 +err_destroy_packet_crypt:
 +	destroy_workqueue(wg->packet_crypt_wq);
 +err_destroy_handshake_send:
 +	destroy_workqueue(wg->handshake_send_wq);
 +err_destroy_handshake_receive:
 +	destroy_workqueue(wg->handshake_receive_wq);
-+err_free_incoming_handshakes:
-+	free_percpu(wg->incoming_handshakes_worker);
 +err_free_tstats:
 +	free_percpu(dev->tstats);
 +err_free_index_hashtable:
@@ -45038,6 +45394,7 @@ index 00000000..c6734463
 +static void wg_netns_pre_exit(struct net *net)
 +{
 +	struct wg_device *wg;
++	struct wg_peer *peer;
 +
 +	rtnl_lock();
 +	list_for_each_entry(wg, &device_list, device_list) {
@@ -45047,6 +45404,8 @@ index 00000000..c6734463
 +			mutex_lock(&wg->device_update_lock);
 +			rcu_assign_pointer(wg->creating_net, NULL);
 +			wg_socket_reinit(wg, NULL, NULL);
++			list_for_each_entry(peer, &wg->peer_list, peer_list)
++				wg_socket_clear_peer_endpoint_src(peer);
 +			mutex_unlock(&wg->device_update_lock);
 +		}
 +	}
@@ -45097,10 +45456,10 @@ index 00000000..c6734463
 +}
 diff --git a/net/wireguard/device.h b/net/wireguard/device.h
 new file mode 100644
-index 00000000..4d0144e1
+index 00000000..43c7cebb
 --- /dev/null
 +++ b/net/wireguard/device.h
-@@ -0,0 +1,64 @@
+@@ -0,0 +1,62 @@
 +/* SPDX-License-Identifier: GPL-2.0 */
 +/*
 + * Copyright (C) 2015-2019 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
@@ -45130,32 +45489,30 @@ index 00000000..4d0144e1
 +
 +struct crypt_queue {
 +	struct ptr_ring ring;
-+	union {
-+		struct {
-+			struct multicore_worker __percpu *worker;
-+			int last_cpu;
-+		};
-+		struct work_struct work;
-+	};
++	struct multicore_worker __percpu *worker;
++	int last_cpu;
++};
++
++struct prev_queue {
++	struct sk_buff *head, *tail, *peeked;
++	struct { struct sk_buff *next, *prev; } empty; // Match first 2 members of struct sk_buff.
++	atomic_t count;
 +};
 +
 +struct wg_device {
 +	struct net_device *dev;
-+	struct crypt_queue encrypt_queue, decrypt_queue;
++	struct crypt_queue encrypt_queue, decrypt_queue, handshake_queue;
 +	struct sock __rcu *sock4, *sock6;
 +	struct net __rcu *creating_net;
 +	struct noise_static_identity static_identity;
-+	struct workqueue_struct *handshake_receive_wq, *handshake_send_wq;
-+	struct workqueue_struct *packet_crypt_wq;
-+	struct sk_buff_head incoming_handshakes;
-+	int incoming_handshake_cpu;
-+	struct multicore_worker __percpu *incoming_handshakes_worker;
++	struct workqueue_struct *packet_crypt_wq,*handshake_receive_wq, *handshake_send_wq;
 +	struct cookie_checker cookie_checker;
 +	struct pubkey_hashtable *peer_hashtable;
 +	struct index_hashtable *index_hashtable;
 +	struct allowedips peer_allowedips;
 +	struct mutex device_update_lock, socket_update_lock;
 +	struct list_head device_list, peer_list;
++	atomic_t handshake_queue_len;
 +	unsigned int num_peers, device_update_gen;
 +	u32 fwmark;
 +	u16 incoming_port;
@@ -45167,10 +45524,10 @@ index 00000000..4d0144e1
 +#endif /* _WG_DEVICE_H */
 diff --git a/net/wireguard/main.c b/net/wireguard/main.c
 new file mode 100644
-index 00000000..54350115
+index 00000000..d5ce491e
 --- /dev/null
 +++ b/net/wireguard/main.c
-@@ -0,0 +1,69 @@
+@@ -0,0 +1,84 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) 2015-2019 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
@@ -45190,7 +45547,7 @@ index 00000000..54350115
 +#include <linux/genetlink.h>
 +#include <net/rtnetlink.h>
 +
-+static int __init mod_init(void)
++static int __init wg_mod_init(void)
 +{
 +	int ret;
 +
@@ -45199,12 +45556,21 @@ index 00000000..54350115
 +	    (ret = curve25519_mod_init()))
 +		return ret;
 +
++	ret = wg_allowedips_slab_init();
++	if (ret < 0)
++		goto err_allowedips;
++
 +#ifdef DEBUG
++	ret = -ENOTRECOVERABLE;
 +	if (!wg_allowedips_selftest() || !wg_packet_counter_selftest() ||
 +	    !wg_ratelimiter_selftest())
-+		return -ENOTRECOVERABLE;
++		goto err_peer;
 +#endif
 +	wg_noise_init();
++
++	ret = wg_peer_init();
++	if (ret < 0)
++		goto err_peer;
 +
 +	ret = wg_device_init();
 +	if (ret < 0)
@@ -45222,17 +45588,23 @@ index 00000000..54350115
 +err_netlink:
 +	wg_device_uninit();
 +err_device:
++	wg_peer_uninit();
++err_peer:
++	wg_allowedips_slab_uninit();
++err_allowedips:
 +	return ret;
 +}
 +
-+static void __exit mod_exit(void)
++static void __exit wg_mod_exit(void)
 +{
 +	wg_genetlink_uninit();
 +	wg_device_uninit();
++	wg_peer_uninit();
++	wg_allowedips_slab_uninit();
 +}
 +
-+module_init(mod_init);
-+module_exit(mod_exit);
++module_init(wg_mod_init);
++module_exit(wg_mod_exit);
 +MODULE_LICENSE("GPL v2");
 +MODULE_DESCRIPTION("WireGuard secure network tunnel");
 +MODULE_AUTHOR("Jason A. Donenfeld <Jason@zx2c4.com>");
@@ -47035,10 +47407,10 @@ index 00000000..c527253d
 +#endif /* _WG_NOISE_H */
 diff --git a/net/wireguard/peer.c b/net/wireguard/peer.c
 new file mode 100644
-index 00000000..b3b6370e
+index 00000000..1acd00ab
 --- /dev/null
 +++ b/net/wireguard/peer.c
-@@ -0,0 +1,237 @@
+@@ -0,0 +1,240 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) 2015-2019 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
@@ -47056,6 +47428,7 @@ index 00000000..b3b6370e
 +#include <linux/rcupdate.h>
 +#include <linux/list.h>
 +
++static struct kmem_cache *peer_cache;
 +static atomic64_t peer_counter = ATOMIC64_INIT(0);
 +
 +struct wg_peer *wg_peer_create(struct wg_device *wg,
@@ -47070,30 +47443,25 @@ index 00000000..b3b6370e
 +	if (wg->num_peers >= MAX_PEERS_PER_DEVICE)
 +		return ERR_PTR(ret);
 +
-+	peer = kzalloc(sizeof(*peer), GFP_KERNEL);
++	peer = kmem_cache_zalloc(peer_cache, GFP_KERNEL);
 +	if (unlikely(!peer))
 +		return ERR_PTR(ret);
-+	peer->device = wg;
++	if (unlikely(dst_cache_init(&peer->endpoint_cache, GFP_KERNEL)))
++		goto err;
 +
++	peer->device = wg;
 +	wg_noise_handshake_init(&peer->handshake, &wg->static_identity,
 +				public_key, preshared_key, peer);
-+	if (dst_cache_init(&peer->endpoint_cache, GFP_KERNEL))
-+		goto err_1;
-+	if (wg_packet_queue_init(&peer->tx_queue, wg_packet_tx_worker, false,
-+				 MAX_QUEUED_PACKETS))
-+		goto err_2;
-+	if (wg_packet_queue_init(&peer->rx_queue, NULL, false,
-+				 MAX_QUEUED_PACKETS))
-+		goto err_3;
-+
 +	peer->internal_id = atomic64_inc_return(&peer_counter);
 +	peer->serial_work_cpu = nr_cpumask_bits;
 +	wg_cookie_init(&peer->latest_cookie);
 +	wg_timers_init(peer);
 +	wg_cookie_checker_precompute_peer_keys(peer);
 +	spin_lock_init(&peer->keypairs.keypair_update_lock);
-+	INIT_WORK(&peer->transmit_handshake_work,
-+		  wg_packet_handshake_send_worker);
++	INIT_WORK(&peer->transmit_handshake_work, wg_packet_handshake_send_worker);
++	INIT_WORK(&peer->transmit_packet_work, wg_packet_tx_worker);
++	wg_prev_queue_init(&peer->tx_queue);
++	wg_prev_queue_init(&peer->rx_queue);
 +	rwlock_init(&peer->endpoint_lock);
 +	kref_init(&peer->refcount);
 +	skb_queue_head_init(&peer->staged_packet_queue);
@@ -47109,12 +47477,8 @@ index 00000000..b3b6370e
 +	pr_debug("%s: Peer %llu created\n", wg->dev->name, peer->internal_id);
 +	return peer;
 +
-+err_3:
-+	wg_packet_queue_free(&peer->tx_queue, false);
-+err_2:
-+	dst_cache_destroy(&peer->endpoint_cache);
-+err_1:
-+	kfree(peer);
++err:
++	kmem_cache_free(peer_cache, peer);
 +	return ERR_PTR(ret);
 +}
 +
@@ -47138,7 +47502,7 @@ index 00000000..b3b6370e
 +	/* Mark as dead, so that we don't allow jumping contexts after. */
 +	WRITE_ONCE(peer->is_dead, true);
 +
-+	/* The caller must now synchronize_rcu() for this to take effect. */
++	/* The caller must now synchronize_net() for this to take effect. */
 +}
 +
 +static void peer_remove_after_dead(struct wg_peer *peer)
@@ -47210,7 +47574,7 @@ index 00000000..b3b6370e
 +	lockdep_assert_held(&peer->device->device_update_lock);
 +
 +	peer_make_dead(peer);
-+	synchronize_rcu();
++	synchronize_net();
 +	peer_remove_after_dead(peer);
 +}
 +
@@ -47228,7 +47592,7 @@ index 00000000..b3b6370e
 +		peer_make_dead(peer);
 +		list_add_tail(&peer->peer_list, &dead_peers);
 +	}
-+	synchronize_rcu();
++	synchronize_net();
 +	list_for_each_entry_safe(peer, temp, &dead_peers, peer_list)
 +		peer_remove_after_dead(peer);
 +}
@@ -47238,13 +47602,13 @@ index 00000000..b3b6370e
 +	struct wg_peer *peer = container_of(rcu, struct wg_peer, rcu);
 +
 +	dst_cache_destroy(&peer->endpoint_cache);
-+	wg_packet_queue_free(&peer->rx_queue, false);
-+	wg_packet_queue_free(&peer->tx_queue, false);
++	WARN_ON(wg_prev_queue_peek(&peer->tx_queue) || wg_prev_queue_peek(&peer->rx_queue));
 +
 +	/* The final zeroing takes care of clearing any remaining handshake key
 +	 * material and other potentially sensitive information.
 +	 */
-+	kfree_sensitive(peer);
++	memzero_explicit(peer, sizeof(*peer));
++	kmem_cache_free(peer_cache, peer);
 +}
 +
 +static void kref_release(struct kref *refcount)
@@ -47276,12 +47640,23 @@ index 00000000..b3b6370e
 +		return;
 +	kref_put(&peer->refcount, kref_release);
 +}
++
++int __init wg_peer_init(void)
++{
++	peer_cache = KMEM_CACHE(wg_peer, 0);
++	return peer_cache ? 0 : -ENOMEM;
++}
++
++void wg_peer_uninit(void)
++{
++	kmem_cache_destroy(peer_cache);
++}
 diff --git a/net/wireguard/peer.h b/net/wireguard/peer.h
 new file mode 100644
-index 00000000..23af4092
+index 00000000..76e4d312
 --- /dev/null
 +++ b/net/wireguard/peer.h
-@@ -0,0 +1,83 @@
+@@ -0,0 +1,86 @@
 +/* SPDX-License-Identifier: GPL-2.0 */
 +/*
 + * Copyright (C) 2015-2019 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
@@ -47320,16 +47695,17 @@ index 00000000..23af4092
 +
 +struct wg_peer {
 +	struct wg_device *device;
-+	struct crypt_queue tx_queue, rx_queue;
++	struct prev_queue tx_queue, rx_queue;
 +	struct sk_buff_head staged_packet_queue;
 +	int serial_work_cpu;
++	bool is_dead;
 +	struct noise_keypairs keypairs;
 +	struct endpoint endpoint;
 +	struct dst_cache endpoint_cache;
 +	rwlock_t endpoint_lock;
 +	struct noise_handshake handshake;
 +	atomic64_t last_sent_handshake;
-+	struct work_struct transmit_handshake_work, clear_peer_work;
++	struct work_struct transmit_handshake_work, clear_peer_work, transmit_packet_work;
 +	struct cookie latest_cookie;
 +	struct hlist_node pubkey_hash;
 +	u64 rx_bytes, tx_bytes;
@@ -47345,9 +47721,8 @@ index 00000000..23af4092
 +	struct rcu_head rcu;
 +	struct list_head peer_list;
 +	struct list_head allowedips_list;
-+	u64 internal_id;
 +	struct napi_struct napi;
-+	bool is_dead;
++	u64 internal_id;
 +};
 +
 +struct wg_peer *wg_peer_create(struct wg_device *wg,
@@ -47363,6 +47738,9 @@ index 00000000..23af4092
 +void wg_peer_put(struct wg_peer *peer);
 +void wg_peer_remove(struct wg_peer *peer);
 +void wg_peer_remove_all(struct wg_device *wg);
++
++int wg_peer_init(void);
++void wg_peer_uninit(void);
 +
 +#endif /* _WG_PEER_H */
 diff --git a/net/wireguard/peerlookup.c b/net/wireguard/peerlookup.c
@@ -47669,23 +48047,23 @@ index 00000000..ced81179
 +#endif /* _WG_PEERLOOKUP_H */
 diff --git a/net/wireguard/queueing.c b/net/wireguard/queueing.c
 new file mode 100644
-index 00000000..71b8e80b
+index 00000000..8084e740
 --- /dev/null
 +++ b/net/wireguard/queueing.c
-@@ -0,0 +1,55 @@
+@@ -0,0 +1,108 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) 2015-2019 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
 + */
 +
 +#include "queueing.h"
++#include <linux/skb_array.h>
 +
 +struct multicore_worker __percpu *
 +wg_packet_percpu_multicore_worker_alloc(work_func_t function, void *ptr)
 +{
 +	int cpu;
-+	struct multicore_worker __percpu *worker =
-+		alloc_percpu(struct multicore_worker);
++	struct multicore_worker __percpu *worker = alloc_percpu(struct multicore_worker);
 +
 +	if (!worker)
 +		return NULL;
@@ -47698,7 +48076,7 @@ index 00000000..71b8e80b
 +}
 +
 +int wg_packet_queue_init(struct crypt_queue *queue, work_func_t function,
-+			 bool multicore, unsigned int len)
++			 unsigned int len)
 +{
 +	int ret;
 +
@@ -47706,34 +48084,87 @@ index 00000000..71b8e80b
 +	ret = ptr_ring_init(&queue->ring, len, GFP_KERNEL);
 +	if (ret)
 +		return ret;
-+	if (function) {
-+		if (multicore) {
-+			queue->worker = wg_packet_percpu_multicore_worker_alloc(
-+				function, queue);
-+			if (!queue->worker) {
-+				ptr_ring_cleanup(&queue->ring, NULL);
-+				return -ENOMEM;
-+			}
-+		} else {
-+			INIT_WORK(&queue->work, function);
-+		}
++	queue->worker = wg_packet_percpu_multicore_worker_alloc(function, queue);
++	if (!queue->worker) {
++		ptr_ring_cleanup(&queue->ring, NULL);
++		return -ENOMEM;
 +	}
 +	return 0;
 +}
 +
-+void wg_packet_queue_free(struct crypt_queue *queue, bool multicore)
++void wg_packet_queue_free(struct crypt_queue *queue, bool purge)
 +{
-+	if (multicore)
-+		free_percpu(queue->worker);
-+	WARN_ON(!__ptr_ring_empty(&queue->ring));
-+	ptr_ring_cleanup(&queue->ring, NULL);
++	free_percpu(queue->worker);
++	WARN_ON(!purge && !__ptr_ring_empty(&queue->ring));
++	ptr_ring_cleanup(&queue->ring, purge ? __skb_array_destroy_skb : NULL);
 +}
++
++#define NEXT(skb) ((skb)->prev)
++#define STUB(queue) ((struct sk_buff *)&queue->empty)
++
++void wg_prev_queue_init(struct prev_queue *queue)
++{
++	NEXT(STUB(queue)) = NULL;
++	queue->head = queue->tail = STUB(queue);
++	queue->peeked = NULL;
++	atomic_set(&queue->count, 0);
++	BUILD_BUG_ON(
++		offsetof(struct sk_buff, next) != offsetof(struct prev_queue, empty.next) -
++							offsetof(struct prev_queue, empty) ||
++		offsetof(struct sk_buff, prev) != offsetof(struct prev_queue, empty.prev) -
++							 offsetof(struct prev_queue, empty));
++}
++
++static void __wg_prev_queue_enqueue(struct prev_queue *queue, struct sk_buff *skb)
++{
++	WRITE_ONCE(NEXT(skb), NULL);
++	WRITE_ONCE(NEXT(xchg_release(&queue->head, skb)), skb);
++}
++
++bool wg_prev_queue_enqueue(struct prev_queue *queue, struct sk_buff *skb)
++{
++	if (!atomic_add_unless(&queue->count, 1, MAX_QUEUED_PACKETS))
++		return false;
++	__wg_prev_queue_enqueue(queue, skb);
++	return true;
++}
++
++struct sk_buff *wg_prev_queue_dequeue(struct prev_queue *queue)
++{
++	struct sk_buff *tail = queue->tail, *next = smp_load_acquire(&NEXT(tail));
++
++	if (tail == STUB(queue)) {
++		if (!next)
++			return NULL;
++		queue->tail = next;
++		tail = next;
++		next = smp_load_acquire(&NEXT(next));
++	}
++	if (next) {
++		queue->tail = next;
++		atomic_dec(&queue->count);
++		return tail;
++	}
++	if (tail != READ_ONCE(queue->head))
++		return NULL;
++	__wg_prev_queue_enqueue(queue, STUB(queue));
++	next = smp_load_acquire(&NEXT(tail));
++	if (next) {
++		queue->tail = next;
++		atomic_dec(&queue->count);
++		return tail;
++	}
++	return NULL;
++}
++
++#undef NEXT
++#undef STUB
 diff --git a/net/wireguard/queueing.h b/net/wireguard/queueing.h
 new file mode 100644
-index 00000000..bab170b9
+index 00000000..03850c43
 --- /dev/null
 +++ b/net/wireguard/queueing.h
-@@ -0,0 +1,196 @@
+@@ -0,0 +1,217 @@
 +/* SPDX-License-Identifier: GPL-2.0 */
 +/*
 + * Copyright (C) 2015-2019 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
@@ -47753,12 +48184,13 @@ index 00000000..bab170b9
 +struct wg_peer;
 +struct multicore_worker;
 +struct crypt_queue;
++struct prev_queue;
 +struct sk_buff;
 +
 +/* queueing.c APIs: */
 +int wg_packet_queue_init(struct crypt_queue *queue, work_func_t function,
-+			 bool multicore, unsigned int len);
-+void wg_packet_queue_free(struct crypt_queue *queue, bool multicore);
++			 unsigned int len);
++void wg_packet_queue_free(struct crypt_queue *queue, bool purge);
 +struct multicore_worker __percpu *
 +wg_packet_percpu_multicore_worker_alloc(work_func_t function, void *ptr);
 +
@@ -47874,8 +48306,31 @@ index 00000000..bab170b9
 +	return cpu;
 +}
 +
++void wg_prev_queue_init(struct prev_queue *queue);
++
++/* Multi producer */
++bool wg_prev_queue_enqueue(struct prev_queue *queue, struct sk_buff *skb);
++
++/* Single consumer */
++struct sk_buff *wg_prev_queue_dequeue(struct prev_queue *queue);
++
++/* Single consumer */
++static inline struct sk_buff *wg_prev_queue_peek(struct prev_queue *queue)
++{
++	if (queue->peeked)
++		return queue->peeked;
++	queue->peeked = wg_prev_queue_dequeue(queue);
++	return queue->peeked;
++}
++
++/* Single consumer */
++static inline void wg_prev_queue_drop_peeked(struct prev_queue *queue)
++{
++	queue->peeked = NULL;
++}
++
 +static inline int wg_queue_enqueue_per_device_and_peer(
-+	struct crypt_queue *device_queue, struct crypt_queue *peer_queue,
++	struct crypt_queue *device_queue, struct prev_queue *peer_queue,
 +	struct sk_buff *skb, struct workqueue_struct *wq, int *next_cpu)
 +{
 +	int cpu;
@@ -47884,8 +48339,9 @@ index 00000000..bab170b9
 +	/* We first queue this up for the peer ingestion, but the consumer
 +	 * will wait for the state to change to CRYPTED or DEAD before.
 +	 */
-+	if (unlikely(ptr_ring_produce_bh(&peer_queue->ring, skb)))
++	if (unlikely(!wg_prev_queue_enqueue(peer_queue, skb)))
 +		return -ENOSPC;
++
 +	/* Then we queue it up in the device queue, which consumes the
 +	 * packet as soon as it can.
 +	 */
@@ -47896,9 +48352,7 @@ index 00000000..bab170b9
 +	return 0;
 +}
 +
-+static inline void wg_queue_enqueue_per_peer(struct crypt_queue *queue,
-+					     struct sk_buff *skb,
-+					     enum packet_state state)
++static inline void wg_queue_enqueue_per_peer_tx(struct sk_buff *skb, enum packet_state state)
 +{
 +	/* We take a reference, because as soon as we call atomic_set, the
 +	 * peer can be freed from below us.
@@ -47906,14 +48360,12 @@ index 00000000..bab170b9
 +	struct wg_peer *peer = wg_peer_get(PACKET_PEER(skb));
 +
 +	atomic_set_release(&PACKET_CB(skb)->state, state);
-+	queue_work_on(wg_cpumask_choose_online(&peer->serial_work_cpu,
-+					       peer->internal_id),
-+		      peer->device->packet_crypt_wq, &queue->work);
++	queue_work_on(wg_cpumask_choose_online(&peer->serial_work_cpu, peer->internal_id),
++		      peer->device->packet_crypt_wq, &peer->transmit_packet_work);
 +	wg_peer_put(peer);
 +}
 +
-+static inline void wg_queue_enqueue_per_peer_napi(struct sk_buff *skb,
-+						  enum packet_state state)
++static inline void wg_queue_enqueue_per_peer_rx(struct sk_buff *skb, enum packet_state state)
 +{
 +	/* We take a reference, because as soon as we call atomic_set, the
 +	 * peer can be freed from below us.
@@ -47932,7 +48384,7 @@ index 00000000..bab170b9
 +#endif /* _WG_QUEUEING_H */
 diff --git a/net/wireguard/ratelimiter.c b/net/wireguard/ratelimiter.c
 new file mode 100644
-index 00000000..e33ec72a
+index 00000000..ecee41f5
 --- /dev/null
 +++ b/net/wireguard/ratelimiter.c
 @@ -0,0 +1,235 @@
@@ -48126,12 +48578,12 @@ index 00000000..e33ec72a
 +			(1U << 14) / sizeof(struct hlist_head)));
 +	max_entries = table_size * 8;
 +
-+	table_v4 = kvzalloc(table_size * sizeof(*table_v4), GFP_KERNEL);
++	table_v4 = kvcalloc(table_size, sizeof(*table_v4), GFP_KERNEL);
 +	if (unlikely(!table_v4))
 +		goto err_kmemcache;
 +
 +#if IS_ENABLED(CONFIG_IPV6)
-+	table_v6 = kvzalloc(table_size * sizeof(*table_v6), GFP_KERNEL);
++	table_v6 = kvcalloc(table_size, sizeof(*table_v6), GFP_KERNEL);
 +	if (unlikely(!table_v6)) {
 +		kvfree(table_v4);
 +		goto err_kmemcache;
@@ -48198,10 +48650,10 @@ index 00000000..83067f71
 +#endif /* _WG_RATELIMITER_H */
 diff --git a/net/wireguard/receive.c b/net/wireguard/receive.c
 new file mode 100644
-index 00000000..172ef823
+index 00000000..214889ed
 --- /dev/null
 +++ b/net/wireguard/receive.c
-@@ -0,0 +1,599 @@
+@@ -0,0 +1,602 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) 2015-2019 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
@@ -48321,8 +48773,8 @@ index 00000000..172ef823
 +		return;
 +	}
 +
-+	under_load = skb_queue_len(&wg->incoming_handshakes) >=
-+		     MAX_QUEUED_INCOMING_HANDSHAKES / 8;
++	under_load = atomic_read(&wg->handshake_queue_len) >=
++			MAX_QUEUED_INCOMING_HANDSHAKES / 8;
 +	if (under_load) {
 +		last_under_load = ktime_get_coarse_boottime_ns();
 +	} else if (last_under_load) {
@@ -48417,13 +48869,14 @@ index 00000000..172ef823
 +
 +void wg_packet_handshake_receive_worker(struct work_struct *work)
 +{
-+	struct wg_device *wg = container_of(work, struct multicore_worker,
-+					    work)->ptr;
++	struct crypt_queue *queue = container_of(work, struct multicore_worker, work)->ptr;
++	struct wg_device *wg = container_of(queue, struct wg_device, handshake_queue);
 +	struct sk_buff *skb;
 +
-+	while ((skb = skb_dequeue(&wg->incoming_handshakes)) != NULL) {
++	while ((skb = ptr_ring_consume_bh(&queue->ring)) != NULL) {
 +		wg_receive_handshake_packet(wg, skb);
 +		dev_kfree_skb(skb);
++		atomic_dec(&wg->handshake_queue_len);
 +		cond_resched();
 +	}
 +}
@@ -48653,7 +49106,6 @@ index 00000000..172ef823
 +int wg_packet_rx_poll(struct napi_struct *napi, int budget)
 +{
 +	struct wg_peer *peer = container_of(napi, struct wg_peer, napi);
-+	struct crypt_queue *queue = &peer->rx_queue;
 +	struct noise_keypair *keypair;
 +	struct endpoint endpoint;
 +	enum packet_state state;
@@ -48664,11 +49116,10 @@ index 00000000..172ef823
 +	if (unlikely(budget <= 0))
 +		return 0;
 +
-+	while ((skb = __ptr_ring_peek(&queue->ring)) != NULL &&
++	while ((skb = wg_prev_queue_peek(&peer->rx_queue)) != NULL &&
 +	       (state = atomic_read_acquire(&PACKET_CB(skb)->state)) !=
 +		       PACKET_STATE_UNCRYPTED) {
-+		__ptr_ring_discard_one(&queue->ring);
-+		peer = PACKET_PEER(skb);
++		wg_prev_queue_drop_peeked(&peer->rx_queue);
 +		keypair = PACKET_CB(skb)->keypair;
 +		free = true;
 +
@@ -48720,7 +49171,7 @@ index 00000000..172ef823
 +			likely(decrypt_packet(skb, PACKET_CB(skb)->keypair,
 +					      &simd_context)) ?
 +				PACKET_STATE_CRYPTED : PACKET_STATE_DEAD;
-+		wg_queue_enqueue_per_peer_napi(skb, state);
++		wg_queue_enqueue_per_peer_rx(skb, state);
 +		simd_relax(&simd_context);
 +	}
 +
@@ -48744,12 +49195,10 @@ index 00000000..172ef823
 +	if (unlikely(READ_ONCE(peer->is_dead)))
 +		goto err;
 +
-+	ret = wg_queue_enqueue_per_device_and_peer(&wg->decrypt_queue,
-+						   &peer->rx_queue, skb,
-+						   wg->packet_crypt_wq,
-+						   &wg->decrypt_queue.last_cpu);
++	ret = wg_queue_enqueue_per_device_and_peer(&wg->decrypt_queue, &peer->rx_queue, skb,
++						   wg->packet_crypt_wq, &wg->decrypt_queue.last_cpu);
 +	if (unlikely(ret == -EPIPE))
-+		wg_queue_enqueue_per_peer_napi(skb, PACKET_STATE_DEAD);
++		wg_queue_enqueue_per_peer_rx(skb, PACKET_STATE_DEAD);
 +	if (likely(!ret || ret == -EPIPE)) {
 +		rcu_read_unlock_bh();
 +		return;
@@ -48770,22 +49219,28 @@ index 00000000..172ef823
 +	case cpu_to_le32(MESSAGE_HANDSHAKE_INITIATION):
 +	case cpu_to_le32(MESSAGE_HANDSHAKE_RESPONSE):
 +	case cpu_to_le32(MESSAGE_HANDSHAKE_COOKIE): {
-+		int cpu;
++		int cpu, ret = -EBUSY;
 +
-+		if (skb_queue_len(&wg->incoming_handshakes) >
-+			    MAX_QUEUED_INCOMING_HANDSHAKES ||
-+		    unlikely(!rng_is_initialized())) {
++		if (unlikely(!rng_is_initialized()))
++			goto drop;
++		if (atomic_read(&wg->handshake_queue_len) > MAX_QUEUED_INCOMING_HANDSHAKES / 2) {
++			if (spin_trylock_bh(&wg->handshake_queue.ring.producer_lock)) {
++				ret = __ptr_ring_produce(&wg->handshake_queue.ring, skb);
++				spin_unlock_bh(&wg->handshake_queue.ring.producer_lock);
++			}
++		} else
++			ret = ptr_ring_produce_bh(&wg->handshake_queue.ring, skb);
++		if (ret) {
++	drop:
 +			net_dbg_skb_ratelimited("%s: Dropping handshake packet from %pISpfsc\n",
 +						wg->dev->name, skb);
 +			goto err;
 +		}
-+		skb_queue_tail(&wg->incoming_handshakes, skb);
-+		/* Queues up a call to packet_process_queued_handshake_
-+		 * packets(skb):
-+		 */
-+		cpu = wg_cpumask_next_online(&wg->incoming_handshake_cpu);
++		atomic_inc(&wg->handshake_queue_len);
++		cpu = wg_cpumask_next_online(&wg->handshake_queue.last_cpu);
++		/* Queues up a call to packet_process_queued_handshake_packets(skb): */
 +		queue_work_on(cpu, wg->handshake_receive_wq,
-+			&per_cpu_ptr(wg->incoming_handshakes_worker, cpu)->work);
++			      &per_cpu_ptr(wg->handshake_queue.worker, cpu)->work);
 +		break;
 +	}
 +	case cpu_to_le32(MESSAGE_DATA):
@@ -48803,10 +49258,10 @@ index 00000000..172ef823
 +}
 diff --git a/net/wireguard/selftest/allowedips.c b/net/wireguard/selftest/allowedips.c
 new file mode 100644
-index 00000000..846db14c
+index 00000000..e173204a
 --- /dev/null
 +++ b/net/wireguard/selftest/allowedips.c
-@@ -0,0 +1,683 @@
+@@ -0,0 +1,676 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) 2015-2019 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
@@ -48828,32 +49283,22 @@ index 00000000..846db14c
 +
 +#include <linux/siphash.h>
 +
-+static __init void swap_endian_and_apply_cidr(u8 *dst, const u8 *src, u8 bits,
-+					      u8 cidr)
-+{
-+	swap_endian(dst, src, bits);
-+	memset(dst + (cidr + 7) / 8, 0, bits / 8 - (cidr + 7) / 8);
-+	if (cidr)
-+		dst[(cidr + 7) / 8 - 1] &= ~0U << ((8 - (cidr % 8)) % 8);
-+}
-+
 +static __init void print_node(struct allowedips_node *node, u8 bits)
 +{
 +	char *fmt_connection = KERN_DEBUG "\t\"%p/%d\" -> \"%p/%d\";\n";
-+	char *fmt_declaration = KERN_DEBUG
-+		"\t\"%p/%d\"[style=%s, color=\"#%06x\"];\n";
++	char *fmt_declaration = KERN_DEBUG "\t\"%p/%d\"[style=%s, color=\"#%06x\"];\n";
++	u8 ip1[16], ip2[16], cidr1, cidr2;
 +	char *style = "dotted";
-+	u8 ip1[16], ip2[16];
 +	u32 color = 0;
 +
++	if (node == NULL)
++		return;
 +	if (bits == 32) {
 +		fmt_connection = KERN_DEBUG "\t\"%pI4/%d\" -> \"%pI4/%d\";\n";
-+		fmt_declaration = KERN_DEBUG
-+			"\t\"%pI4/%d\"[style=%s, color=\"#%06x\"];\n";
++		fmt_declaration = KERN_DEBUG "\t\"%pI4/%d\"[style=%s, color=\"#%06x\"];\n";
 +	} else if (bits == 128) {
 +		fmt_connection = KERN_DEBUG "\t\"%pI6/%d\" -> \"%pI6/%d\";\n";
-+		fmt_declaration = KERN_DEBUG
-+			"\t\"%pI6/%d\"[style=%s, color=\"#%06x\"];\n";
++		fmt_declaration = KERN_DEBUG "\t\"%pI6/%d\"[style=%s, color=\"#%06x\"];\n";
 +	}
 +	if (node->peer) {
 +		hsiphash_key_t key = { { 0 } };
@@ -48864,24 +49309,20 @@ index 00000000..846db14c
 +			hsiphash_1u32(0xabad1dea, &key) % 200;
 +		style = "bold";
 +	}
-+	swap_endian_and_apply_cidr(ip1, node->bits, bits, node->cidr);
-+	printk(fmt_declaration, ip1, node->cidr, style, color);
++	wg_allowedips_read_node(node, ip1, &cidr1);
++	printk(fmt_declaration, ip1, cidr1, style, color);
 +	if (node->bit[0]) {
-+		swap_endian_and_apply_cidr(ip2,
-+				rcu_dereference_raw(node->bit[0])->bits, bits,
-+				node->cidr);
-+		printk(fmt_connection, ip1, node->cidr, ip2,
-+		       rcu_dereference_raw(node->bit[0])->cidr);
-+		print_node(rcu_dereference_raw(node->bit[0]), bits);
++		wg_allowedips_read_node(rcu_dereference_raw(node->bit[0]), ip2, &cidr2);
++		printk(fmt_connection, ip1, cidr1, ip2, cidr2);
 +	}
 +	if (node->bit[1]) {
-+		swap_endian_and_apply_cidr(ip2,
-+				rcu_dereference_raw(node->bit[1])->bits,
-+				bits, node->cidr);
-+		printk(fmt_connection, ip1, node->cidr, ip2,
-+		       rcu_dereference_raw(node->bit[1])->cidr);
-+		print_node(rcu_dereference_raw(node->bit[1]), bits);
++		wg_allowedips_read_node(rcu_dereference_raw(node->bit[1]), ip2, &cidr2);
++		printk(fmt_connection, ip1, cidr1, ip2, cidr2);
 +	}
++	if (node->bit[0])
++		print_node(rcu_dereference_raw(node->bit[0]), bits);
++	if (node->bit[1])
++		print_node(rcu_dereference_raw(node->bit[1]), bits);
 +}
 +
 +static __init void print_tree(struct allowedips_node __rcu *top, u8 bits)
@@ -48930,8 +49371,8 @@ index 00000000..846db14c
 +{
 +	union nf_inet_addr mask;
 +
-+	memset(&mask, 0x00, 128 / 8);
-+	memset(&mask, 0xff, cidr / 8);
++	memset(&mask, 0, sizeof(mask));
++	memset(&mask.all, 0xff, cidr / 8);
 +	if (cidr % 32)
 +		mask.all[cidr / 32] = (__force u32)htonl(
 +			(0xFFFFFFFFUL << (32 - (cidr % 32))) & 0xFFFFFFFFUL);
@@ -48958,42 +49399,36 @@ index 00000000..846db14c
 +}
 +
 +static __init inline bool
-+horrible_match_v4(const struct horrible_allowedips_node *node,
-+		  struct in_addr *ip)
++horrible_match_v4(const struct horrible_allowedips_node *node, struct in_addr *ip)
 +{
 +	return (ip->s_addr & node->mask.ip) == node->ip.ip;
 +}
 +
 +static __init inline bool
-+horrible_match_v6(const struct horrible_allowedips_node *node,
-+		  struct in6_addr *ip)
++horrible_match_v6(const struct horrible_allowedips_node *node, struct in6_addr *ip)
 +{
-+	return (ip->in6_u.u6_addr32[0] & node->mask.ip6[0]) ==
-+		       node->ip.ip6[0] &&
-+	       (ip->in6_u.u6_addr32[1] & node->mask.ip6[1]) ==
-+		       node->ip.ip6[1] &&
-+	       (ip->in6_u.u6_addr32[2] & node->mask.ip6[2]) ==
-+		       node->ip.ip6[2] &&
++	return (ip->in6_u.u6_addr32[0] & node->mask.ip6[0]) == node->ip.ip6[0] &&
++	       (ip->in6_u.u6_addr32[1] & node->mask.ip6[1]) == node->ip.ip6[1] &&
++	       (ip->in6_u.u6_addr32[2] & node->mask.ip6[2]) == node->ip.ip6[2] &&
 +	       (ip->in6_u.u6_addr32[3] & node->mask.ip6[3]) == node->ip.ip6[3];
 +}
 +
 +static __init void
-+horrible_insert_ordered(struct horrible_allowedips *table,
-+			struct horrible_allowedips_node *node)
++horrible_insert_ordered(struct horrible_allowedips *table, struct horrible_allowedips_node *node)
 +{
 +	struct horrible_allowedips_node *other = NULL, *where = NULL;
 +	u8 my_cidr = horrible_mask_to_cidr(node->mask);
 +
 +	hlist_for_each_entry(other, &table->head, table) {
-+		if (!memcmp(&other->mask, &node->mask,
-+			    sizeof(union nf_inet_addr)) &&
-+		    !memcmp(&other->ip, &node->ip,
-+			    sizeof(union nf_inet_addr)) &&
-+		    other->ip_version == node->ip_version) {
++		if (other->ip_version == node->ip_version &&
++		    !memcmp(&other->mask, &node->mask, sizeof(union nf_inet_addr)) &&
++		    !memcmp(&other->ip, &node->ip, sizeof(union nf_inet_addr))) {
 +			other->value = node->value;
 +			kfree(node);
 +			return;
 +		}
++	}
++	hlist_for_each_entry(other, &table->head, table) {
 +		where = other;
 +		if (horrible_mask_to_cidr(other->mask) <= my_cidr)
 +			break;
@@ -49010,8 +49445,7 @@ index 00000000..846db14c
 +horrible_allowedips_insert_v4(struct horrible_allowedips *table,
 +			      struct in_addr *ip, u8 cidr, void *value)
 +{
-+	struct horrible_allowedips_node *node = kzalloc(sizeof(*node),
-+							GFP_KERNEL);
++	struct horrible_allowedips_node *node = kzalloc(sizeof(*node), GFP_KERNEL);
 +
 +	if (unlikely(!node))
 +		return -ENOMEM;
@@ -49028,8 +49462,7 @@ index 00000000..846db14c
 +horrible_allowedips_insert_v6(struct horrible_allowedips *table,
 +			      struct in6_addr *ip, u8 cidr, void *value)
 +{
-+	struct horrible_allowedips_node *node = kzalloc(sizeof(*node),
-+							GFP_KERNEL);
++	struct horrible_allowedips_node *node = kzalloc(sizeof(*node), GFP_KERNEL);
 +
 +	if (unlikely(!node))
 +		return -ENOMEM;
@@ -49043,39 +49476,43 @@ index 00000000..846db14c
 +}
 +
 +static __init void *
-+horrible_allowedips_lookup_v4(struct horrible_allowedips *table,
-+			      struct in_addr *ip)
++horrible_allowedips_lookup_v4(struct horrible_allowedips *table, struct in_addr *ip)
 +{
 +	struct horrible_allowedips_node *node;
-+	void *ret = NULL;
 +
 +	hlist_for_each_entry(node, &table->head, table) {
-+		if (node->ip_version != 4)
-+			continue;
-+		if (horrible_match_v4(node, ip)) {
-+			ret = node->value;
-+			break;
-+		}
++		if (node->ip_version == 4 && horrible_match_v4(node, ip))
++			return node->value;
 +	}
-+	return ret;
++	return NULL;
 +}
 +
 +static __init void *
-+horrible_allowedips_lookup_v6(struct horrible_allowedips *table,
-+			      struct in6_addr *ip)
++horrible_allowedips_lookup_v6(struct horrible_allowedips *table, struct in6_addr *ip)
 +{
 +	struct horrible_allowedips_node *node;
-+	void *ret = NULL;
 +
 +	hlist_for_each_entry(node, &table->head, table) {
-+		if (node->ip_version != 6)
-+			continue;
-+		if (horrible_match_v6(node, ip)) {
-+			ret = node->value;
-+			break;
-+		}
++		if (node->ip_version == 6 && horrible_match_v6(node, ip))
++			return node->value;
 +	}
-+	return ret;
++	return NULL;
++}
++
++
++static __init void
++horrible_allowedips_remove_by_value(struct horrible_allowedips *table, void *value)
++{
++	struct horrible_allowedips_node *node;
++	struct hlist_node *h;
++
++	hlist_for_each_entry_safe(node, h, &table->head, table) {
++		if (node->value != value)
++			continue;
++		hlist_del(&node->table);
++		kfree(node);
++	}
++
 +}
 +
 +static __init bool randomized_test(void)
@@ -49105,6 +49542,7 @@ index 00000000..846db14c
 +			goto free;
 +		}
 +		kref_init(&peers[i]->refcount);
++		INIT_LIST_HEAD(&peers[i]->allowedips_list);
 +	}
 +
 +	mutex_lock(&mutex);
@@ -49142,7 +49580,7 @@ index 00000000..846db14c
 +			if (wg_allowedips_insert_v4(&t,
 +						    (struct in_addr *)mutated,
 +						    cidr, peer, &mutex) < 0) {
-+				pr_err("allowedips random malloc: FAIL\n");
++				pr_err("allowedips random self-test malloc: FAIL\n");
 +				goto free_locked;
 +			}
 +			if (horrible_allowedips_insert_v4(&h,
@@ -49205,23 +49643,33 @@ index 00000000..846db14c
 +		print_tree(t.root6, 128);
 +	}
 +
-+	for (i = 0; i < NUM_QUERIES; ++i) {
-+		prandom_bytes(ip, 4);
-+		if (lookup(t.root4, 32, ip) !=
-+		    horrible_allowedips_lookup_v4(&h, (struct in_addr *)ip)) {
-+			pr_err("allowedips random self-test: FAIL\n");
-+			goto free;
++	for (j = 0;; ++j) {
++		for (i = 0; i < NUM_QUERIES; ++i) {
++			prandom_bytes(ip, 4);
++			if (lookup(t.root4, 32, ip) != horrible_allowedips_lookup_v4(&h, (struct in_addr *)ip)) {
++				horrible_allowedips_lookup_v4(&h, (struct in_addr *)ip);
++				pr_err("allowedips random v4 self-test: FAIL\n");
++				goto free;
++			}
++			prandom_bytes(ip, 16);
++			if (lookup(t.root6, 128, ip) != horrible_allowedips_lookup_v6(&h, (struct in6_addr *)ip)) {
++				pr_err("allowedips random v6 self-test: FAIL\n");
++				goto free;
++			}
 +		}
++		if (j >= NUM_PEERS)
++			break;
++		mutex_lock(&mutex);
++		wg_allowedips_remove_by_peer(&t, peers[j], &mutex);
++		mutex_unlock(&mutex);
++		horrible_allowedips_remove_by_value(&h, peers[j]);
 +	}
 +
-+	for (i = 0; i < NUM_QUERIES; ++i) {
-+		prandom_bytes(ip, 16);
-+		if (lookup(t.root6, 128, ip) !=
-+		    horrible_allowedips_lookup_v6(&h, (struct in6_addr *)ip)) {
-+			pr_err("allowedips random self-test: FAIL\n");
-+			goto free;
-+		}
++	if (t.root4 || t.root6) {
++		pr_err("allowedips random self-test removal: FAIL\n");
++		goto free;
 +	}
++
 +	ret = true;
 +
 +free:
@@ -49841,10 +50289,10 @@ index 00000000..007cd445
 +#endif
 diff --git a/net/wireguard/send.c b/net/wireguard/send.c
 new file mode 100644
-index 00000000..828b086a
+index 00000000..55bb0c93
 --- /dev/null
 +++ b/net/wireguard/send.c
-@@ -0,0 +1,429 @@
+@@ -0,0 +1,420 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) 2015-2019 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
@@ -50089,8 +50537,7 @@ index 00000000..828b086a
 +	wg_packet_send_staged_packets(peer);
 +}
 +
-+static void wg_packet_create_data_done(struct sk_buff *first,
-+				       struct wg_peer *peer)
++static void wg_packet_create_data_done(struct wg_peer *peer, struct sk_buff *first)
 +{
 +	struct sk_buff *skb, *next;
 +	bool is_keepalive, data_sent = false;
@@ -50112,22 +50559,19 @@ index 00000000..828b086a
 +
 +void wg_packet_tx_worker(struct work_struct *work)
 +{
-+	struct crypt_queue *queue = container_of(work, struct crypt_queue,
-+						 work);
++	struct wg_peer *peer = container_of(work, struct wg_peer, transmit_packet_work);
 +	struct noise_keypair *keypair;
 +	enum packet_state state;
 +	struct sk_buff *first;
-+	struct wg_peer *peer;
 +
-+	while ((first = __ptr_ring_peek(&queue->ring)) != NULL &&
++	while ((first = wg_prev_queue_peek(&peer->tx_queue)) != NULL &&
 +	       (state = atomic_read_acquire(&PACKET_CB(first)->state)) !=
 +		       PACKET_STATE_UNCRYPTED) {
-+		__ptr_ring_discard_one(&queue->ring);
-+		peer = PACKET_PEER(first);
++		wg_prev_queue_drop_peeked(&peer->tx_queue);
 +		keypair = PACKET_CB(first)->keypair;
 +
 +		if (likely(state == PACKET_STATE_CRYPTED))
-+			wg_packet_create_data_done(first, peer);
++			wg_packet_create_data_done(peer, first);
 +		else
 +			kfree_skb_list(first);
 +
@@ -50159,17 +50603,15 @@ index 00000000..828b086a
 +				break;
 +			}
 +		}
-+		wg_queue_enqueue_per_peer(&PACKET_PEER(first)->tx_queue, first,
-+					  state);
++		wg_queue_enqueue_per_peer_tx(first, state);
 +
 +		simd_relax(&simd_context);
 +	}
 +	simd_put(&simd_context);
 +}
 +
-+static void wg_packet_create_data(struct sk_buff *first)
++static void wg_packet_create_data(struct wg_peer *peer, struct sk_buff *first)
 +{
-+	struct wg_peer *peer = PACKET_PEER(first);
 +	struct wg_device *wg = peer->device;
 +	int ret = -EINVAL;
 +
@@ -50177,13 +50619,10 @@ index 00000000..828b086a
 +	if (unlikely(READ_ONCE(peer->is_dead)))
 +		goto err;
 +
-+	ret = wg_queue_enqueue_per_device_and_peer(&wg->encrypt_queue,
-+						   &peer->tx_queue, first,
-+						   wg->packet_crypt_wq,
-+						   &wg->encrypt_queue.last_cpu);
++	ret = wg_queue_enqueue_per_device_and_peer(&wg->encrypt_queue, &peer->tx_queue, first,
++						   wg->packet_crypt_wq, &wg->encrypt_queue.last_cpu);
 +	if (unlikely(ret == -EPIPE))
-+		wg_queue_enqueue_per_peer(&peer->tx_queue, first,
-+					  PACKET_STATE_DEAD);
++		wg_queue_enqueue_per_peer_tx(first, PACKET_STATE_DEAD);
 +err:
 +	rcu_read_unlock_bh();
 +	if (likely(!ret || ret == -EPIPE))
@@ -50247,7 +50686,7 @@ index 00000000..828b086a
 +	packets.prev->next = NULL;
 +	wg_peer_get(keypair->entry.peer);
 +	PACKET_CB(packets.next)->keypair = keypair;
-+	wg_packet_create_data(packets.next);
++	wg_packet_create_data(peer, packets.next);
 +	return;
 +
 +out_invalid:
@@ -50276,10 +50715,10 @@ index 00000000..828b086a
 +}
 diff --git a/net/wireguard/socket.c b/net/wireguard/socket.c
 new file mode 100644
-index 00000000..e8eceeb0
+index 00000000..9e0af932
 --- /dev/null
 +++ b/net/wireguard/socket.c
-@@ -0,0 +1,436 @@
+@@ -0,0 +1,437 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) 2015-2019 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
@@ -50442,6 +50881,7 @@ index 00000000..e8eceeb0
 +	rcu_read_unlock_bh();
 +	return ret;
 +#else
++	kfree_skb(skb);
 +	return -EAFNOSUPPORT;
 +#endif
 +}
@@ -50523,7 +50963,7 @@ index 00000000..e8eceeb0
 +		endpoint->addr4.sin_addr.s_addr = ip_hdr(skb)->saddr;
 +		endpoint->src4.s_addr = ip_hdr(skb)->daddr;
 +		endpoint->src_if4 = skb->skb_iif;
-+	} else if (skb->protocol == htons(ETH_P_IPV6)) {
++	} else if (IS_ENABLED(CONFIG_IPV6) && skb->protocol == htons(ETH_P_IPV6)) {
 +		endpoint->addr6.sin6_family = AF_INET6;
 +		endpoint->addr6.sin6_port = udp_hdr(skb)->source;
 +		endpoint->addr6.sin6_addr = ipv6_hdr(skb)->saddr;
@@ -50566,7 +51006,7 @@ index 00000000..e8eceeb0
 +		peer->endpoint.addr4 = endpoint->addr4;
 +		peer->endpoint.src4 = endpoint->src4;
 +		peer->endpoint.src_if4 = endpoint->src_if4;
-+	} else if (endpoint->addr.sa_family == AF_INET6) {
++	} else if (IS_ENABLED(CONFIG_IPV6) && endpoint->addr.sa_family == AF_INET6) {
 +		peer->endpoint.addr6 = endpoint->addr6;
 +		peer->endpoint.src6 = endpoint->src6;
 +	} else {
@@ -50590,7 +51030,7 @@ index 00000000..e8eceeb0
 +{
 +	write_lock_bh(&peer->endpoint_lock);
 +	memset(&peer->endpoint.src6, 0, sizeof(peer->endpoint.src6));
-+	dst_cache_reset(&peer->endpoint_cache);
++	dst_cache_reset_now(&peer->endpoint_cache);
 +	write_unlock_bh(&peer->endpoint_lock);
 +}
 +
@@ -50712,7 +51152,7 @@ index 00000000..e8eceeb0
 +	if (new4)
 +		wg->incoming_port = ntohs(inet_sk(new4)->inet_sport);
 +	mutex_unlock(&wg->socket_update_lock);
-+	synchronize_rcu();
++	synchronize_net();
 +	sock_free(old4);
 +	sock_free(old6);
 +}
@@ -51256,10 +51696,10 @@ index 00000000..ae88be14
 +#endif /* _WG_UAPI_WIREGUARD_H */
 diff --git a/net/wireguard/version.h b/net/wireguard/version.h
 new file mode 100644
-index 00000000..fc144d11
+index 00000000..c7f9028f
 --- /dev/null
 +++ b/net/wireguard/version.h
 @@ -0,0 +1,3 @@
 +#ifndef WIREGUARD_VERSION
-+#define WIREGUARD_VERSION "1.0.20210124"
++#define WIREGUARD_VERSION "1.0.20220627"
 +#endif
